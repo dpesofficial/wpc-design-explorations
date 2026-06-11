@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WP Creative — Design Explorations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { height: 100%; scroll-behavior: smooth; }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      cursor: none;
+      background: #000;
+      color: #fff;
+    }
+
+    /* ── CURSOR ─────────────────────────────────────────────── */
+    .cur {
+      position: fixed; z-index: 9999;
+      width: 24px; height: 24px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.4);
+      pointer-events: none; transform: translate(-50%,-50%);
+      transition: width .2s, height .2s, border-color .2s, background .2s;
+    }
+    .cur.on-card { width: 64px; height: 64px; border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); }
+    .cur.on-light { border-color: rgba(0,0,0,0.3); }
+    .cur.on-card.on-light { border-color: rgba(0,0,0,0.15); background: rgba(0,0,0,0.04); }
+    .cur-dot {
+      position: fixed; z-index: 10000;
+      width: 3px; height: 3px; border-radius: 50%;
+      background: #fff; pointer-events: none;
+      transform: translate(-50%,-50%);
+      transition: background .2s;
+    }
+    .cur-dot.on-light { background: #000; }
+    @media (hover:none) { .cur,.cur-dot { display:none; } body { cursor:auto; } }
+
+    /* ── HERO — BLACK ────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      background: #000;
+      color: #fff;
+      display: flex; flex-direction: column;
+      padding: 0 64px;
+      overflow: hidden;
+    }
+
+    .hero__nav {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding-top: 44px;
+    }
+    .hero__brand {
+      font-size: 12px; font-weight: 400;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+    }
+    .hero__navright {
+      text-align: right;
+      font-size: 11px; font-weight: 400;
+      letter-spacing: 0.10em; text-transform: uppercase;
+      color: rgba(255,255,255,0.18);
+      line-height: 1.7;
+    }
+
+    .hero__body {
+      flex: 1;
+      display: flex; flex-direction: column;
+      justify-content: flex-end;
+      padding-bottom: 80px;
+    }
+
+    .hero__title {
+      font-size: clamp(72px, 14vw, 225px);
+      font-weight: 300;
+      line-height: 0.76;
+      letter-spacing: -0.03em;
+      color: #fff;
+      margin-bottom: 72px;
+    }
+    .hero__title span { display: block; }
+
+    .hero__foot {
+      display: flex; align-items: center;
+      gap: 40px;
+    }
+
+    .pill-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 30px;
+      border: 1px solid rgba(255,255,255,0.28);
+      border-radius: 75px;
+      font-size: 13px; font-weight: 400; letter-spacing: 0.03em;
+      color: rgba(255,255,255,0.7);
+      transition: background .2s, border-color .2s, color .2s;
+      white-space: nowrap;
+    }
+    .pill-btn:hover {
+      background: rgba(255,255,255,0.07);
+      border-color: rgba(255,255,255,0.55);
+      color: #fff;
+    }
+    .pill-btn--dark {
+      border-color: rgba(0,0,0,0.18);
+      color: rgba(0,0,0,0.5);
+    }
+    .pill-btn--dark:hover {
+      background: rgba(0,0,0,0.05);
+      border-color: rgba(0,0,0,0.45);
+      color: #000;
+    }
+
+    .hero__caption {
+      font-size: 13px; font-weight: 300;
+      color: rgba(255,255,255,0.22);
+      line-height: 1.75;
+    }
+
+    .hero__footnote {
+      position: absolute; bottom: 40px; right: 64px;
+      font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(255,255,255,0.08);
+      writing-mode: vertical-rl; transform: rotate(180deg);
+    }
+
+    /* ── EDITORIAL — WHITE ───────────────────────────────────── */
+    .editorial {
+      background: #fff;
+      color: #000;
+      padding: 88px 64px;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .editorial__label {
+      font-size: 11px; font-weight: 400;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(0,0,0,0.28);
+      padding-top: 6px;
+      line-height: 1.8;
+    }
+
+    .editorial__text {
+      font-size: clamp(20px, 2.4vw, 30px);
+      font-weight: 300;
+      line-height: 1.42;
+      color: #000;
+      letter-spacing: -0.015em;
+    }
+
+    /* ── WORK GRID — BLACK ───────────────────────────────────── */
+    .work {
+      background: #000;
+      padding: 2px;
+    }
+
+    .work__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .work-card {
+      position: relative;
+      display: block;
+      min-height: 620px;
+      overflow: hidden;
+      cursor: none;
+    }
+
+    .work-card__bg {
+      position: absolute; inset: 0;
+      background-size: cover; background-position: center;
+      transition: transform 0.8s cubic-bezier(.22,1,.36,1);
+    }
+    .work-card:hover .work-card__bg { transform: scale(1.045); }
+
+    .work-card__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.42) 42%, rgba(0,0,0,0.08) 100%);
+      transition: background .4s;
+    }
+    .work-card:hover .work-card__overlay {
+      background: linear-gradient(to top, rgba(0,0,0,0.94) 0%, rgba(0,0,0,0.58) 52%, rgba(0,0,0,0.15) 100%);
+    }
+
+    .work-card__content {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      justify-content: space-between;
+      padding: 40px;
+    }
+
+    .work-card__num {
+      font-size: 11px; font-weight: 400;
+      letter-spacing: 0.14em;
+      color: rgba(255,255,255,0.25);
+      align-self: flex-end;
+    }
+
+    .work-card__label {
+      font-size: 10px; font-weight: 400;
+      letter-spacing: 0.13em; text-transform: uppercase;
+      color: rgba(255,255,255,0.28);
+      margin-bottom: 14px;
+    }
+
+    .work-card__title {
+      font-size: clamp(24px, 2.8vw, 38px);
+      font-weight: 300;
+      line-height: 1.08;
+      letter-spacing: -0.022em;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+
+    .work-card__desc {
+      font-size: 13px; font-weight: 300;
+      color: rgba(255,255,255,0.38);
+      line-height: 1.65;
+      max-width: 300px;
+      margin-bottom: 28px;
+      opacity: 0; transform: translateY(10px);
+      transition: opacity .35s, transform .35s cubic-bezier(.22,1,.36,1);
+    }
+    .work-card:hover .work-card__desc { opacity: 1; transform: translateY(0); }
+
+    .work-card__cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 12px; font-weight: 400;
+      letter-spacing: 0.06em;
+      color: rgba(255,255,255,0.45);
+      opacity: 0; transform: translateY(6px);
+      transition: opacity .3s .05s, transform .3s .05s, color .2s;
+    }
+    .work-card:hover .work-card__cta { opacity: 1; transform: translateY(0); color: #fff; }
+    .work-card__cta-icon {
+      width: 26px; height: 26px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.25);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+      transition: transform .2s, border-color .2s;
+    }
+    .work-card:hover .work-card__cta-icon { transform: rotate(-45deg); border-color: rgba(255,255,255,0.55); }
+
+    /* V3 — light card */
+    .work-card--v3 .work-card__overlay {
+      background: linear-gradient(to top, rgba(229,228,224,0.90) 0%, rgba(229,228,224,0.45) 45%, rgba(229,228,224,0.04) 100%);
+    }
+    .work-card--v3:hover .work-card__overlay {
+      background: linear-gradient(to top, rgba(229,228,224,0.95) 0%, rgba(229,228,224,0.62) 55%, rgba(229,228,224,0.1) 100%);
+    }
+    .work-card--v3 .work-card__num   { color: rgba(0,0,0,0.22); }
+    .work-card--v3 .work-card__label { color: rgba(0,0,0,0.28); }
+    .work-card--v3 .work-card__title { color: #000; }
+    .work-card--v3 .work-card__desc  { color: rgba(0,0,0,0.38); }
+    .work-card--v3 .work-card__cta   { color: rgba(0,0,0,0.38); }
+    .work-card--v3:hover .work-card__cta { color: #000; }
+    .work-card--v3 .work-card__cta-icon { border-color: rgba(0,0,0,0.2); }
+    .work-card--v3:hover .work-card__cta-icon { border-color: rgba(0,0,0,0.5); }
+
+    /* Card backgrounds */
+    .work-card--v1 .work-card__bg {
+      background-image:
+        linear-gradient(to bottom, rgba(5,5,5,0.25), rgba(5,5,5,0.45)),
+        url('https://wpcreative.com.au/wp-content/uploads/2025/03/Wordpress-developer-sydney.png');
+    }
+    .work-card--v2 .work-card__bg {
+      background-image:
+        linear-gradient(to bottom, rgba(18,25,20,0.2), rgba(18,25,20,0.4)),
+        url('https://images.unsplash.com/photo-1490750967868-88df5691cc11?w=1200&q=80&fit=crop');
+    }
+    .work-card--v3 .work-card__bg { background: #e5e4e0; }
+
+    /* V3 iridescent sphere */
+    .work-card--v3 .sphere {
+      position: absolute;
+      width: 58%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: linear-gradient(255deg, rgb(250,203,14) 0%, rgb(240,107,168) 30%, rgb(120,186,230) 65%, #fff 100%);
+      right: -10%; top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* ── CLOSING — WHITE ─────────────────────────────────────── */
+    .closing {
+      background: #fff;
+      color: #000;
+      padding: 100px 64px;
+      display: flex; justify-content: space-between; align-items: flex-end;
+    }
+
+    .closing__wordmark {
+      font-size: clamp(44px, 8vw, 108px);
+      font-weight: 300;
+      letter-spacing: -0.03em;
+      line-height: 0.88;
+      color: #000;
+    }
+
+    .closing__right {
+      text-align: right;
+      display: flex; flex-direction: column; gap: 20px; align-items: flex-end;
+    }
+    .closing__url {
+      font-size: 13px; font-weight: 300;
+      color: rgba(0,0,0,0.35);
+      letter-spacing: 0.02em;
+    }
+
+    /* ── FOOTER — BLACK ──────────────────────────────────────── */
+    footer {
+      background: #000;
+      padding: 28px 64px;
+      display: flex; justify-content: space-between; align-items: center;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    footer p { font-size: 11px; font-weight: 300; color: rgba(255,255,255,0.14); letter-spacing: 0.06em; }
+    .sep { color: rgba(255,255,255,0.07); margin: 0 8px; }
+
+    /* ── RESPONSIVE ──────────────────────────────────────────── */
+    @media (max-width: 960px) {
+      .hero, .editorial, .closing, footer { padding-left: 28px; padding-right: 28px; }
+      .hero__footnote { right: 28px; }
+      .editorial { grid-template-columns: 1fr; gap: 28px; padding-top: 60px; padding-bottom: 60px; }
+      .work__grid { grid-template-columns: 1fr; }
+      .work-card { min-height: 480px; }
+      .work-card__desc { opacity: 1; transform: translateY(0); }
+      .work-card__cta  { opacity: 1; transform: translateY(0); }
+      .closing { flex-direction: column; align-items: flex-start; gap: 48px; }
+      .closing__right { align-items: flex-start; text-align: left; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cur" id="cur"></div>
+  <div class="cur-dot" id="curDot"></div>
+
+  <!-- ── HERO ── -->
+  <section class="hero" data-section="dark">
+    <nav class="hero__nav">
+      <span class="hero__brand">WP Creative</span>
+      <div class="hero__navright">
+        Design explorations<br>
+        wpcreative.com.au
+      </div>
+    </nav>
+    <div class="hero__body">
+      <h1 class="hero__title">
+        <span>Three</span>
+        <span>visual</span>
+        <span>directions.</span>
+      </h1>
+      <div class="hero__foot">
+        <a href="#work" class="pill-btn js-scroll">Browse work &darr;</a>
+        <p class="hero__caption">One brand. Three design languages.<br>Each built to convert.</p>
+      </div>
+    </div>
+    <span class="hero__footnote">Landing&nbsp;page&nbsp;concepts&nbsp;&middot;&nbsp;2024</span>
+  </section>
+
+  <!-- ── EDITORIAL ── -->
+  <section class="editorial" data-section="light">
+    <div class="editorial__label">
+      01&ndash;03<br>
+      Landing page<br>concepts
+    </div>
+    <p class="editorial__text">Three distinct visual identities applied to a single brand. Darkroom gallery, botanical editorial, typographic parchment. Each built from a real design system &mdash; Aker, Perplexity, OFF+BRAND.</p>
+  </section>
+
+  <!-- ── WORK ── -->
+  <section class="work" id="work" data-section="dark">
+    <div class="work__grid">
+
+      <!-- V1 — Aker / Darkroom -->
+      <a href="v1.html" class="work-card work-card--v1">
+        <div class="work-card__bg"></div>
+        <div class="work-card__overlay"></div>
+        <div class="work-card__content">
+          <div class="work-card__num">01 / 03</div>
+          <div>
+            <div class="work-card__label">Aker &middot; Darkroom gallery</div>
+            <h2 class="work-card__title">Monumental.<br>Restrained.<br>Gallery-grade.</h2>
+            <p class="work-card__desc">Full-bleed cityscape photography. 168px whisper-weight wordmark. Terracotta Ember on deep Char surfaces with parallax and scroll-reveal.</p>
+            <div class="work-card__cta">
+              Open version 01
+              <div class="work-card__cta-icon">&#8599;</div>
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <!-- V2 — Perplexity / Botanical -->
+      <a href="v2.html" class="work-card work-card--v2">
+        <div class="work-card__bg"></div>
+        <div class="work-card__overlay"></div>
+        <div class="work-card__content">
+          <div class="work-card__num">02 / 03</div>
+          <div>
+            <div class="work-card__label">Perplexity &middot; Botanical</div>
+            <h2 class="work-card__title">Organic.<br>Editorial.<br>Warm-parchment.</h2>
+            <p class="work-card__desc">Blurred botanical photography. Georgia serif headlines on warm parchment canvas with deep forest nav and frosted glass testimonials.</p>
+            <div class="work-card__cta">
+              Open version 02
+              <div class="work-card__cta-icon">&#8599;</div>
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <!-- V3 — OFF+BRAND / Iridescent -->
+      <a href="v3.html" class="work-card work-card--v3">
+        <div class="work-card__bg"></div>
+        <div class="sphere"></div>
+        <div class="work-card__overlay"></div>
+        <div class="work-card__content">
+          <div class="work-card__num">03 / 03</div>
+          <div>
+            <div class="work-card__label">OFF+BRAND &middot; Editorial parchment</div>
+            <h2 class="work-card__title">Typographic.<br>Achromatic.<br>One gradient.</h2>
+            <p class="work-card__desc">103px display type at 0.80 line-height. A single iridescent sphere as the only colour event. Zero shadows, grid-paper project cards.</p>
+            <div class="work-card__cta">
+              Open version 03
+              <div class="work-card__cta-icon">&#8599;</div>
+            </div>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ── CLOSING ── -->
+  <section class="closing" data-section="light">
+    <div class="closing__wordmark">WP<br>Creative</div>
+    <div class="closing__right">
+      <p class="closing__url">wpcreative.com.au</p>
+      <a href="https://www.wpcreative.com.au" target="_blank" class="pill-btn pill-btn--dark">Visit the live site &nbsp;&#8599;</a>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer data-section="dark">
+    <p>WP Creative <span class="sep">&middot;</span> Design explorations <span class="sep">&middot;</span> 2024</p>
+    <p>3 concepts <span class="sep">&middot;</span> Aker &middot; Perplexity &middot; OFF+BRAND</p>
+  </footer>
+
+  <script>
+    var cur = document.getElementById('cur');
+    var curDot = document.getElementById('curDot');
+    var mx = 0, my = 0, cx = 0, cy = 0;
+
+    document.addEventListener('mousemove', function(e) {
+      mx = e.clientX; my = e.clientY;
+      curDot.style.left = mx + 'px'; curDot.style.top = my + 'px';
+      var el = document.elementFromPoint(mx, my);
+      var sec = el && el.closest('[data-section]');
+      var light = sec ? sec.dataset.section === 'light' : false;
+      cur.classList.toggle('on-light', light);
+      curDot.classList.toggle('on-light', light);
+    });
+
+    (function lag() {
+      cx += (mx - cx) * 0.12;
+      cy += (my - cy) * 0.12;
+      cur.style.left = cx + 'px';
+      cur.style.top  = cy + 'px';
+      requestAnimationFrame(lag);
+    })();
+
+    document.querySelectorAll('.work-card').forEach(function(el) {
+      el.addEventListener('mouseenter', function() { cur.classList.add('on-card'); });
+      el.addEventListener('mouseleave', function() { cur.classList.remove('on-card'); });
+    });
+
+    var scrollBtn = document.querySelector('.js-scroll');
+    if (scrollBtn) {
+      scrollBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.getElementById('work').scrollIntoView({ behavior: 'smooth' });
+      });
+    }
+  </script>
+
+
+  <!-- __ WATER RIPPLE EFFECT __________________________________________________ -->
+  <script>
+  (function(){
+    function initWater(sel, R, G, B) {
+      var el = document.querySelector(sel);
+      if (!el) return;
+      if (getComputedStyle(el).position === 'static') el.style.position = 'relative';
+      var cvs = document.createElement('canvas');
+      cvs.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:10;mix-blend-mode:screen;';
+      el.appendChild(cvs);
+      var ctx = cvs.getContext('2d');
+      var W=0,H=0,buf0,buf1,img;
+      function resize(){
+        W=Math.max(4,el.offsetWidth>>1); H=Math.max(4,el.offsetHeight>>1);
+        cvs.width=W; cvs.height=H;
+        buf0=new Float32Array(W*H); buf1=new Float32Array(W*H);
+        img=ctx.createImageData(W,H);
+      }
+      resize(); new ResizeObserver(resize).observe(el);
+      function splash(ex,ey,rad,force){
+        var sx=(ex/el.offsetWidth*W)|0, sy=(ey/el.offsetHeight*H)|0, r2=rad*rad;
+        for(var dy=-rad;dy<=rad;dy++) for(var dx=-rad;dx<=rad;dx++){
+          if(dx*dx+dy*dy>r2) continue;
+          var px=sx+dx,py=sy+dy;
+          if(px>0&&px<W-1&&py>0&&py<H-1) buf0[py*W+px]+=force;
+        }
+      }
+      var _lx=-999,_ly=-999;
+      el.addEventListener('mousemove',function(e){
+        var rc=el.getBoundingClientRect();
+        var cx=e.clientX-rc.left,cy=e.clientY-rc.top;
+        if(Math.hypot(cx-_lx,cy-_ly)<72) return;
+        _lx=cx; _ly=cy;
+        splash(cx,cy,4,110);
+      });
+      el.addEventListener('click',function(e){
+        var rc=el.getBoundingClientRect();
+        splash(e.clientX-rc.left,e.clientY-rc.top,10,320);
+      });
+      (function frame(){
+        var W1=W-1,H1=H-1;
+        for(var y=1;y<H1;y++) for(var x=1;x<W1;x++){
+          var i=y*W+x;
+          buf1[i]=(buf0[i-1]+buf0[i+1]+buf0[i-W]+buf0[i+W])*0.5-buf1[i];
+          buf1[i]*=0.968;
+        }
+        var tmp=buf0; buf0=buf1; buf1=tmp;
+        var d=img.data;
+        for(var y=1;y<H1;y++) for(var x=1;x<W1;x++){
+          var i=y*W+x,p=i*4;
+          var nx=buf0[i+1]-buf0[i-1], ny=buf0[i+W]-buf0[i-W];
+          var spec=nx+ny;
+          var a=spec>0?Math.min(16,spec*0.19):0;
+          d[p]=R; d[p+1]=G; d[p+2]=B; d[p+3]=a;
+        }
+        ctx.putImageData(img,0,0);
+        requestAnimationFrame(frame);
+      })();
+    }
+    var fn=function(){initWater('.hero',255,255,255);};
+    document.readyState==='loading'?document.addEventListener('DOMContentLoaded',fn):fn();
+  })();
+  </script>
+
+</body>
+</html>

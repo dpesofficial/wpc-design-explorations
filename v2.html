@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WP Creative — WordPress Agency for Marketing Teams</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Georgia&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── RESET ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ─── TOKENS ─────────────────────────────────────────────── */
+    :root {
+      --aged-sepia:    #271a00;
+      --parchment:     #faf8f5;
+      --fog:           #d1cfc7;
+      --abs-black:     #000000;
+      --pure-white:    #ffffff;
+      --moss-shadow:   #7c7464;
+      --deep-forest:   #23291b;
+      --teal-accent:   #0f3639;
+      --ash-mist:      #e5e5e3;
+      --slate-edge:    #121516;
+
+      --sans: 'Inter', -apple-system, ui-sans-serif, sans-serif;
+      --serif: Georgia, 'Times New Roman', serif;
+      --mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+
+      --radius-card: 12px;
+      --radius-badge: 4px;
+      --radius-btn: 40px;
+
+      --page-max: 1160px;
+    }
+
+    /* ─── BASE ───────────────────────────────────────────────── */
+    body {
+      font-family: var(--sans);
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.5;
+      letter-spacing: -0.028em;
+      color: var(--aged-sepia);
+      background: var(--parchment);
+      -webkit-font-smoothing: antialiased;
+      cursor: none;
+    }
+
+    .wrap { max-width: var(--page-max); margin: 0 auto; padding: 0 40px; }
+
+    /* ─── CUSTOM CURSOR ──────────────────────────────────────── */
+    .cursor-ring {
+      position: fixed; top: 0; left: 0; z-index: 9999;
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 1px solid var(--aged-sepia);
+      pointer-events: none; transform: translate(-50%,-50%);
+      transition: transform 0.14s ease, opacity 0.2s, width 0.2s, height 0.2s;
+      opacity: 0.5;
+    }
+    .cursor-dot {
+      position: fixed; top: 0; left: 0; z-index: 10000;
+      width: 4px; height: 4px; border-radius: 50%;
+      background: var(--aged-sepia);
+      pointer-events: none; transform: translate(-50%,-50%);
+    }
+    .cursor-ring.grow { width: 52px; height: 52px; opacity: 0.25; }
+    @media (hover:none) { .cursor-ring, .cursor-dot { display:none; } body { cursor:auto; } }
+
+    /* ─── SCROLL PROGRESS ────────────────────────────────────── */
+    .progress {
+      position: fixed; top: 0; left: 0; z-index: 200;
+      height: 1px; background: var(--aged-sepia);
+      width: 0%; opacity: 0.4; transition: width 0.06s linear;
+    }
+
+    /* ─── NAV ────────────────────────────────────────────────── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px; height: 64px;
+      transition: background 0.3s, backdrop-filter 0.3s;
+    }
+    .nav.scrolled {
+      background: rgba(35,41,27,0.92);
+      backdrop-filter: blur(12px);
+    }
+    .nav__logo {
+      font-family: var(--serif);
+      font-size: 17px; font-weight: 400;
+      color: var(--aged-sepia); letter-spacing: 0.01em;
+    }
+    .nav.scrolled .nav__logo { color: var(--parchment); }
+    .nav__links {
+      display: flex; align-items: center; gap: 4px;
+    }
+    .nav__link {
+      font-size: 14px; font-weight: 400;
+      color: var(--aged-sepia); letter-spacing: -0.028em;
+      padding: 8px 16px; border-radius: var(--radius-btn);
+      transition: background 0.18s;
+    }
+    .nav.scrolled .nav__link { color: rgba(250,248,245,0.7); }
+    .nav__link:hover { background: rgba(39,26,0,0.08); }
+    .nav.scrolled .nav__link:hover { background: rgba(250,248,245,0.1); }
+    .nav__cta {
+      font-size: 14px; font-weight: 500;
+      color: var(--slate-edge);
+      background: var(--fog); border: 1px solid var(--slate-edge);
+      border-radius: var(--radius-btn); padding: 10px 22px;
+      letter-spacing: -0.02em; transition: background 0.18s, color 0.18s;
+    }
+    .nav__cta:hover { background: var(--aged-sepia); color: var(--parchment); }
+
+    /* ─── HERO ───────────────────────────────────────────────── */
+    .hero {
+      position: relative; min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .hero__bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: url('https://images.unsplash.com/photo-1490750967868-88df5691cc11?w=2400&q=85&fit=crop') center/cover no-repeat;
+      filter: blur(18px) saturate(0.7);
+      transform: scale(1.08);
+      will-change: transform;
+    }
+    .hero__vignette {
+      position: absolute; inset: 0; z-index: 1;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 50%, transparent 20%, rgba(250,248,245,0.6) 80%),
+        linear-gradient(to bottom, rgba(250,248,245,0.5) 0%, transparent 25%, transparent 75%, rgba(250,248,245,0.9) 100%);
+    }
+    .hero__content {
+      position: relative; z-index: 2;
+      text-align: center; padding: 120px 40px 80px;
+      max-width: 900px;
+    }
+    .hero__badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--mono); font-size: 11px; font-weight: 500;
+      color: var(--moss-shadow); letter-spacing: 0.04em;
+      margin-bottom: 32px;
+    }
+    .hero__badge::before, .hero__badge::after {
+      content: ''; width: 20px; height: 1px; background: var(--fog);
+    }
+    .hero__headline {
+      font-family: var(--serif); font-size: clamp(52px, 8vw, 96px);
+      font-weight: 400; line-height: 1.05; letter-spacing: -0.01em;
+      color: var(--aged-sepia); margin-bottom: 24px;
+    }
+    .hero__sub {
+      font-size: 17px; font-weight: 400; line-height: 1.6;
+      color: var(--moss-shadow); max-width: 520px;
+      margin: 0 auto 40px; letter-spacing: -0.02em;
+    }
+    .hero__actions { display: flex; gap: 12px; justify-content: center; align-items: center; }
+    .btn-primary {
+      font-family: var(--sans); font-size: 14px; font-weight: 500;
+      color: var(--slate-edge); letter-spacing: -0.02em;
+      background: var(--fog); border: 1px solid var(--slate-edge);
+      border-radius: var(--radius-btn); padding: 13px 28px;
+      cursor: none; transition: background 0.18s, color 0.18s, transform 0.2s;
+    }
+    .btn-primary:hover { background: var(--aged-sepia); color: var(--parchment); transform: translateY(-1px); }
+    .btn-ghost {
+      font-family: var(--sans); font-size: 14px; font-weight: 400;
+      color: var(--aged-sepia); letter-spacing: -0.02em;
+      background: rgba(255,255,255,0.55); backdrop-filter: blur(4px);
+      border: 1px solid rgba(39,26,0,0.14);
+      border-radius: var(--radius-badge); padding: 13px 24px;
+      cursor: none; transition: background 0.18s, transform 0.2s;
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,0.8); transform: translateY(-1px); }
+
+    /* ─── SCROLL INDICATOR ───────────────────────────────────── */
+    .scroll-hint {
+      position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+      z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 8px;
+      opacity: 0.4;
+    }
+    .scroll-hint span { font-family: var(--mono); font-size: 10px; color: var(--aged-sepia); letter-spacing: 0.08em; }
+    .scroll-hint__line { width: 1px; height: 32px; background: var(--aged-sepia); animation: scrollPulse 2s ease-in-out infinite; }
+    @keyframes scrollPulse {
+      0%, 100% { transform: scaleY(1); opacity: 1; }
+      50% { transform: scaleY(0.5); opacity: 0.3; }
+    }
+
+    /* ─── STATEMENT ──────────────────────────────────────────── */
+    .statement { padding: 120px 0 80px; }
+    .statement__inner {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+    }
+    .statement__kicker {
+      font-family: var(--mono); font-size: 11px; color: var(--moss-shadow);
+      letter-spacing: 0.06em; margin-bottom: 20px; display: block;
+    }
+    .statement__heading {
+      font-family: var(--serif); font-size: clamp(36px, 4vw, 52px);
+      font-weight: 400; line-height: 1.1; color: var(--aged-sepia);
+    }
+    .statement__body {
+      padding-top: 12px; display: flex; flex-direction: column; gap: 20px;
+    }
+    .statement__p {
+      font-size: 16px; line-height: 1.7; color: var(--moss-shadow);
+      letter-spacing: -0.02em;
+    }
+    .statement__p em { color: var(--aged-sepia); font-style: normal; font-weight: 500; }
+    .text-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 14px; font-weight: 500; color: var(--aged-sepia);
+      border-bottom: 1px solid var(--fog); padding-bottom: 2px;
+      transition: border-color 0.2s; letter-spacing: -0.02em;
+      cursor: none;
+    }
+    .text-link:hover { border-color: var(--aged-sepia); }
+
+    /* ─── STATS ──────────────────────────────────────────────── */
+    .stats { padding: 0 0 100px; }
+    .stats__grid {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      border-top: 1px solid var(--fog);
+    }
+    .stats__cell {
+      padding: 40px 32px; border-right: 1px solid var(--fog);
+      transition: background 0.2s;
+    }
+    .stats__cell:last-child { border-right: none; }
+    .stats__cell:hover { background: var(--pure-white); }
+    .stats__num {
+      font-family: var(--serif); font-size: 52px; font-weight: 400;
+      line-height: 1.0; color: var(--aged-sepia); letter-spacing: -0.02em;
+    }
+    .stats__label {
+      font-size: 13px; color: var(--moss-shadow);
+      margin-top: 10px; letter-spacing: -0.02em;
+    }
+
+    /* ─── FEATURE CARDS ──────────────────────────────────────── */
+    .features { padding: 40px 0 100px; }
+    .features__header { margin-bottom: 48px; }
+    .features__kicker {
+      font-family: var(--mono); font-size: 11px; color: var(--moss-shadow);
+      letter-spacing: 0.06em; margin-bottom: 16px; display: block;
+    }
+    .features__heading {
+      font-family: var(--serif); font-size: clamp(28px, 3.5vw, 44px);
+      font-weight: 400; color: var(--aged-sepia); line-height: 1.1;
+    }
+    .features__grid {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 16px;
+    }
+    .fcard {
+      background: var(--pure-white); border-radius: var(--radius-card);
+      padding: 36px; display: flex; flex-direction: column;
+      transition: transform 0.3s cubic-bezier(.22,1,.36,1);
+    }
+    .fcard:hover { transform: translateY(-4px); }
+    .fcard__icon {
+      font-family: var(--mono); font-size: 11px; color: var(--moss-shadow);
+      letter-spacing: 0.06em; margin-bottom: 20px;
+      padding: 4px 8px; background: var(--parchment);
+      border-radius: var(--radius-badge); display: inline-block;
+    }
+    .fcard__heading {
+      font-family: var(--serif); font-size: 22px; font-weight: 400;
+      line-height: 1.2; color: var(--slate-edge); margin-bottom: 12px;
+    }
+    .fcard__body {
+      font-size: 14px; color: var(--moss-shadow); line-height: 1.65;
+      letter-spacing: -0.02em; flex: 1;
+    }
+
+    /* wide card */
+    .fcard--wide {
+      grid-column: span 2;
+      background:
+        linear-gradient(to right, rgba(250,248,245,0.96) 40%, rgba(250,248,245,0.7) 100%),
+        url('https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1200&q=80&fit=crop') right center/cover no-repeat;
+    }
+
+    /* dark card */
+    .fcard--dark {
+      background: var(--deep-forest); color: var(--parchment);
+    }
+    .fcard--dark .fcard__heading { color: var(--parchment); }
+    .fcard--dark .fcard__body { color: rgba(250,248,245,0.6); }
+    .fcard--dark .fcard__icon { color: rgba(250,248,245,0.4); background: rgba(255,255,255,0.06); }
+
+    /* ─── RESULTS BAND ───────────────────────────────────────── */
+    .results-band {
+      position: relative; overflow: hidden;
+      padding: 100px 0;
+    }
+    .results-band__bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: url('https://images.unsplash.com/photo-1444930694458-01babf71870c?w=2000&q=80&fit=crop') center/cover;
+      filter: blur(20px) saturate(0.6);
+      transform: scale(1.06);
+    }
+    .results-band__overlay {
+      position: absolute; inset: 0; z-index: 1;
+      background: rgba(250,248,245,0.88);
+    }
+    .results-band__inner { position: relative; z-index: 2; }
+    .results-band__heading {
+      font-family: var(--serif); font-size: clamp(32px, 4vw, 52px);
+      font-weight: 400; color: var(--aged-sepia); line-height: 1.1;
+      margin-bottom: 56px;
+    }
+    .results-grid {
+      display: grid; grid-template-columns: repeat(5,1fr); gap: 0;
+      border: 1px solid var(--fog); border-radius: var(--radius-card);
+      overflow: hidden;
+    }
+    .ritem {
+      padding: 36px 28px; border-right: 1px solid var(--fog);
+      background: rgba(255,255,255,0.7); backdrop-filter: blur(8px);
+      transition: background 0.2s;
+    }
+    .ritem:last-child { border-right: none; }
+    .ritem:hover { background: rgba(255,255,255,0.95); }
+    .ritem__num {
+      font-family: var(--serif); font-size: 44px; font-weight: 400;
+      color: var(--teal-accent); line-height: 1.0; letter-spacing: -0.02em;
+    }
+    .ritem__label { font-size: 12px; color: var(--moss-shadow); margin-top: 8px; line-height: 1.4; }
+    .ritem__client {
+      font-family: var(--mono); font-size: 10px; color: var(--fog);
+      margin-top: 20px; letter-spacing: 0.06em;
+    }
+
+    /* ─── SERVICES ───────────────────────────────────────────── */
+    .services { padding: 100px 0; }
+    .services__layout {
+      display: grid; grid-template-columns: 360px 1fr; gap: 80px; align-items: start;
+    }
+    .services__sticky {
+      position: sticky; top: 100px;
+    }
+    .services__kicker {
+      font-family: var(--mono); font-size: 11px; color: var(--moss-shadow);
+      letter-spacing: 0.06em; display: block; margin-bottom: 16px;
+    }
+    .services__heading {
+      font-family: var(--serif); font-size: 40px; font-weight: 400;
+      line-height: 1.1; color: var(--aged-sepia); margin-bottom: 24px;
+    }
+    .services__desc { font-size: 14px; color: var(--moss-shadow); line-height: 1.7; }
+    .services__list { display: flex; flex-direction: column; }
+    .sitem {
+      display: grid; grid-template-columns: 40px 1fr 80px;
+      align-items: center; gap: 20px;
+      padding: 24px 16px; border-top: 1px solid var(--fog);
+      border-radius: var(--radius-badge);
+      transition: background 0.2s, padding-left 0.25s cubic-bezier(.22,1,.36,1);
+      cursor: none;
+    }
+    .sitem:last-child { border-bottom: 1px solid var(--fog); }
+    .sitem:hover { background: var(--pure-white); padding-left: 24px; }
+    .sitem__num { font-family: var(--mono); font-size: 11px; color: var(--fog); }
+    .sitem__name { font-size: 18px; font-weight: 400; color: var(--aged-sepia); }
+    .sitem__tag {
+      font-family: var(--mono); font-size: 10px; color: var(--moss-shadow);
+      letter-spacing: 0.06em; text-align: right;
+    }
+
+    /* ─── DIFFERENTIATORS ────────────────────────────────────── */
+    .diff { padding: 0 0 100px; }
+    .diff__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .dcard {
+      background: var(--pure-white); border-radius: var(--radius-card);
+      padding: 36px; transition: transform 0.3s cubic-bezier(.22,1,.36,1);
+    }
+    .dcard:hover { transform: translateY(-3px); }
+    .dcard__num {
+      font-family: var(--mono); font-size: 11px; color: var(--fog);
+      margin-bottom: 16px; display: block;
+    }
+    .dcard__title {
+      font-family: var(--serif); font-size: 22px; font-weight: 400;
+      color: var(--aged-sepia); margin-bottom: 10px; line-height: 1.2;
+    }
+    .dcard__body { font-size: 14px; color: var(--moss-shadow); line-height: 1.7; }
+
+    /* ─── TESTIMONIALS ───────────────────────────────────────── */
+    .testimonials {
+      position: relative; overflow: hidden; padding: 100px 0;
+    }
+    .testimonials__bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: url('https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=2000&q=80&fit=crop') center/cover;
+      filter: blur(20px) saturate(0.55);
+      transform: scale(1.06);
+    }
+    .testimonials__overlay {
+      position: absolute; inset: 0; z-index: 1;
+      background: rgba(250,248,245,0.82);
+    }
+    .testimonials__inner { position: relative; z-index: 2; }
+    .testimonials__heading {
+      font-family: var(--serif); font-size: clamp(32px, 4vw, 52px);
+      font-weight: 400; color: var(--aged-sepia); line-height: 1.1;
+      margin-bottom: 48px;
+    }
+    .tgrid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+    .tcard {
+      background: rgba(255,255,255,0.82); backdrop-filter: blur(12px);
+      border-radius: var(--radius-card); padding: 32px;
+      border: 1px solid rgba(39,26,0,0.08);
+      transition: transform 0.28s cubic-bezier(.22,1,.36,1), background 0.2s;
+    }
+    .tcard:hover { transform: translateY(-4px); background: rgba(255,255,255,0.96); }
+    .tcard__quote {
+      font-family: var(--serif); font-size: 15px; font-weight: 400;
+      line-height: 1.7; color: var(--aged-sepia); margin-bottom: 24px;
+    }
+    .tcard__name { font-size: 12px; font-weight: 500; color: var(--aged-sepia); }
+    .tcard__role { font-size: 12px; color: var(--moss-shadow); margin-top: 3px; }
+
+    /* ─── CLIENTS ────────────────────────────────────────────── */
+    .clients { padding: 80px 0; border-top: 1px solid var(--fog); }
+    .clients__kicker {
+      font-family: var(--mono); font-size: 11px; color: var(--moss-shadow);
+      letter-spacing: 0.06em; text-align: center; display: block; margin-bottom: 32px;
+    }
+    .clients__pills {
+      display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+    }
+    .cpill {
+      font-size: 12px; font-weight: 400; color: var(--moss-shadow);
+      background: var(--pure-white); border: 1px solid var(--fog);
+      border-radius: var(--radius-badge); padding: 7px 16px;
+      transition: background 0.18s, color 0.18s, border-color 0.18s, transform 0.18s;
+      cursor: none;
+    }
+    .cpill:hover { background: var(--aged-sepia); color: var(--parchment); border-color: var(--aged-sepia); transform: translateY(-2px); }
+
+    /* ─── FOUNDERS ───────────────────────────────────────────── */
+    .founders { padding: 100px 0; }
+    .founders__inner {
+      background: var(--pure-white); border-radius: var(--radius-card);
+      padding: 64px; display: grid; grid-template-columns: 1fr 1fr; gap: 64px;
+      align-items: center;
+    }
+    .founders__kicker {
+      font-family: var(--mono); font-size: 11px; color: var(--moss-shadow);
+      letter-spacing: 0.06em; display: block; margin-bottom: 20px;
+    }
+    .founders__heading {
+      font-family: var(--serif); font-size: 38px; font-weight: 400;
+      line-height: 1.12; color: var(--aged-sepia); margin-bottom: 20px;
+    }
+    .founders__body { font-size: 15px; color: var(--moss-shadow); line-height: 1.7; margin-bottom: 28px; }
+    .founders__duo { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .founders__portrait {
+      aspect-ratio: 3/4; border-radius: var(--radius-card);
+      overflow: hidden; background: var(--ash-mist);
+    }
+    .founders__portrait:nth-child(2) { margin-top: 32px; }
+    .founders__portrait-fill {
+      width: 100%; height: 100%;
+      background: linear-gradient(160deg, var(--ash-mist) 0%, var(--fog) 100%);
+      display: flex; align-items: flex-end; padding: 16px;
+    }
+    .founders__portrait-name {
+      font-family: var(--mono); font-size: 11px; color: var(--moss-shadow);
+      letter-spacing: 0.04em;
+    }
+
+    /* ─── PROCESS ────────────────────────────────────────────── */
+    .process {
+      padding: 100px 0;
+      background:
+        linear-gradient(to bottom, var(--parchment) 0%, rgba(250,248,245,0) 30%),
+        url('https://images.unsplash.com/photo-1490750967868-88df5691cc11?w=2000&q=70&fit=crop') center/cover;
+    }
+    .process__inner { position: relative; z-index: 1; }
+    .process__heading {
+      font-family: var(--serif); font-size: clamp(32px, 4vw, 52px);
+      font-weight: 400; color: var(--aged-sepia); margin-bottom: 48px;
+    }
+    .process__steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+    .pstep {
+      background: rgba(255,255,255,0.75); backdrop-filter: blur(12px);
+      border-radius: var(--radius-card); padding: 36px;
+      border: 1px solid rgba(39,26,0,0.06);
+      transition: transform 0.3s cubic-bezier(.22,1,.36,1);
+    }
+    .pstep:hover { transform: translateY(-4px); }
+    .pstep__num {
+      font-family: var(--mono); font-size: 11px; color: var(--moss-shadow);
+      letter-spacing: 0.06em; margin-bottom: 16px; display: block;
+    }
+    .pstep__title {
+      font-family: var(--serif); font-size: 24px; font-weight: 400;
+      color: var(--aged-sepia); margin-bottom: 12px;
+    }
+    .pstep__body { font-size: 14px; color: var(--moss-shadow); line-height: 1.7; }
+
+    /* ─── CTA ────────────────────────────────────────────────── */
+    .cta-section {
+      position: relative; overflow: hidden; padding: 120px 0;
+    }
+    .cta-section__bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: url('https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=2000&q=80&fit=crop') center/cover;
+      filter: blur(20px) saturate(0.55);
+      transform: scale(1.06);
+    }
+    .cta-section__overlay {
+      position: absolute; inset: 0; z-index: 1;
+      background: rgba(250,248,245,0.9);
+    }
+    .cta-section__inner {
+      position: relative; z-index: 2;
+      max-width: 680px; text-align: center; margin: 0 auto;
+    }
+    .cta-section__heading {
+      font-family: var(--serif); font-size: clamp(36px, 5vw, 64px);
+      font-weight: 400; line-height: 1.1; color: var(--aged-sepia);
+      margin-bottom: 20px;
+    }
+    .cta-section__sub {
+      font-size: 16px; color: var(--moss-shadow); line-height: 1.7;
+      margin-bottom: 36px; letter-spacing: -0.02em;
+    }
+    .cta-section__btns { display: flex; gap: 12px; justify-content: center; }
+
+    /* ─── FOOTER ─────────────────────────────────────────────── */
+    .footer {
+      background: var(--abs-black); padding: 64px 0 48px;
+    }
+    .footer__top {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px; margin-bottom: 56px;
+    }
+    .footer__wordmark {
+      font-family: var(--serif); font-size: 20px; font-weight: 400;
+      color: var(--parchment); margin-bottom: 14px; letter-spacing: 0.01em;
+    }
+    .footer__tagline {
+      font-size: 13px; color: rgba(250,248,245,0.4); line-height: 1.6; max-width: 240px;
+    }
+    .footer__col-head {
+      font-family: var(--mono); font-size: 10px; color: rgba(250,248,245,0.25);
+      letter-spacing: 0.1em; margin-bottom: 20px;
+    }
+    .footer__links { display: flex; flex-direction: column; gap: 10px; }
+    .footer__links a {
+      font-size: 13px; color: rgba(250,248,245,0.45);
+      transition: color 0.18s; letter-spacing: -0.02em;
+    }
+    .footer__links a:hover { color: var(--parchment); }
+    .footer__bottom {
+      display: flex; justify-content: space-between;
+      padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .footer__copy { font-size: 12px; color: rgba(250,248,245,0.18); letter-spacing: -0.01em; }
+    .footer__mark { color: var(--teal-accent); }
+
+    /* ─── SCROLL REVEAL ──────────────────────────────────────── */
+    .rv { opacity:0; transform:translateY(28px); transition: opacity .65s cubic-bezier(.22,1,.36,1), transform .65s cubic-bezier(.22,1,.36,1); }
+    .rv.in { opacity:1; transform:none; }
+    .rv-l { opacity:0; transform:translateX(-32px); transition: opacity .75s cubic-bezier(.22,1,.36,1), transform .75s cubic-bezier(.22,1,.36,1); }
+    .rv-l.in { opacity:1; transform:none; }
+    .rv-r { opacity:0; transform:translateX(32px); transition: opacity .75s cubic-bezier(.22,1,.36,1), transform .75s cubic-bezier(.22,1,.36,1); }
+    .rv-r.in { opacity:1; transform:none; }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────────── */
+    @media (max-width: 960px) {
+      .statement__inner, .services__layout, .founders__inner,
+      .diff__grid, .tgrid, .process__steps, .footer__top { grid-template-columns: 1fr; gap: 32px; }
+      .stats__grid { grid-template-columns: 1fr 1fr; }
+      .features__grid { grid-template-columns: 1fr; }
+      .fcard--wide { grid-column: span 1; }
+      .results-grid { grid-template-columns: 1fr 1fr; }
+      .wrap { padding: 0 20px; }
+      .nav { padding: 0 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor-ring" id="ring"></div>
+  <div class="cursor-dot" id="dot2"></div>
+  <div class="progress" id="prog"></div>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="nav__logo">WP Creative</div>
+    <div class="nav__links">
+      <a href="#services" class="nav__link">Services</a>
+      <a href="#work" class="nav__link">Work</a>
+      <a href="#about" class="nav__link">About</a>
+    </div>
+    <a href="#cta" class="nav__cta">Book a Call</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero__bg" id="heroBg"></div>
+    <div class="hero__vignette"></div>
+    <div class="hero__content">
+      <span class="hero__badge">WordPress Agency for Marketing Teams</span>
+      <h1 class="hero__headline">Websites that<br>fuel growth.</h1>
+      <p class="hero__sub">We blend marketing vision with technical precision — turning your WordPress site into your strongest revenue channel.</p>
+      <div class="hero__actions">
+        <a href="#cta" class="btn-primary">Book a free strategy session</a>
+        <a href="#work" class="btn-ghost">View our work →</a>
+      </div>
+    </div>
+    <div class="scroll-hint">
+      <span>scroll</span>
+      <div class="scroll-hint__line"></div>
+    </div>
+  </section>
+
+  <!-- STATEMENT -->
+  <section class="statement" id="about">
+    <div class="wrap">
+      <div class="statement__inner">
+        <div class="rv-l">
+          <span class="statement__kicker">/about</span>
+          <h2 class="statement__heading">The Marketechs™ difference.</h2>
+        </div>
+        <div class="statement__body rv-r">
+          <p class="statement__p">We are <em>Marketechs™</em> — a rare blend of marketing vision and technical precision. Most agencies can build websites. We build growth engines.</p>
+          <p class="statement__p">Senior-only. 100% in-house. No outsourcing, no juniors learning on your budget. Every project is handled by developers who understand conversion, campaigns, and what it means to move fast in a marketing environment.</p>
+          <a href="#about" class="text-link">Our story <span>→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats">
+    <div class="wrap">
+      <div class="stats__grid">
+        <div class="stats__cell rv">
+          <div class="stats__num" data-count="1200" data-suffix="+">1,200+</div>
+          <div class="stats__label">Projects completed</div>
+        </div>
+        <div class="stats__cell rv">
+          <div class="stats__num" data-count="12" data-suffix="+">12+</div>
+          <div class="stats__label">Years of experience</div>
+        </div>
+        <div class="stats__cell rv">
+          <div class="stats__num" data-count="100" data-suffix="+">100+</div>
+          <div class="stats__label">5-star Google reviews</div>
+        </div>
+        <div class="stats__cell rv">
+          <div class="stats__num" data-count="100" data-suffix="%">100%</div>
+          <div class="stats__label">In-house, never outsourced</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features" id="work">
+    <div class="wrap">
+      <div class="features__header rv">
+        <span class="features__kicker">/what-we-build</span>
+        <h2 class="features__heading">Built for marketing.<br>Engineered for growth.</h2>
+      </div>
+      <div class="features__grid">
+        <div class="fcard fcard--wide rv">
+          <span class="fcard__icon">/ux-design</span>
+          <h3 class="fcard__heading">High-converting web design that turns your site into a marketing engine.</h3>
+          <p class="fcard__body">Every page designed around your funnel. UX that removes friction, builds trust, and converts visitors into pipeline — not just impressions.</p>
+        </div>
+        <div class="fcard fcard--dark rv">
+          <span class="fcard__icon">/care-plans</span>
+          <h3 class="fcard__heading">Ongoing plans built for marketing teams.</h3>
+          <p class="fcard__body">Care, Performance, and Enterprise plans that keep your site fast, secure, and ready for every campaign you run.</p>
+        </div>
+        <div class="fcard rv">
+          <span class="fcard__icon">/wordpress-dev</span>
+          <h3 class="fcard__heading">Lightning-fast WordPress development.</h3>
+          <p class="fcard__body">Performance, SEO, and scalability baked into every build. Never a site that fights your marketing team.</p>
+        </div>
+        <div class="fcard rv">
+          <span class="fcard__icon">/integrations</span>
+          <h3 class="fcard__heading">Seamless CRM & marketing integrations.</h3>
+          <p class="fcard__body">HubSpot, Salesforce, Marketo, LMS, ERP — wired into your WordPress stack cleanly and reliably.</p>
+        </div>
+        <div class="fcard rv">
+          <span class="fcard__icon">/woocommerce</span>
+          <h3 class="fcard__heading">WooCommerce built to convert and scale.</h3>
+          <p class="fcard__body">Custom eCommerce designed around your catalogue, your customers, and your revenue goals.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section class="results-band">
+    <div class="results-band__bg"></div>
+    <div class="results-band__overlay"></div>
+    <div class="results-band__inner wrap">
+      <div class="rv">
+        <span class="features__kicker">/results</span>
+        <h2 class="results-band__heading">Numbers that matter<br>to marketing teams.</h2>
+      </div>
+      <div class="results-grid">
+        <div class="ritem rv">
+          <div class="ritem__num" data-count="108" data-prefix="+" data-suffix="%">+108%</div>
+          <div class="ritem__label">Organic traffic in 15 months</div>
+          <div class="ritem__client">FLARE HR</div>
+        </div>
+        <div class="ritem rv">
+          <div class="ritem__num" data-count="144" data-prefix="+" data-suffix="%">+144%</div>
+          <div class="ritem__label">Mobile page speed</div>
+          <div class="ritem__client">GREGORY JEWELLERS</div>
+        </div>
+        <div class="ritem rv">
+          <div class="ritem__num" data-count="145" data-prefix="+" data-suffix="%">+145%</div>
+          <div class="ritem__label">User engagement</div>
+          <div class="ritem__client">CROWN FURNITURE</div>
+        </div>
+        <div class="ritem rv">
+          <div class="ritem__num" data-count="75" data-prefix="+" data-suffix="%">+75%</div>
+          <div class="ritem__label">Quote requests</div>
+          <div class="ritem__client">TILE FACTORY OUTLET</div>
+        </div>
+        <div class="ritem rv">
+          <div class="ritem__num" data-count="220" data-prefix="+" data-suffix="%">+220%</div>
+          <div class="ritem__label">Mobile speed increase</div>
+          <div class="ritem__client">CHRONOS AGENCY</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services" id="services">
+    <div class="wrap">
+      <div class="services__layout">
+        <div class="services__sticky rv-l">
+          <span class="services__kicker">/services</span>
+          <h2 class="services__heading">Full-service WordPress for marketing teams.</h2>
+          <p class="services__desc">From first brief to ongoing optimisation — every service is built around one goal: making your website your best-performing marketing channel.</p>
+        </div>
+        <div class="services__list rv-r">
+          <div class="sitem"><span class="sitem__num">01</span><span class="sitem__name">UX / UI Design</span><span class="sitem__tag">DESIGN</span></div>
+          <div class="sitem"><span class="sitem__num">02</span><span class="sitem__name">WordPress Development</span><span class="sitem__tag">BUILD</span></div>
+          <div class="sitem"><span class="sitem__num">03</span><span class="sitem__name">WooCommerce & eCommerce</span><span class="sitem__tag">COMMERCE</span></div>
+          <div class="sitem"><span class="sitem__num">04</span><span class="sitem__name">CRM & Third-Party Integrations</span><span class="sitem__tag">INTEGRATE</span></div>
+          <div class="sitem"><span class="sitem__num">05</span><span class="sitem__name">Website Care Plans</span><span class="sitem__tag">ONGOING</span></div>
+          <div class="sitem"><span class="sitem__num">06</span><span class="sitem__name">Website Performance Plans</span><span class="sitem__tag">GROWTH</span></div>
+          <div class="sitem"><span class="sitem__num">07</span><span class="sitem__name">SEO & Conversion Rate Optimisation</span><span class="sitem__tag">SEO/CRO</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIFFERENTIATORS -->
+  <section class="diff">
+    <div class="wrap">
+      <div class="rv" style="margin-bottom:48px;">
+        <span class="features__kicker">/why-wpc</span>
+        <h2 class="features__heading">Less stress.<br>More marketing.</h2>
+      </div>
+      <div class="diff__grid">
+        <div class="dcard rv"><span class="dcard__num">01</span><h3 class="dcard__title">Senior-only team</h3><p class="dcard__body">Every project handled by experienced devs, designers, and QA — no juniors, no learning curves on your budget.</p></div>
+        <div class="dcard rv"><span class="dcard__num">02</span><h3 class="dcard__title">100% in-house</h3><p class="dcard__body">We never outsource. All work is done by our own team — so quality and accountability never slip through the cracks.</p></div>
+        <div class="dcard rv"><span class="dcard__num">03</span><h3 class="dcard__title">Marketing-fluent developers</h3><p class="dcard__body">Devs who understand funnels, conversion, and campaign execution — not just code. Direct access, no middlemen.</p></div>
+        <div class="dcard rv"><span class="dcard__num">04</span><h3 class="dcard__title">Response times that match your pace</h3><p class="dcard__body">Emergency fixes within minutes. Board-ready reporting. No ticket queues. No days-long waits.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <div class="testimonials__bg"></div>
+    <div class="testimonials__overlay"></div>
+    <div class="testimonials__inner wrap">
+      <div class="rv">
+        <span class="features__kicker">/testimonials</span>
+        <h2 class="testimonials__heading">Trusted by brands.<br>Loved by clients.</h2>
+      </div>
+      <div class="tgrid">
+        <div class="tcard rv"><p class="tcard__quote">"WP Creative are hands down the best development agency we've worked with. Translating creative vision into technically excellent results is genuinely rare."</p><div class="tcard__name">Scott Roberts</div><div class="tcard__role">Creative Director, Studio Helm</div></div>
+        <div class="tcard rv"><p class="tcard__quote">"I'd recommend WPC in a heartbeat. Excellent project managers with the skills and mindset to listen and resolve issues efficiently."</p><div class="tcard__name">Minsha Mueen</div><div class="tcard__role">Digital Marketing Manager, Flare</div></div>
+        <div class="tcard rv"><p class="tcard__quote">"With their help, our two large content-heavy news websites now rank A's on GT Metrics with greatly increased speeds."</p><div class="tcard__name">Mark Brown</div><div class="tcard__role">Founder, Engage Media</div></div>
+        <div class="tcard rv"><p class="tcard__quote">"Really good in terms of their ability to deliver. Their working style, collaboration style — and they're very cost effective."</p><div class="tcard__name">Pete Williams</div><div class="tcard__role">Founder, Deloitte Digital</div></div>
+        <div class="tcard rv"><p class="tcard__quote">"Specialists in WordPress and WooCommerce, which are both crucial to our operation. A genuinely great fit."</p><div class="tcard__name">Simon Kennedy</div><div class="tcard__role">Managing Editor, Quadrant</div></div>
+        <div class="tcard rv"><p class="tcard__quote">"My favourite thing about their service is the communication and attention to detail. Strong and swift — exactly what you need."</p><div class="tcard__name">Chad Fellows</div><div class="tcard__role">Founder, Kitchen Ventilation & SS Mfg.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLIENTS -->
+  <section class="clients">
+    <div class="wrap">
+      <span class="clients__kicker rv">/trusted-by</span>
+      <div class="clients__pills">
+        <span class="cpill rv">Oxford University</span>
+        <span class="cpill rv">Bonds</span>
+        <span class="cpill rv">nib Eyecare</span>
+        <span class="cpill rv">Transport for NSW</span>
+        <span class="cpill rv">UTS</span>
+        <span class="cpill rv">Quantium</span>
+        <span class="cpill rv">illion</span>
+        <span class="cpill rv">Flare HR</span>
+        <span class="cpill rv">Gregory Jewellers</span>
+        <span class="cpill rv">Crown Furniture</span>
+        <span class="cpill rv">Quadrant</span>
+        <span class="cpill rv">Onsite</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOUNDERS -->
+  <section class="founders" id="about">
+    <div class="wrap">
+      <div class="founders__inner">
+        <div class="rv-l">
+          <span class="founders__kicker">/founders</span>
+          <h2 class="founders__heading">Built to close the gap between marketing and tech.</h2>
+          <p class="founders__body">Nirmal and Saba founded WP Creative after seeing the same problem play out across hundreds of businesses — developers who don't understand marketing, and agencies that can't execute technically. WPC was built to close that gap. Fifteen years later, it's still the only thing we do.</p>
+          <a href="#cta" class="text-link">Meet the team <span>→</span></a>
+        </div>
+        <div class="founders__duo rv-r">
+          <div class="founders__portrait">
+            <div class="founders__portrait-fill">
+              <span class="founders__portrait-name">Nirmal Gyanwali</span>
+            </div>
+          </div>
+          <div class="founders__portrait">
+            <div class="founders__portrait-fill" style="background: linear-gradient(160deg, #d4d0c8 0%, #bdb9b0 100%);">
+              <span class="founders__portrait-name">Saba Gyanwali</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="process">
+    <div class="wrap process__inner">
+      <div class="rv">
+        <span class="features__kicker">/how-it-works</span>
+        <h2 class="process__heading">Three steps to a better website.</h2>
+      </div>
+      <div class="process__steps">
+        <div class="pstep rv"><span class="pstep__num">01</span><h3 class="pstep__title">Book a free consultation</h3><p class="pstep__body">A 30-minute call to understand your goals, your stack, and where your website is leaving revenue on the table.</p></div>
+        <div class="pstep rv"><span class="pstep__num">02</span><h3 class="pstep__title">Get a tailored proposal</h3><p class="pstep__body">A clear scope, timeline, and investment — built around your specific marketing objectives, not a generic template.</p></div>
+        <div class="pstep rv"><span class="pstep__num">03</span><h3 class="pstep__title">Unlock new growth</h3><p class="pstep__body">We build, launch, and optimise. Your website becomes your best-performing marketing channel.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="cta">
+    <div class="cta-section__bg"></div>
+    <div class="cta-section__overlay"></div>
+    <div class="wrap">
+      <div class="cta-section__inner rv">
+        <span class="features__kicker">/get-started</span>
+        <h2 class="cta-section__heading">Ready to make your website work harder?</h2>
+        <p class="cta-section__sub">Book a free strategy session. We'll review your website, identify quick wins, and map a clear path to better marketing performance.</p>
+        <div class="cta-section__btns">
+          <a href="#" class="btn-primary">Book a FREE strategy session</a>
+          <a href="#work" class="btn-ghost">View case studies →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer__top">
+        <div>
+          <div class="footer__wordmark">WP Creative</div>
+          <p class="footer__tagline">The WordPress agency for marketing teams. Senior-only, in-house, built for results.</p>
+        </div>
+        <div>
+          <div class="footer__col-head">SERVICES</div>
+          <div class="footer__links">
+            <a href="#">UX / UI Design</a>
+            <a href="#">WordPress Development</a>
+            <a href="#">WooCommerce</a>
+            <a href="#">Integrations</a>
+            <a href="#">Care Plans</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer__col-head">COMPANY</div>
+          <div class="footer__links">
+            <a href="#">About Us</a>
+            <a href="#">Case Studies</a>
+            <a href="#">Blog</a>
+            <a href="#">Careers</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer__col-head">CONTACT</div>
+          <div class="footer__links">
+            <a href="#">Book a Meeting</a>
+            <a href="#">hello@wpcreative.com.au</a>
+            <a href="#">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span class="footer__copy">© 2024 WP Creative. All rights reserved.</span>
+        <span class="footer__copy">Built by <span class="footer__mark">Marketechs™</span></span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* ── Cursor ── */
+    const ring = document.getElementById('ring');
+    const dot2 = document.getElementById('dot2');
+    let mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; dot2.style.cssText=`left:${mx}px;top:${my}px`; });
+    (function lag(){ rx+=(mx-rx)*0.13; ry+=(my-ry)*0.13; ring.style.cssText=`left:${rx}px;top:${ry}px`; requestAnimationFrame(lag); })();
+    document.addEventListener('mousedown',()=>ring.style.transform='translate(-50%,-50%) scale(0.8)');
+    document.addEventListener('mouseup',()=>ring.style.transform='');
+    document.querySelectorAll('a,button,.fcard,.tcard,.dcard,.pstep,.sitem,.cpill,.stats__cell,.ritem').forEach(el=>{
+      el.addEventListener('mouseenter',()=>ring.classList.add('grow'));
+      el.addEventListener('mouseleave',()=>ring.classList.remove('grow'));
+    });
+
+    /* ── Progress bar ── */
+    const prog = document.getElementById('prog');
+    window.addEventListener('scroll',()=>{
+      prog.style.width=(window.scrollY/(document.body.scrollHeight-window.innerHeight)*100)+'%';
+    },{passive:true});
+
+    /* ── Nav scroll ── */
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>60),{passive:true});
+
+    /* ── Hero parallax ── */
+    const heroBg = document.getElementById('heroBg');
+    window.addEventListener('scroll',()=>{ heroBg.style.transform=`scale(1.08) translateY(${window.scrollY*0.35}px)`; },{passive:true});
+
+    /* ── Scroll reveal ── */
+    const obs = new IntersectionObserver(entries=>{
+      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); } });
+    },{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+    document.querySelectorAll('.rv,.rv-l,.rv-r').forEach((el,i)=>{ el.style.transitionDelay=(i%4*55)+'ms'; obs.observe(el); });
+
+    /* ── Counter animation ── */
+    function countUp(el, target, prefix='', suffix='', duration=1300){
+      let start=null;
+      const step=ts=>{
+        if(!start)start=ts;
+        const p=Math.min((ts-start)/duration,1);
+        const ease=1-Math.pow(1-p,3);
+        el.textContent=prefix+Math.floor(ease*target).toLocaleString()+suffix;
+        if(p<1)requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }
+    const countObs = new IntersectionObserver(entries=>{
+      entries.forEach(e=>{
+        if(!e.isIntersecting)return;
+        const el=e.target;
+        const target=+el.dataset.count;
+        const prefix=el.dataset.prefix||'';
+        const suffix=el.dataset.suffix||'';
+        countUp(el,target,prefix,suffix);
+        countObs.unobserve(el);
+      });
+    },{threshold:0.5});
+    document.querySelectorAll('[data-count]').forEach(el=>countObs.observe(el));
+
+    /* ── Botanical bg parallax ── */
+    ['.results-band__bg','.testimonials__bg','.cta-section__bg'].forEach(sel=>{
+      const el=document.querySelector(sel);
+      if(!el)return;
+      window.addEventListener('scroll',()=>{
+        const r=el.parentElement.getBoundingClientRect();
+        if(r.top<window.innerHeight&&r.bottom>0){
+          const off=(window.innerHeight/2-r.top-r.height/2)*0.15;
+          el.style.backgroundPositionY=`calc(50% + ${off}px)`;
+        }
+      },{passive:true});
+    });
+
+    /* ── Magnetic buttons ── */
+    document.querySelectorAll('.btn-primary,.btn-ghost,.nav__cta').forEach(btn=>{
+      btn.addEventListener('mousemove',e=>{
+        const r=btn.getBoundingClientRect();
+        btn.style.transform=`translate(${(e.clientX-r.left-r.width/2)*0.2}px,${(e.clientY-r.top-r.height/2)*0.3}px)`;
+      });
+      btn.addEventListener('mouseleave',()=>btn.style.transform='');
+    });
+
+    /* ── Hero entrance ── */
+    setTimeout(()=>{
+      document.querySelector('.hero__badge').style.cssText='opacity:1;transform:none;transition:opacity .6s .1s,transform .6s .1s cubic-bezier(.22,1,.36,1)';
+      document.querySelector('.hero__headline').style.cssText='opacity:1;transform:none;transition:opacity .8s .25s,transform .8s .25s cubic-bezier(.22,1,.36,1)';
+      document.querySelector('.hero__sub').style.cssText='opacity:1;transform:none;transition:opacity .8s .4s,transform .8s .4s cubic-bezier(.22,1,.36,1)';
+      document.querySelector('.hero__actions').style.cssText='opacity:1;transform:none;transition:opacity .8s .55s,transform .8s .55s cubic-bezier(.22,1,.36,1)';
+    },80);
+    ['.hero__badge','.hero__headline','.hero__sub','.hero__actions'].forEach(s=>{
+      const el=document.querySelector(s);
+      if(el){ el.style.opacity='0'; el.style.transform='translateY(24px)'; }
+    });
+  </script>
+
+
+
+  <!-- __ WATER RIPPLE EFFECT __________________________________________________ -->
+  <script>
+  (function(){
+    function initWater(sel, R, G, B) {
+      var el = document.querySelector(sel);
+      if (!el) return;
+      if (getComputedStyle(el).position === 'static') el.style.position = 'relative';
+      var cvs = document.createElement('canvas');
+      cvs.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:10;mix-blend-mode:multiply;';
+      el.appendChild(cvs);
+      var ctx = cvs.getContext('2d');
+      var W=0,H=0,buf0,buf1,img;
+      function resize(){
+        W=Math.max(4,el.offsetWidth>>1); H=Math.max(4,el.offsetHeight>>1);
+        cvs.width=W; cvs.height=H;
+        buf0=new Float32Array(W*H); buf1=new Float32Array(W*H);
+        img=ctx.createImageData(W,H);
+      }
+      resize(); new ResizeObserver(resize).observe(el);
+      function splash(ex,ey,rad,force){
+        var sx=(ex/el.offsetWidth*W)|0, sy=(ey/el.offsetHeight*H)|0, r2=rad*rad;
+        for(var dy=-rad;dy<=rad;dy++) for(var dx=-rad;dx<=rad;dx++){
+          if(dx*dx+dy*dy>r2) continue;
+          var px=sx+dx,py=sy+dy;
+          if(px>0&&px<W-1&&py>0&&py<H-1) buf0[py*W+px]+=force;
+        }
+      }
+      var _lx=-999,_ly=-999;
+      el.addEventListener('mousemove',function(e){
+        var rc=el.getBoundingClientRect();
+        var cx=e.clientX-rc.left,cy=e.clientY-rc.top;
+        if(Math.hypot(cx-_lx,cy-_ly)<72) return;
+        _lx=cx; _ly=cy;
+        splash(cx,cy,4,110);
+      });
+      el.addEventListener('click',function(e){
+        var rc=el.getBoundingClientRect();
+        splash(e.clientX-rc.left,e.clientY-rc.top,10,320);
+      });
+      (function frame(){
+        var W1=W-1,H1=H-1;
+        for(var y=1;y<H1;y++) for(var x=1;x<W1;x++){
+          var i=y*W+x;
+          buf1[i]=(buf0[i-1]+buf0[i+1]+buf0[i-W]+buf0[i+W])*0.5-buf1[i];
+          buf1[i]*=0.968;
+        }
+        var tmp=buf0; buf0=buf1; buf1=tmp;
+        var d=img.data;
+        for(var y=1;y<H1;y++) for(var x=1;x<W1;x++){
+          var i=y*W+x,p=i*4;
+          var nx=buf0[i+1]-buf0[i-1], ny=buf0[i+W]-buf0[i-W];
+          var spec=nx+ny;
+          var a=spec>0?Math.min(16,spec*0.19):0;
+          d[p]=R; d[p+1]=G; d[p+2]=B; d[p+3]=a;
+        }
+        ctx.putImageData(img,0,0);
+        requestAnimationFrame(frame);
+      })();
+    }
+    var fn=function(){initWater('.hero',15,54,57);};
+    document.readyState==='loading'?document.addEventListener('DOMContentLoaded',fn):fn();
+  })();
+  </script>
+</body>
+</html>

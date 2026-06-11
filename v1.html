@@ -1,0 +1,1578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WP Creative — WordPress Agency for Marketing Teams</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Lora:wght@400&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── RESET ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ─── DESIGN TOKENS ──────────────────────────────────────── */
+    :root {
+      --color-ink: #000000;
+      --color-paper: #ffffff;
+      --color-char: #1c1c1c;
+      --color-midnight: #070707;
+      --color-iron: #262626;
+      --color-mist: #e5e4e4;
+      --color-smoke: #8d8d8d;
+      --color-pewter: #666666;
+      --color-ember: #b75928;
+      --color-pine: #193f32;
+      --color-tide: #002934;
+      --color-cedar: #776157;
+      --color-coral: #df6a6b;
+      --color-primary-action-fill: #494949;
+
+      --font-primary: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+      --font-serif: 'Lora', Georgia, serif;
+
+      --text-body: 15px;
+      --text-subheading: 18px;
+      --text-heading-sm: 22px;
+      --text-heading: 36px;
+      --text-heading-lg: 62px;
+      --text-display: clamp(72px, 12vw, 168px);
+
+      --tracking-display: -0.025em;
+      --tracking-heading-lg: -0.025em;
+      --tracking-heading: -0.02em;
+      --tracking-heading-sm: -0.02em;
+      --tracking-body: 0.01em;
+
+      --radius-cards: 8px;
+      --radius-buttons: 80px;
+      --radius-badges: 1584px;
+
+      --page-max: 1200px;
+      --section-gap: 80px;
+    }
+
+    /* ─── BASE ───────────────────────────────────────────────── */
+    body {
+      font-family: var(--font-primary);
+      font-size: var(--text-body);
+      font-weight: 400;
+      line-height: 1.5;
+      letter-spacing: var(--tracking-body);
+      color: var(--color-ink);
+      background: var(--color-paper);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── UTILITY ────────────────────────────────────────────── */
+    .wrap { max-width: var(--page-max); margin: 0 auto; padding: 0 40px; }
+    .section-label {
+      font-size: 12px; font-weight: 400; color: var(--color-smoke);
+      letter-spacing: 0.12px; display: block; margin-bottom: 6px;
+    }
+    .arrow-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-primary); font-size: 13px; font-weight: 400;
+      letter-spacing: var(--tracking-body); cursor: pointer;
+      background: none; border: none; color: inherit; padding: 0;
+    }
+    .arrow-btn .arrow { font-size: 16px; transition: transform 0.2s; }
+    .arrow-btn:hover .arrow { transform: translateX(4px); }
+
+    .pill-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-primary); font-size: 13px; font-weight: 500;
+      letter-spacing: var(--tracking-body); cursor: pointer;
+      border-radius: var(--radius-buttons); border: 1.5px solid currentColor;
+      padding: 14px 24px; transition: background 0.2s, color 0.2s;
+    }
+    .pill-btn--dark {
+      background: var(--color-char); color: var(--color-paper); border-color: var(--color-char);
+    }
+    .pill-btn--dark:hover { background: var(--color-iron); border-color: var(--color-iron); }
+    .pill-btn--outline { background: transparent; color: var(--color-ink); border-color: var(--color-ink); }
+    .pill-btn--outline:hover { background: var(--color-ink); color: var(--color-paper); }
+    .pill-btn--outline-light { background: transparent; color: var(--color-paper); border-color: var(--color-paper); }
+    .pill-btn--outline-light:hover { background: var(--color-paper); color: var(--color-ink); }
+
+    .hairline { width: 100%; height: 1px; background: var(--color-mist); }
+    .hairline--dark { background: rgba(255,255,255,0.12); }
+
+    /* ─── NAV ────────────────────────────────────────────────── */
+    .nav {
+      position: fixed; top: 24px; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0 40px; pointer-events: none;
+    }
+    .nav__logo {
+      font-size: 12px; font-weight: 600; letter-spacing: 0.15em;
+      color: var(--color-paper); pointer-events: auto;
+      text-shadow: 0 1px 8px rgba(0,0,0,0.4);
+    }
+    .nav__pill {
+      pointer-events: auto;
+      display: flex; align-items: center; gap: 10px;
+      background: var(--color-char); border-radius: var(--radius-badges);
+      padding: 8px 16px; height: 36px;
+    }
+    .nav__pill span {
+      font-size: 11px; font-weight: 500; color: var(--color-paper);
+      letter-spacing: 0.12px;
+    }
+    .nav__pill-links {
+      display: flex; gap: 20px; align-items: center;
+    }
+    .nav__pill-links a {
+      font-size: 11px; font-weight: 400; color: var(--color-paper);
+      letter-spacing: 0.08em; opacity: 0.8; transition: opacity 0.2s;
+    }
+    .nav__pill-links a:hover { opacity: 1; }
+    .nav__pill-cta {
+      background: var(--color-ember); color: var(--color-paper);
+      font-size: 11px; font-weight: 500; letter-spacing: 0.08em;
+      border-radius: var(--radius-badges); padding: 6px 14px;
+      white-space: nowrap; transition: opacity 0.2s;
+    }
+    .nav__pill-cta:hover { opacity: 0.88; }
+
+    /* ─── HERO ───────────────────────────────────────────────── */
+    .hero {
+      position: relative; width: 100%; height: 100vh; min-height: 700px;
+      overflow: hidden; display: flex; align-items: flex-end;
+    }
+    .hero__bg {
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.05) 40%, rgba(0,0,0,0.55) 100%),
+        url('https://images.unsplash.com/photo-1486325212027-8081e485255e?w=2000&q=80&fm=jpg&fit=crop') center/cover no-repeat;
+    }
+    .hero__content {
+      position: relative; z-index: 2; width: 100%;
+      display: flex; justify-content: space-between; align-items: flex-end;
+      padding: 0 40px 56px;
+    }
+    .hero__wordmark {
+      font-size: var(--text-display); font-weight: 300;
+      line-height: 0.80; letter-spacing: var(--tracking-display);
+      color: var(--color-paper);
+    }
+    .hero__intro {
+      max-width: 360px; text-align: right;
+    }
+    .hero__intro p {
+      font-size: 15px; font-weight: 400; color: var(--color-paper);
+      line-height: 1.55; opacity: 0.88;
+    }
+    .hero__intro .arrow-btn {
+      color: var(--color-paper); margin-top: 20px;
+    }
+
+    /* ─── TICKER ─────────────────────────────────────────────── */
+    .ticker {
+      background: var(--color-char); overflow: hidden;
+      padding: 16px 0; white-space: nowrap;
+    }
+    .ticker__track {
+      display: inline-flex; gap: 60px;
+      animation: ticker-scroll 32s linear infinite;
+    }
+    .ticker__item {
+      font-size: 11px; font-weight: 500; letter-spacing: 0.18em;
+      color: var(--color-smoke); text-transform: uppercase;
+      display: flex; align-items: center; gap: 20px;
+    }
+    .ticker__item::after {
+      content: '·'; color: var(--color-ember); font-size: 20px; line-height: 1;
+    }
+    @keyframes ticker-scroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* ─── STATEMENT SECTION ──────────────────────────────────── */
+    .statement {
+      padding: 100px 0; background: var(--color-paper);
+    }
+    .statement__inner {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+    }
+    .statement__heading {
+      font-size: var(--text-heading-lg); font-weight: 300;
+      line-height: 1.05; letter-spacing: var(--tracking-heading-lg);
+      color: var(--color-ink);
+    }
+    .statement__body {
+      padding-top: 8px;
+    }
+    .statement__body p {
+      font-family: var(--font-serif); font-size: 18px; font-weight: 400;
+      line-height: 1.65; color: var(--color-ink); letter-spacing: 0.011em;
+      margin-bottom: 28px;
+    }
+    .statement__body p span { color: var(--color-ember); }
+
+    /* ─── STATS ──────────────────────────────────────────────── */
+    .stats { padding: 0 0 100px; }
+    .stats__grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 0; border-top: 1px solid var(--color-mist);
+    }
+    .stats__item {
+      padding: 40px 0 40px 32px; border-right: 1px solid var(--color-mist);
+    }
+    .stats__item:last-child { border-right: none; }
+    .stats__num {
+      font-size: 62px; font-weight: 300; letter-spacing: -0.025em;
+      line-height: 1.0; color: var(--color-ink);
+    }
+    .stats__num sup { font-size: 22px; font-weight: 300; vertical-align: super; }
+    .stats__label {
+      font-size: 13px; font-weight: 400; color: var(--color-smoke);
+      margin-top: 8px; letter-spacing: 0.01em;
+    }
+
+    /* ─── SERVICES ───────────────────────────────────────────── */
+    .services {
+      padding: var(--section-gap) 0;
+      background: var(--color-paper);
+    }
+    .services__header {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+      align-items: end; margin-bottom: 64px;
+    }
+    .services__heading {
+      font-size: var(--text-heading); font-weight: 300;
+      letter-spacing: var(--tracking-heading); line-height: 1.2;
+      color: var(--color-ink);
+    }
+    .services__intro {
+      font-size: 15px; color: var(--color-pewter); line-height: 1.7;
+      padding-bottom: 4px;
+    }
+    .services__list { display: flex; flex-direction: column; gap: 0; }
+    .services__item {
+      display: grid; grid-template-columns: 48px 1fr auto;
+      align-items: center; gap: 24px; padding: 28px 0;
+      border-top: 1px solid var(--color-mist); cursor: default;
+    }
+    .services__item:last-child { border-bottom: 1px solid var(--color-mist); }
+    .services__num {
+      font-size: 12px; font-weight: 400; color: var(--color-smoke);
+    }
+    .services__name {
+      font-size: 20px; font-weight: 400; color: var(--color-ink);
+    }
+    .services__tag {
+      font-size: 11px; font-weight: 500; letter-spacing: 0.1em;
+      color: var(--color-smoke); text-transform: uppercase;
+    }
+
+    /* ─── FEATURE CARDS ──────────────────────────────────────── */
+    .feature-cards { padding: var(--section-gap) 0; }
+    .feature-cards__grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    }
+    .fc {
+      border-radius: var(--radius-cards); overflow: hidden;
+      padding: 40px; min-height: 460px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      position: relative;
+    }
+    .fc--light { background: var(--color-mist); }
+    .fc--photo {
+      background:
+        linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.1) 60%),
+        url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80&fit=crop') center/cover no-repeat;
+    }
+    .fc--dark { background: var(--color-char); }
+    .fc--pine { background: var(--color-pine); }
+    .fc__overline {
+      font-size: 11px; font-weight: 500; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--color-smoke);
+      margin-bottom: 12px; display: block;
+    }
+    .fc--photo .fc__overline,
+    .fc--dark .fc__overline,
+    .fc--pine .fc__overline {
+      color: rgba(255,255,255,0.55);
+    }
+    .fc__heading {
+      font-size: 36px; font-weight: 300;
+      letter-spacing: var(--tracking-heading); line-height: 1.15;
+      color: var(--color-ink);
+    }
+    .fc--photo .fc__heading,
+    .fc--dark .fc__heading,
+    .fc--pine .fc__heading { color: var(--color-paper); }
+    .fc__bottom {
+      display: flex; justify-content: space-between; align-items: flex-end;
+    }
+    .fc__mark {
+      font-size: 80px; font-weight: 300; line-height: 0.8;
+      letter-spacing: -0.025em; color: rgba(0,0,0,0.07);
+      user-select: none;
+    }
+    .fc--dark .fc__mark,
+    .fc--pine .fc__mark { color: rgba(255,255,255,0.07); }
+
+    /* ─── PROOF BAND ─────────────────────────────────────────── */
+    .proof-band {
+      background: var(--color-char); padding: 100px 0;
+    }
+    .proof-band__header { margin-bottom: 64px; }
+    .proof-band__heading {
+      font-size: var(--text-heading); font-weight: 300;
+      letter-spacing: var(--tracking-heading); color: var(--color-paper);
+    }
+    .proof-band__grid {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 0;
+    }
+    .proof-item {
+      padding: 40px 32px; border-right: 1px solid rgba(255,255,255,0.1);
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .proof-item:last-child { border-right: none; }
+    .proof-item__num {
+      font-size: 48px; font-weight: 300; letter-spacing: -0.025em;
+      color: var(--color-ember); line-height: 1.0;
+    }
+    .proof-item__num sup { font-size: 18px; }
+    .proof-item__label {
+      font-size: 12px; font-weight: 400; color: var(--color-smoke);
+      margin-top: 12px; line-height: 1.5;
+    }
+    .proof-item__client {
+      font-size: 11px; font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase; color: rgba(255,255,255,0.25);
+      margin-top: 28px;
+    }
+
+    /* ─── WHAT WE DO ─────────────────────────────────────────── */
+    .what-we-do { padding: var(--section-gap) 0 100px; }
+    .what-we-do__inner {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+    }
+    .what-we-do__heading {
+      font-size: var(--text-heading); font-weight: 300;
+      letter-spacing: var(--tracking-heading); line-height: 1.2;
+    }
+    .what-we-do__list { list-style: none; }
+    .what-we-do__item {
+      display: grid; grid-template-columns: 36px 1fr;
+      gap: 16px; align-items: baseline;
+      padding: 20px 0; border-top: 1px solid var(--color-mist);
+    }
+    .what-we-do__item:last-child { border-bottom: 1px solid var(--color-mist); }
+    .what-we-do__num { font-size: 12px; font-weight: 400; color: var(--color-smoke); }
+    .what-we-do__name { font-size: 18px; font-weight: 400; color: var(--color-ink); }
+    .what-we-do__desc {
+      font-size: 13px; color: var(--color-pewter);
+      line-height: 1.55; margin-top: 4px;
+    }
+
+    /* ─── TESTIMONIALS ───────────────────────────────────────── */
+    .testimonials {
+      padding: 100px 0;
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.5) 100%),
+        url('https://images.unsplash.com/photo-1497366858526-0766cadbe8fa?w=2000&q=80&fit=crop') center/cover no-repeat;
+    }
+    .testimonials__header { margin-bottom: 64px; }
+    .testimonials__label { color: rgba(255,255,255,0.45); }
+    .testimonials__heading {
+      font-size: var(--text-heading); font-weight: 300;
+      letter-spacing: var(--tracking-heading); color: var(--color-paper);
+    }
+    .testimonials__grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    }
+    .tcard {
+      background: rgba(255,255,255,0.07); backdrop-filter: blur(8px);
+      border-radius: var(--radius-cards); padding: 32px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .tcard__quote {
+      font-family: var(--font-serif); font-size: 15px; font-weight: 400;
+      line-height: 1.65; color: rgba(255,255,255,0.88); letter-spacing: 0.011em;
+      margin-bottom: 24px;
+    }
+    .tcard__name {
+      font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--color-paper);
+    }
+    .tcard__role {
+      font-size: 12px; font-weight: 400; color: rgba(255,255,255,0.4);
+      margin-top: 4px; line-height: 1.4;
+    }
+
+    /* ─── WHY US ─────────────────────────────────────────────── */
+    .why-us { padding: 100px 0; background: var(--color-paper); }
+    .why-us__inner {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+    }
+    .why-us__heading {
+      font-size: var(--text-heading); font-weight: 300;
+      letter-spacing: var(--tracking-heading); line-height: 1.2;
+    }
+    .why-us__cards { display: flex; flex-direction: column; gap: 12px; }
+    .why-card {
+      background: var(--color-mist); border-radius: var(--radius-cards);
+      padding: 28px 32px;
+    }
+    .why-card__title {
+      font-size: 15px; font-weight: 500; color: var(--color-ink);
+      margin-bottom: 8px;
+    }
+    .why-card__body {
+      font-size: 13px; color: var(--color-pewter); line-height: 1.65;
+    }
+
+    /* ─── CTA SECTION ────────────────────────────────────────── */
+    .cta-section {
+      padding: 120px 0;
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.65) 100%),
+        url('https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=2000&q=80&fit=crop') center/cover no-repeat;
+    }
+    .cta-section__inner { text-align: left; max-width: 700px; }
+    .cta-section__heading {
+      font-size: var(--text-heading-lg); font-weight: 300;
+      letter-spacing: var(--tracking-heading-lg); line-height: 1.05;
+      color: var(--color-paper); margin-bottom: 24px;
+    }
+    .cta-section__body {
+      font-size: 18px; font-weight: 400; color: rgba(255,255,255,0.75);
+      line-height: 1.6; margin-bottom: 40px;
+    }
+    .cta-section__actions { display: flex; gap: 16px; align-items: center; }
+
+    /* ─── CLIENTS ────────────────────────────────────────────── */
+    .clients { padding: 80px 0; border-top: 1px solid var(--color-mist); }
+    .clients__label { text-align: center; margin-bottom: 40px; }
+    .clients__grid {
+      display: flex; flex-wrap: wrap; gap: 12px;
+      justify-content: center; align-items: center;
+    }
+    .client-tag {
+      font-size: 11px; font-weight: 500; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--color-smoke);
+      padding: 8px 16px; border: 1px solid var(--color-mist);
+      border-radius: var(--radius-badges);
+    }
+
+    /* ─── FOUNDERS ───────────────────────────────────────────── */
+    .founders { padding: 100px 0; background: var(--color-char); }
+    .founders__inner {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+    }
+    .founders__text {}
+    .founders__label { color: rgba(255,255,255,0.35); }
+    .founders__heading {
+      font-size: var(--text-heading); font-weight: 300;
+      letter-spacing: var(--tracking-heading); color: var(--color-paper);
+      line-height: 1.2; margin-bottom: 24px;
+    }
+    .founders__body {
+      font-size: 15px; color: rgba(255,255,255,0.65); line-height: 1.75;
+      margin-bottom: 32px;
+    }
+    .founders__image-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    }
+    .founders__img {
+      border-radius: var(--radius-cards); overflow: hidden;
+      aspect-ratio: 3/4;
+      background: var(--color-iron);
+    }
+    .founders__img img { width: 100%; height: 100%; object-fit: cover; }
+    .founders__img-placeholder {
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, var(--color-iron) 0%, var(--color-slate) 100%);
+      display: flex; align-items: flex-end; padding: 20px;
+    }
+    .founders__img-name {
+      font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.5);
+      letter-spacing: 0.05em;
+    }
+
+    /* ─── FOOTER ─────────────────────────────────────────────── */
+    .footer {
+      padding: 64px 0 48px;
+      background: var(--color-midnight);
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .footer__inner {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px; margin-bottom: 64px;
+    }
+    .footer__brand {}
+    .footer__wordmark {
+      font-size: 22px; font-weight: 300; letter-spacing: -0.02em;
+      color: var(--color-paper); margin-bottom: 16px;
+    }
+    .footer__tagline {
+      font-size: 13px; font-weight: 400; color: var(--color-smoke);
+      line-height: 1.6; max-width: 260px;
+    }
+    .footer__col-heading {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: rgba(255,255,255,0.25);
+      margin-bottom: 20px;
+    }
+    .footer__links { display: flex; flex-direction: column; gap: 10px; }
+    .footer__links a {
+      font-size: 13px; font-weight: 400; color: var(--color-smoke);
+      transition: color 0.2s;
+    }
+    .footer__links a:hover { color: var(--color-paper); }
+    .footer__bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .footer__copy {
+      font-size: 12px; color: rgba(255,255,255,0.2); letter-spacing: 0.03em;
+    }
+    .footer__ember { color: var(--color-ember); }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .nav__pill-links { display: none; }
+      .statement__inner,
+      .feature-cards__grid,
+      .what-we-do__inner,
+      .why-us__inner,
+      .founders__inner,
+      .footer__inner { grid-template-columns: 1fr; gap: 40px; }
+      .stats__grid { grid-template-columns: 1fr 1fr; }
+      .proof-band__grid { grid-template-columns: 1fr 1fr; }
+      .testimonials__grid { grid-template-columns: 1fr; }
+      .services__header { grid-template-columns: 1fr; gap: 24px; }
+      .services__grid { grid-template-columns: 1fr; }
+      .hero__content { flex-direction: column; align-items: flex-start; gap: 24px; }
+      .hero__intro { text-align: left; }
+      .cta-section__actions { flex-direction: column; align-items: flex-start; }
+    }
+    @media (max-width: 600px) {
+      .wrap { padding: 0 20px; }
+      .nav { padding: 0 20px; }
+      .hero__content { padding: 0 20px 40px; }
+      .stats__grid { grid-template-columns: 1fr 1fr; }
+      .proof-band__grid { grid-template-columns: 1fr 1fr; }
+      .clients__grid { gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ─────────────────────────────────────────────────── -->
+  <nav class="nav">
+    <div class="nav__logo">WP CREATIVE</div>
+    <div class="nav__pill">
+      <div class="nav__pill-links">
+        <a href="#services">Services</a>
+        <a href="#work">Work</a>
+        <a href="#about">About</a>
+      </div>
+      <a href="#contact" class="nav__pill-cta">Book a Call</a>
+    </div>
+  </nav>
+
+  <!-- ── HERO ─────────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="hero__bg"></div>
+    <div class="hero__content">
+      <div class="hero__wordmark">WP<br>Creative</div>
+      <div class="hero__intro">
+        <p>The WordPress agency behind better marketing teams. We turn websites from a source of stress into your strongest growth asset.</p>
+        <button class="arrow-btn" style="color: #fff; margin-top: 20px;">
+          See our work <span class="arrow">→</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TICKER ────────────────────────────────────────────────── -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker__track">
+      <span class="ticker__item">WordPress Agency</span>
+      <span class="ticker__item">UX / UI Design</span>
+      <span class="ticker__item">WordPress Development</span>
+      <span class="ticker__item">WooCommerce</span>
+      <span class="ticker__item">Website Care Plans</span>
+      <span class="ticker__item">CRM Integrations</span>
+      <span class="ticker__item">Performance Optimisation</span>
+      <span class="ticker__item">SEO & CRO</span>
+      <!-- duplicate for infinite loop -->
+      <span class="ticker__item">WordPress Agency</span>
+      <span class="ticker__item">UX / UI Design</span>
+      <span class="ticker__item">WordPress Development</span>
+      <span class="ticker__item">WooCommerce</span>
+      <span class="ticker__item">Website Care Plans</span>
+      <span class="ticker__item">CRM Integrations</span>
+      <span class="ticker__item">Performance Optimisation</span>
+      <span class="ticker__item">SEO & CRO</span>
+    </div>
+  </div>
+
+  <!-- ── STATEMENT ─────────────────────────────────────────────── -->
+  <section class="statement" id="about">
+    <div class="wrap">
+      <div class="statement__inner">
+        <h1 class="statement__heading">Websites that<br>fuel growth,<br>not fight it.</h1>
+        <div class="statement__body">
+          <p>We are <span>Marketechs™</span> — a team that blends marketing vision with technical precision. We help marketing teams move faster, execute better, and turn their website into a real growth engine.</p>
+          <p>Not junior freelancers learning on the job. Senior developers, designers, and QA specialists who know what it means to deliver on marketing goals — every time.</p>
+          <button class="arrow-btn">
+            Our story <span class="arrow">→</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── STATS ──────────────────────────────────────────────────── -->
+  <section class="stats">
+    <div class="wrap">
+      <div class="stats__grid">
+        <div class="stats__item">
+          <div class="stats__num">1,200<sup>+</sup></div>
+          <div class="stats__label">Projects completed</div>
+        </div>
+        <div class="stats__item">
+          <div class="stats__num">12<sup>+</sup></div>
+          <div class="stats__label">Years of experience</div>
+        </div>
+        <div class="stats__item">
+          <div class="stats__num">100<sup>+</sup></div>
+          <div class="stats__label">5-star Google reviews</div>
+        </div>
+        <div class="stats__item">
+          <div class="stats__num">100<sup>%</sup></div>
+          <div class="stats__label">In-house, never outsourced</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FEATURE CARDS ─────────────────────────────────────────── -->
+  <section class="feature-cards" id="work">
+    <div class="wrap">
+      <div class="feature-cards__grid">
+        <div class="fc fc--light">
+          <div>
+            <span class="fc__overline">Start here</span>
+            <h2 class="fc__heading">Work with a team that understands marketing.</h2>
+          </div>
+          <div class="fc__bottom">
+            <button class="arrow-btn">
+              Book a free strategy session <span class="arrow">→</span>
+            </button>
+            <div class="fc__mark">WPC</div>
+          </div>
+        </div>
+        <div class="fc fc--photo">
+          <div>
+            <span class="fc__overline">Case Studies</span>
+            <h2 class="fc__heading">Real results across 1,200+ projects.</h2>
+          </div>
+          <div class="fc__bottom">
+            <button class="arrow-btn" style="color: #fff;">
+              View our work <span class="arrow">→</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="feature-cards__grid" style="margin-top: 16px;">
+        <div class="fc fc--dark">
+          <div>
+            <span class="fc__overline">Website Plans</span>
+            <h2 class="fc__heading">Ongoing support built for marketing teams.</h2>
+          </div>
+          <div class="fc__bottom">
+            <button class="arrow-btn" style="color: #fff;">
+              Explore plans <span class="arrow">→</span>
+            </button>
+            <div class="fc__mark">↗</div>
+          </div>
+        </div>
+        <div class="fc fc--pine">
+          <div>
+            <span class="fc__overline">eCommerce</span>
+            <h2 class="fc__heading">WooCommerce that converts and scales.</h2>
+          </div>
+          <div class="fc__bottom">
+            <button class="arrow-btn" style="color: #fff;">
+              eCommerce work <span class="arrow">→</span>
+            </button>
+            <div class="fc__mark">WPC</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PROOF BAND ─────────────────────────────────────────────── -->
+  <section class="proof-band">
+    <div class="wrap">
+      <div class="proof-band__header">
+        <span class="section-label" style="color: rgba(255,255,255,0.3);">Results we've driven</span>
+        <h2 class="proof-band__heading">Numbers that matter to marketing.</h2>
+      </div>
+      <div class="proof-band__grid">
+        <div class="proof-item">
+          <div>
+            <div class="proof-item__num">+108<sup>%</sup></div>
+            <div class="proof-item__label">Organic traffic increase in 15 months</div>
+          </div>
+          <div class="proof-item__client">Flare HR</div>
+        </div>
+        <div class="proof-item">
+          <div>
+            <div class="proof-item__num">+144<sup>%</sup></div>
+            <div class="proof-item__label">Mobile page speed improvement</div>
+          </div>
+          <div class="proof-item__client">Gregory Jewellers</div>
+        </div>
+        <div class="proof-item">
+          <div>
+            <div class="proof-item__num">+145<sup>%</sup></div>
+            <div class="proof-item__label">User engagement increase</div>
+          </div>
+          <div class="proof-item__client">Crown Furniture</div>
+        </div>
+        <div class="proof-item">
+          <div>
+            <div class="proof-item__num">+75<sup>%</sup></div>
+            <div class="proof-item__label">Quote requests from website</div>
+          </div>
+          <div class="proof-item__client">Tile Factory Outlet</div>
+        </div>
+        <div class="proof-item">
+          <div>
+            <div class="proof-item__num">+220<sup>%</sup></div>
+            <div class="proof-item__label">Mobile speed increase</div>
+          </div>
+          <div class="proof-item__client">Chronos Agency</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SERVICES ──────────────────────────────────────────────── -->
+  <section class="services" id="services">
+    <div class="wrap">
+      <div class="services__header">
+        <div>
+          <span class="section-label">What we do</span>
+          <h2 class="services__heading">Full-service WordPress for marketing teams.</h2>
+        </div>
+        <p class="services__intro">From concept to launch to ongoing performance — every service is built around one goal: turning your website into your best-performing marketing channel.</p>
+      </div>
+      <div class="services__list">
+        <div class="services__item">
+          <span class="services__num">01</span>
+          <span class="services__name">UX / UI Design</span>
+          <span class="services__tag">Design</span>
+        </div>
+        <div class="services__item">
+          <span class="services__num">02</span>
+          <span class="services__name">WordPress Development</span>
+          <span class="services__tag">Build</span>
+        </div>
+        <div class="services__item">
+          <span class="services__num">03</span>
+          <span class="services__name">WooCommerce & eCommerce</span>
+          <span class="services__tag">Commerce</span>
+        </div>
+        <div class="services__item">
+          <span class="services__num">04</span>
+          <span class="services__name">CRM & Third-Party Integrations</span>
+          <span class="services__tag">Integrate</span>
+        </div>
+        <div class="services__item">
+          <span class="services__num">05</span>
+          <span class="services__name">Website Care & Performance Plans</span>
+          <span class="services__tag">Ongoing</span>
+        </div>
+        <div class="services__item">
+          <span class="services__num">06</span>
+          <span class="services__name">SEO & Conversion Rate Optimisation</span>
+          <span class="services__tag">Growth</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── WHAT WE DO ─────────────────────────────────────────────── -->
+  <section class="what-we-do">
+    <div class="wrap">
+      <div class="what-we-do__inner">
+        <div>
+          <span class="section-label">The WPC difference</span>
+          <h2 class="what-we-do__heading">Built different.<br>By design.</h2>
+          <p style="font-size: 15px; color: var(--color-pewter); line-height: 1.75; margin-top: 24px; max-width: 440px;">We are not a generalist agency or a freelancer marketplace. WP Creative is the only team you'll ever need — senior-only, in-house, and marketing-fluent from day one.</p>
+        </div>
+        <ul class="what-we-do__list">
+          <li class="what-we-do__item">
+            <span class="what-we-do__num">01</span>
+            <div>
+              <div class="what-we-do__name">Senior-only team</div>
+              <div class="what-we-do__desc">Every project handled by experienced devs, designers, and QA — no juniors, no learning on your budget.</div>
+            </div>
+          </li>
+          <li class="what-we-do__item">
+            <span class="what-we-do__num">02</span>
+            <div>
+              <div class="what-we-do__name">100% in-house</div>
+              <div class="what-we-do__desc">We never outsource. All work is done by our own team — so quality, speed, and accountability never slip.</div>
+            </div>
+          </li>
+          <li class="what-we-do__item">
+            <span class="what-we-do__num">03</span>
+            <div>
+              <div class="what-we-do__name">Marketing-fluent developers</div>
+              <div class="what-we-do__desc">Devs who understand funnels, conversion, and campaign execution — not just code.</div>
+            </div>
+          </li>
+          <li class="what-we-do__item">
+            <span class="what-we-do__num">04</span>
+            <div>
+              <div class="what-we-do__name">Response times that match your pace</div>
+              <div class="what-we-do__desc">Emergency fixes within minutes. No ticket queues, no days-long waits.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TESTIMONIALS ──────────────────────────────────────────── -->
+  <section class="testimonials">
+    <div class="wrap">
+      <div class="testimonials__header">
+        <span class="section-label testimonials__label">Client testimonials</span>
+        <h2 class="testimonials__heading">Trusted by brands.<br>Loved by clients.</h2>
+      </div>
+      <div class="testimonials__grid">
+        <div class="tcard">
+          <p class="tcard__quote">"WP Creative are hands down the best development agency we've worked with. Their ability to translate creative vision into a technically excellent result is genuinely rare."</p>
+          <div class="tcard__name">Scott Roberts</div>
+          <div class="tcard__role">Creative Director, Studio Helm</div>
+        </div>
+        <div class="tcard">
+          <p class="tcard__quote">"I'd recommend WPC in a heartbeat. Excellent project managers with the skills and mindset to listen and resolve issues efficiently. Nothing is ever too hard."</p>
+          <div class="tcard__name">Minsha Mueen</div>
+          <div class="tcard__role">Digital Marketing Manager, Flare</div>
+        </div>
+        <div class="tcard">
+          <p class="tcard__quote">"With their help, our two large content-heavy news websites now rank as A's on GT Metrics with greatly increased speeds. The results speak for themselves."</p>
+          <div class="tcard__name">Mark Brown</div>
+          <div class="tcard__role">Founder, Engage Media</div>
+        </div>
+        <div class="tcard">
+          <p class="tcard__quote">"They were really good in terms of their ability to deliver — their working style, their collaboration style, and they're very cost effective."</p>
+          <div class="tcard__name">Pete Williams</div>
+          <div class="tcard__role">Founder, Deloitte Digital</div>
+        </div>
+        <div class="tcard">
+          <p class="tcard__quote">"They're specialists in WordPress and WooCommerce, which are both crucial to our operation. Responsive, skilled, and a genuinely great fit for a publishing environment."</p>
+          <div class="tcard__name">Simon Kennedy</div>
+          <div class="tcard__role">Managing Editor, Quadrant</div>
+        </div>
+        <div class="tcard">
+          <p class="tcard__quote">"My favourite thing about their service is the communication and attention to detail. It was strong and swift — exactly what you need when stakes are high."</p>
+          <div class="tcard__name">Chad Fellows</div>
+          <div class="tcard__role">Founder, Kitchen Ventilation & SS Mfg.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── WHY US ─────────────────────────────────────────────────── -->
+  <section class="why-us">
+    <div class="wrap">
+      <div class="why-us__inner">
+        <div>
+          <span class="section-label">Why WP Creative</span>
+          <h2 class="why-us__heading">Less website<br>stress. More<br>marketing<br>success.</h2>
+          <button class="arrow-btn" style="margin-top: 32px; color: var(--color-ember);">
+            View our plans <span class="arrow">→</span>
+          </button>
+        </div>
+        <div class="why-us__cards">
+          <div class="why-card">
+            <div class="why-card__title">Fast, reliable execution</div>
+            <div class="why-card__body">Timelines that hold. Deployments that don't break things. A team that ships what was scoped — no surprises.</div>
+          </div>
+          <div class="why-card">
+            <div class="why-card__title">Developers who understand marketing</div>
+            <div class="why-card__body">We don't just build pages — we build conversion flows, landing systems, and campaign-ready infrastructure.</div>
+          </div>
+          <div class="why-card">
+            <div class="why-card__title">Direct access, no middlemen</div>
+            <div class="why-card__body">No account manager layer. You work directly with the people building your website — which means faster decisions and better results.</div>
+          </div>
+          <div class="why-card">
+            <div class="why-card__title">Board-ready reporting</div>
+            <div class="why-card__body">Clear visibility into what's working, what's improving, and what needs attention — without needing to ask.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CLIENTS TICKER ─────────────────────────────────────────── -->
+  <section class="clients">
+    <div class="wrap">
+      <div class="clients__label">
+        <span class="section-label" style="text-align: center; display: block;">Trusted by leading Australian brands</span>
+      </div>
+      <div class="clients__grid">
+        <span class="client-tag">Oxford University</span>
+        <span class="client-tag">Bonds</span>
+        <span class="client-tag">nib Eyecare</span>
+        <span class="client-tag">Transport for NSW</span>
+        <span class="client-tag">UTS</span>
+        <span class="client-tag">Quantium</span>
+        <span class="client-tag">illion</span>
+        <span class="client-tag">Flare HR</span>
+        <span class="client-tag">Gregory Jewellers</span>
+        <span class="client-tag">Crown Furniture</span>
+        <span class="client-tag">Quadrant</span>
+        <span class="client-tag">Onsite</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOUNDERS ───────────────────────────────────────────────── -->
+  <section class="founders" id="about">
+    <div class="wrap">
+      <div class="founders__inner">
+        <div class="founders__text">
+          <span class="section-label founders__label">The founders</span>
+          <h2 class="founders__heading">Built on the gap between marketing and tech.</h2>
+          <p class="founders__body">Nirmal and Saba founded WP Creative after seeing the same problem play out across hundreds of businesses — developers who don't understand marketing, and marketing agencies that can't execute technically. WPC was built to close that gap. Fifteen years later, it's still the only thing we do.</p>
+          <button class="arrow-btn" style="color: #fff;">
+            Meet the team <span class="arrow">→</span>
+          </button>
+        </div>
+        <div class="founders__image-grid">
+          <div class="founders__img">
+            <div class="founders__img-placeholder">
+              <span class="founders__img-name">Nirmal<br>Gyanwali</span>
+            </div>
+          </div>
+          <div class="founders__img" style="margin-top: 40px;">
+            <div class="founders__img-placeholder" style="background: linear-gradient(135deg, #37464a 0%, #1c1c1c 100%);">
+              <span class="founders__img-name">Saba<br>Gyanwali</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ────────────────────────────────────────────────────── -->
+  <section class="cta-section" id="contact">
+    <div class="wrap">
+      <div class="cta-section__inner">
+        <h2 class="cta-section__heading">Ready to make your website work harder?</h2>
+        <p class="cta-section__body">Book a free strategy session. We'll review your website, identify quick wins, and map a clear path to better marketing performance.</p>
+        <div class="cta-section__actions">
+          <a href="#" class="pill-btn pill-btn--outline-light">
+            Book a FREE strategy session <span style="font-size: 16px;">→</span>
+          </a>
+          <button class="arrow-btn" style="color: rgba(255,255,255,0.6);">
+            View case studies <span class="arrow">→</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ─────────────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer__inner">
+        <div class="footer__brand">
+          <div class="footer__wordmark">WP Creative</div>
+          <p class="footer__tagline">The WordPress agency for marketing teams. Senior-only, in-house, and built for results.</p>
+        </div>
+        <div>
+          <div class="footer__col-heading">Services</div>
+          <div class="footer__links">
+            <a href="#">UX / UI Design</a>
+            <a href="#">WordPress Development</a>
+            <a href="#">WooCommerce</a>
+            <a href="#">Integrations</a>
+            <a href="#">Website Care Plans</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer__col-heading">Company</div>
+          <div class="footer__links">
+            <a href="#">About Us</a>
+            <a href="#">Case Studies</a>
+            <a href="#">Blog</a>
+            <a href="#">Careers</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer__col-heading">Contact</div>
+          <div class="footer__links">
+            <a href="#">Book a Meeting</a>
+            <a href="#">hello@wpcreative.com.au</a>
+            <a href="#">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span class="footer__copy">© 2024 WP Creative. All rights reserved.</span>
+        <span class="footer__copy">Built by <span class="footer__ember">Marketechs™</span></span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ── CUSTOM CURSOR ─────────────────────────────────────────── -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-dot" id="cursorDot"></div>
+
+  <style>
+    /* ── Custom cursor ── */
+    .cursor {
+      position: fixed; top: 0; left: 0; z-index: 9999;
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 1.5px solid var(--color-ember);
+      pointer-events: none; transition: transform 0.15s ease, opacity 0.2s;
+      transform: translate(-50%, -50%);
+      mix-blend-mode: normal;
+    }
+    .cursor-dot {
+      position: fixed; top: 0; left: 0; z-index: 10000;
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--color-ember);
+      pointer-events: none; transform: translate(-50%, -50%);
+      transition: transform 0.05s;
+    }
+    .cursor.is-hovering { transform: translate(-50%, -50%) scale(1.8); opacity: 0.6; }
+    .cursor.is-clicking { transform: translate(-50%, -50%) scale(0.8); }
+    @media (hover: none) { .cursor, .cursor-dot { display: none; } }
+
+    /* ── Scroll reveal ── */
+    .reveal {
+      opacity: 0; transform: translateY(32px);
+      transition: opacity 0.7s cubic-bezier(.22,1,.36,1), transform 0.7s cubic-bezier(.22,1,.36,1);
+    }
+    .reveal.is-visible { opacity: 1; transform: translateY(0); }
+    .reveal-left {
+      opacity: 0; transform: translateX(-40px);
+      transition: opacity 0.8s cubic-bezier(.22,1,.36,1), transform 0.8s cubic-bezier(.22,1,.36,1);
+    }
+    .reveal-left.is-visible { opacity: 1; transform: translateX(0); }
+    .reveal-right {
+      opacity: 0; transform: translateX(40px);
+      transition: opacity 0.8s cubic-bezier(.22,1,.36,1), transform 0.8s cubic-bezier(.22,1,.36,1);
+    }
+    .reveal-right.is-visible { opacity: 1; transform: translateX(0); }
+    .reveal-scale {
+      opacity: 0; transform: scale(0.94);
+      transition: opacity 0.7s cubic-bezier(.22,1,.36,1), transform 0.7s cubic-bezier(.22,1,.36,1);
+    }
+    .reveal-scale.is-visible { opacity: 1; transform: scale(1); }
+
+    /* staggered children */
+    .stagger > * {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.6s cubic-bezier(.22,1,.36,1), transform 0.6s cubic-bezier(.22,1,.36,1);
+    }
+    .stagger.is-visible > *:nth-child(1) { opacity:1; transform:none; transition-delay: 0ms; }
+    .stagger.is-visible > *:nth-child(2) { opacity:1; transform:none; transition-delay: 80ms; }
+    .stagger.is-visible > *:nth-child(3) { opacity:1; transform:none; transition-delay: 160ms; }
+    .stagger.is-visible > *:nth-child(4) { opacity:1; transform:none; transition-delay: 240ms; }
+    .stagger.is-visible > *:nth-child(5) { opacity:1; transform:none; transition-delay: 320ms; }
+    .stagger.is-visible > *:nth-child(6) { opacity:1; transform:none; transition-delay: 400ms; }
+
+    /* ── Card hover lifts ── */
+    .fc {
+      transition: transform 0.35s cubic-bezier(.22,1,.36,1),
+                  box-shadow 0.35s cubic-bezier(.22,1,.36,1);
+    }
+    .fc:hover { transform: translateY(-6px); box-shadow: 0 24px 48px rgba(0,0,0,0.14); }
+
+    /* ── Service row hover ── */
+    .services__item {
+      transition: background 0.2s, padding-left 0.25s cubic-bezier(.22,1,.36,1);
+      border-radius: 6px; margin: 0 -16px; padding-left: 16px; padding-right: 16px;
+    }
+    .services__item:hover { background: var(--color-mist); padding-left: 24px; }
+
+    /* ── Why card hover ── */
+    .why-card {
+      transition: transform 0.3s cubic-bezier(.22,1,.36,1),
+                  background 0.25s;
+    }
+    .why-card:hover { transform: translateX(6px); background: #d8d7d7; }
+
+    /* ── Testimonial card hover ── */
+    .tcard {
+      transition: transform 0.3s cubic-bezier(.22,1,.36,1),
+                  background 0.25s, border-color 0.25s;
+    }
+    .tcard:hover {
+      transform: translateY(-4px);
+      background: rgba(255,255,255,0.12);
+      border-color: rgba(183,89,40,0.35);
+    }
+
+    /* ── Nav scroll state ── */
+    .nav { transition: padding 0.3s; }
+    .nav.scrolled .nav__pill { background: rgba(28,28,28,0.92); backdrop-filter: blur(12px); }
+
+    /* ── Hero wordmark split ── */
+    .hero__wordmark .word { display: block; overflow: hidden; }
+    .hero__wordmark .word span {
+      display: block;
+      transform: translateY(100%);
+      opacity: 0;
+      transition: transform 1s cubic-bezier(.22,1,.36,1), opacity 0.6s ease;
+    }
+    .hero__wordmark.is-loaded .word span {
+      transform: translateY(0); opacity: 1;
+    }
+    .hero__wordmark.is-loaded .word:nth-child(2) span {
+      transition-delay: 0.12s;
+    }
+    .hero__intro {
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 0.8s ease 0.5s, transform 0.8s cubic-bezier(.22,1,.36,1) 0.5s;
+    }
+    .hero__intro.is-loaded { opacity: 1; transform: translateY(0); }
+
+    /* ── Parallax containers ── */
+    .hero__bg,
+    .testimonials,
+    .cta-section { will-change: background-position; }
+
+    /* ── Proof number flash ── */
+    .proof-item__num {
+      transition: color 0.3s;
+    }
+    .proof-item:hover .proof-item__num { color: #fff; }
+
+    /* ── Stats item hover ── */
+    .stats__item {
+      transition: background 0.25s;
+      border-radius: 6px;
+    }
+    .stats__item:hover { background: var(--color-mist); }
+
+    /* ── Magnetic pill button ── */
+    .pill-btn {
+      transition: transform 0.3s cubic-bezier(.22,1,.36,1),
+                  background 0.2s, color 0.2s;
+    }
+
+    /* ── Client tag hover ── */
+    .client-tag {
+      transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.2s;
+      cursor: default;
+    }
+    .client-tag:hover {
+      background: var(--color-ink); color: var(--color-paper);
+      border-color: var(--color-ink); transform: translateY(-2px);
+    }
+
+    /* ── Section label line ── */
+    .section-label {
+      position: relative; display: inline-block;
+    }
+    .section-label::before {
+      content: '';
+      position: absolute; left: 0; bottom: -2px;
+      width: 0; height: 1px; background: var(--color-ember);
+      transition: width 0.6s cubic-bezier(.22,1,.36,1);
+    }
+    .section-label.is-visible::before { width: 100%; }
+
+    /* ── Progress bar at top ── */
+    .scroll-progress {
+      position: fixed; top: 0; left: 0; z-index: 200;
+      height: 2px; background: var(--color-ember);
+      width: 0%; transition: width 0.05s linear;
+    }
+  </style>
+
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <script>
+    /* ── Cursor ─────────────────────────────────────────────────── */
+    const cursor = document.getElementById('cursor');
+    const dot    = document.getElementById('cursorDot');
+    let mx = -100, my = -100, cx = -100, cy = -100;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      dot.style.left = mx + 'px';
+      dot.style.top  = my + 'px';
+    });
+
+    /* lag the ring behind the dot */
+    (function lagCursor() {
+      cx += (mx - cx) * 0.14;
+      cy += (my - cy) * 0.14;
+      cursor.style.left = cx + 'px';
+      cursor.style.top  = cy + 'px';
+      requestAnimationFrame(lagCursor);
+    })();
+
+    document.addEventListener('mousedown', () => cursor.classList.add('is-clicking'));
+    document.addEventListener('mouseup',   () => cursor.classList.remove('is-clicking'));
+
+    document.querySelectorAll('a, button, .fc, .tcard, .why-card, .client-tag, .services__item').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('is-hovering'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('is-hovering'));
+    });
+
+    /* ── Scroll progress bar ────────────────────────────────────── */
+    const progressBar = document.getElementById('scrollProgress');
+    window.addEventListener('scroll', () => {
+      const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+      progressBar.style.width = pct + '%';
+    }, { passive: true });
+
+    /* ── Nav scroll state ───────────────────────────────────────── */
+    const nav = document.querySelector('.nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    /* ── Hero entrance ──────────────────────────────────────────── */
+    const wm = document.querySelector('.hero__wordmark');
+    const intro = document.querySelector('.hero__intro');
+
+    /* wrap words for slide-up */
+    wm.innerHTML = wm.textContent.split('\n').filter(Boolean).map(w =>
+      `<span class="word"><span>${w}</span></span>`
+    ).join('');
+    /* re-parse inner HTML preserving line breaks */
+    wm.innerHTML = `<span class="word"><span>WP</span></span><span class="word"><span>Creative</span></span>`;
+
+    setTimeout(() => {
+      wm.classList.add('is-loaded');
+      intro.classList.add('is-loaded');
+    }, 120);
+
+    /* ── Parallax ───────────────────────────────────────────────── */
+    const heroBg        = document.querySelector('.hero__bg');
+    const testimBg      = document.querySelector('.testimonials');
+    const ctaBg         = document.querySelector('.cta-section');
+
+    function applyParallax() {
+      const sy = window.scrollY;
+
+      /* Hero: bg moves up at 40% of scroll speed */
+      heroBg.style.transform = `translateY(${sy * 0.38}px)`;
+
+      /* Testimonials parallax */
+      const testimRect = testimBg.getBoundingClientRect();
+      if (testimRect.top < window.innerHeight && testimRect.bottom > 0) {
+        const offset = (window.innerHeight / 2 - testimRect.top - testimRect.height / 2) * 0.18;
+        testimBg.style.backgroundPositionY = `calc(50% + ${offset}px)`;
+      }
+
+      /* CTA parallax */
+      const ctaRect = ctaBg.getBoundingClientRect();
+      if (ctaRect.top < window.innerHeight && ctaRect.bottom > 0) {
+        const offset = (window.innerHeight / 2 - ctaRect.top - ctaRect.height / 2) * 0.18;
+        ctaBg.style.backgroundPositionY = `calc(50% + ${offset}px)`;
+      }
+    }
+
+    window.addEventListener('scroll', applyParallax, { passive: true });
+    applyParallax();
+
+    /* ── Scroll reveal (Intersection Observer) ──────────────────── */
+    const revealClasses = ['.reveal', '.reveal-left', '.reveal-right', '.reveal-scale', '.stagger'];
+    const revealEls = document.querySelectorAll(revealClasses.join(','));
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -48px 0px' });
+
+    revealEls.forEach(el => revealObserver.observe(el));
+
+    /* also observe section-labels for underline animation */
+    document.querySelectorAll('.section-label').forEach(el => revealObserver.observe(el));
+
+    /* ── Counter animation ──────────────────────────────────────── */
+    function animateCount(el, target, suffix, duration) {
+      let start = null;
+      const step = ts => {
+        if (!start) start = ts;
+        const progress = Math.min((ts - start) / duration, 1);
+        const ease = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.floor(ease * target).toLocaleString() + suffix;
+        if (progress < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }
+
+    /* stats */
+    const statNums = [
+      { selector: '.stats__item:nth-child(1) .stats__num', target: 1200, suffix: '+' },
+      { selector: '.stats__item:nth-child(2) .stats__num', target: 12,   suffix: '+' },
+      { selector: '.stats__item:nth-child(3) .stats__num', target: 100,  suffix: '+' },
+      { selector: '.stats__item:nth-child(4) .stats__num', target: 100,  suffix: '%' },
+    ];
+
+    /* proof numbers */
+    const proofNums = [
+      { selector: '.proof-item:nth-child(1) .proof-item__num', target: 108, prefix: '+', suffix: '%' },
+      { selector: '.proof-item:nth-child(2) .proof-item__num', target: 144, prefix: '+', suffix: '%' },
+      { selector: '.proof-item:nth-child(3) .proof-item__num', target: 145, prefix: '+', suffix: '%' },
+      { selector: '.proof-item:nth-child(4) .proof-item__num', target: 75,  prefix: '+', suffix: '%' },
+      { selector: '.proof-item:nth-child(5) .proof-item__num', target: 220, prefix: '+', suffix: '%' },
+    ];
+
+    function observeAndCount(items, isProof) {
+      items.forEach(({ selector, target, suffix, prefix }) => {
+        const el = document.querySelector(selector);
+        if (!el) return;
+        const obs = new IntersectionObserver(entries => {
+          if (entries[0].isIntersecting) {
+            if (isProof) {
+              /* clear sup, replace with plain text then re-add sup */
+              const sup = el.querySelector('sup');
+              if (sup) sup.remove();
+              let started = null;
+              const step = ts => {
+                if (!started) started = ts;
+                const p = Math.min((ts - started) / 1400, 1);
+                const ease = 1 - Math.pow(1 - p, 3);
+                el.textContent = (prefix || '') + Math.floor(ease * target);
+                if (p < 1) requestAnimationFrame(step);
+                else {
+                  const s = document.createElement('sup'); s.textContent = suffix;
+                  el.appendChild(s);
+                }
+              };
+              requestAnimationFrame(step);
+            } else {
+              const sup = el.querySelector('sup');
+              const supText = sup ? sup.textContent : '';
+              if (sup) sup.remove();
+              let started = null;
+              const step = ts => {
+                if (!started) started = ts;
+                const p = Math.min((ts - started) / 1200, 1);
+                const ease = 1 - Math.pow(1 - p, 3);
+                el.textContent = Math.floor(ease * target).toLocaleString();
+                if (p < 1) requestAnimationFrame(step);
+                else {
+                  const s = document.createElement('sup'); s.textContent = supText;
+                  el.appendChild(s);
+                }
+              };
+              requestAnimationFrame(step);
+            }
+            obs.disconnect();
+          }
+        }, { threshold: 0.5 });
+        obs.observe(el.closest('.stats__item, .proof-item') || el);
+      });
+    }
+
+    observeAndCount(statNums, false);
+    observeAndCount(proofNums, true);
+
+    /* ── Magnetic CTA buttons ───────────────────────────────────── */
+    document.querySelectorAll('.pill-btn').forEach(btn => {
+      btn.addEventListener('mousemove', e => {
+        const r = btn.getBoundingClientRect();
+        const x = e.clientX - r.left - r.width  / 2;
+        const y = e.clientY - r.top  - r.height / 2;
+        btn.style.transform = `translate(${x * 0.22}px, ${y * 0.32}px)`;
+      });
+      btn.addEventListener('mouseleave', () => {
+        btn.style.transform = '';
+      });
+    });
+
+    /* ── Add reveal classes to sections ────────────────────────── */
+    /* statement */
+    document.querySelector('.statement__heading').classList.add('reveal-left');
+    document.querySelector('.statement__body').classList.add('reveal-right');
+
+    /* stats items */
+    document.querySelectorAll('.stats__item').forEach((el, i) => {
+      el.classList.add('reveal');
+      el.style.transitionDelay = (i * 80) + 'ms';
+    });
+
+    /* feature cards */
+    document.querySelectorAll('.fc').forEach((el, i) => {
+      el.classList.add('reveal-scale');
+      el.style.transitionDelay = (i % 2 * 100) + 'ms';
+    });
+
+    /* proof band header + items */
+    document.querySelector('.proof-band__header').classList.add('reveal');
+    document.querySelectorAll('.proof-item').forEach((el, i) => {
+      el.classList.add('reveal');
+      el.style.transitionDelay = (i * 70) + 'ms';
+    });
+
+    /* services */
+    document.querySelector('.services__header').classList.add('reveal');
+    document.querySelectorAll('.services__item').forEach((el, i) => {
+      el.classList.add('reveal');
+      el.style.transitionDelay = (i * 55) + 'ms';
+    });
+
+    /* what-we-do */
+    document.querySelector('.what-we-do__inner > div').classList.add('reveal-left');
+    document.querySelector('.what-we-do__list').classList.add('stagger');
+
+    /* testimonials */
+    document.querySelector('.testimonials__header').classList.add('reveal');
+    document.querySelectorAll('.tcard').forEach((el, i) => {
+      el.classList.add('reveal');
+      el.style.transitionDelay = (i * 80) + 'ms';
+    });
+
+    /* why us */
+    document.querySelector('.why-us__inner > div:first-child').classList.add('reveal-left');
+    document.querySelector('.why-us__cards').classList.add('stagger');
+
+    /* clients */
+    document.querySelector('.clients__label').classList.add('reveal');
+    document.querySelectorAll('.client-tag').forEach((el, i) => {
+      el.classList.add('reveal');
+      el.style.transitionDelay = (i * 35) + 'ms';
+    });
+
+    /* founders */
+    document.querySelector('.founders__text').classList.add('reveal-left');
+    document.querySelector('.founders__image-grid').classList.add('reveal-right');
+
+    /* cta */
+    document.querySelector('.cta-section__inner').classList.add('reveal');
+
+    /* re-observe newly-classed elements */
+    document.querySelectorAll(revealClasses.join(',') + ', .stagger').forEach(el => {
+      if (!el.classList.contains('is-visible')) revealObserver.observe(el);
+    });
+
+    /* ── Arrow button hover ─────────────────────────────────────── */
+    document.querySelectorAll('.arrow-btn').forEach(btn => {
+      const arrow = btn.querySelector('.arrow');
+      if (!arrow) return;
+      btn.addEventListener('mouseenter', () => { arrow.style.transform = 'translateX(5px)'; });
+      btn.addEventListener('mouseleave', () => { arrow.style.transform = ''; });
+    });
+  </script>
+
+
+
+
+  <!-- __ WATER RIPPLE EFFECT __________________________________________________ -->
+  <script>
+  (function(){
+    function initWater(sel, R, G, B) {
+      var el = document.querySelector(sel);
+      if (!el) return;
+      if (getComputedStyle(el).position === 'static') el.style.position = 'relative';
+
+      var cvs = document.createElement('canvas');
+      cvs.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:10;mix-blend-mode:screen;';
+      el.appendChild(cvs);
+      var ctx = cvs.getContext('2d');
+
+      var W = 0, H = 0, buf0, buf1, img;
+
+      function resize() {
+        W = Math.max(4, el.offsetWidth  >> 1);
+        H = Math.max(4, el.offsetHeight >> 1);
+        cvs.width = W; cvs.height = H;
+        buf0 = new Float32Array(W * H);
+        buf1 = new Float32Array(W * H);
+        img  = ctx.createImageData(W, H);
+      }
+      resize();
+      new ResizeObserver(resize).observe(el);
+
+      function splash(ex, ey, rad, force) {
+        var sx = (ex / el.offsetWidth  * W) | 0;
+        var sy = (ey / el.offsetHeight * H) | 0;
+        var r2 = rad * rad;
+        for (var dy = -rad; dy <= rad; dy++)
+          for (var dx = -rad; dx <= rad; dx++) {
+            if (dx*dx + dy*dy > r2) continue;
+            var px = sx+dx, py = sy+dy;
+            if (px > 0 && px < W-1 && py > 0 && py < H-1)
+              buf0[py*W + px] += force;
+          }
+      }
+
+      var _lx = -999, _ly = -999;
+      el.addEventListener('mousemove', function(e) {
+        var rc = el.getBoundingClientRect();
+        var cx = e.clientX - rc.left, cy = e.clientY - rc.top;
+        if (Math.hypot(cx - _lx, cy - _ly) < 72) return;
+        _lx = cx; _ly = cy;
+        splash(cx, cy, 4, 110);
+      });
+      el.addEventListener('click', function(e) {
+        var rc = el.getBoundingClientRect();
+        splash(e.clientX - rc.left, e.clientY - rc.top, 10, 280);
+      });
+
+      (function frame() {
+        var W1 = W-1, H1 = H-1;
+
+        for (var y = 1; y < H1; y++) {
+          for (var x = 1; x < W1; x++) {
+            var i = y*W + x;
+            buf1[i] = (buf0[i-1] + buf0[i+1] + buf0[i-W] + buf0[i+W]) * 0.5 - buf1[i];
+            buf1[i] *= 0.968;
+          }
+        }
+        var tmp = buf0; buf0 = buf1; buf1 = tmp;
+
+        var d = img.data;
+        for (var y = 1; y < H1; y++) {
+          for (var x = 1; x < W1; x++) {
+            var i = y*W + x, p = i*4;
+            var nx = buf0[i+1] - buf0[i-1];
+            var ny = buf0[i+W] - buf0[i-W];
+            var spec = nx + ny;
+            var a = spec > 0 ? Math.min(16, spec * 0.19) : 0;
+            d[p]   = R;
+            d[p+1] = G;
+            d[p+2] = B;
+            d[p+3] = a;
+          }
+        }
+        ctx.putImageData(img, 0, 0);
+        requestAnimationFrame(frame);
+      })();
+    }
+
+    var fn = function() { initWater('.hero', 183, 89, 40); };
+    document.readyState === 'loading'
+      ? document.addEventListener('DOMContentLoaded', fn)
+      : fn();
+  })();
+  </script>
+</body>
+</html>
