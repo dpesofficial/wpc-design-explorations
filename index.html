@@ -116,6 +116,17 @@
       border-color: rgba(0,0,0,0.45);
       color: #000;
     }
+    .pill-btn--cta {
+      background: #fff;
+      border-color: #fff;
+      color: #000;
+      font-weight: 500;
+    }
+    .pill-btn--cta:hover {
+      background: rgba(255,255,255,0.88);
+      border-color: transparent;
+      color: #000;
+    }
 
     .hero__caption {
       font-size: 13px; font-weight: 300;
@@ -157,149 +168,211 @@
       letter-spacing: -0.015em;
     }
 
-    /* ── WORK GRID — BLACK ───────────────────────────────────── */
+    /* ── CARD GRID ───────────────────────────────────────────── */
     .work {
-      background: #000;
-      padding: 2px;
+      background: #f5f5f3;
+      padding: 80px 64px 96px;
     }
 
-    .work__grid {
+    .work__bento {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto;
+      gap: 14px;
     }
 
-    .work-card {
+    .bc--1,.bc--2,.bc--3,.bc--4 { grid-column: auto; grid-row: auto; }
+
+    .bc {
       position: relative;
-      display: block;
-      min-height: 620px;
+      border-radius: 20px;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 0;
+      min-height: 300px;
       cursor: none;
+      text-decoration: none;
+      transition: transform 0.3s cubic-bezier(.22,1,.36,1), box-shadow 0.3s;
+    }
+    .bc:hover { transform: translateY(-3px); box-shadow: 0 16px 48px rgba(0,0,0,0.13); }
+
+    /* ── site preview banner ── */
+    .bc__preview {
+      width: 100%;
+      height: 557px;
+      flex-shrink: 0;
+      overflow: hidden;
+      position: relative;
+    }
+    .bc__preview-img {
+      width: 100%;
+      height: calc(100% - 26px);
+      margin-top: 26px;
+      background-size: cover;
+      background-position: center top;
+      position: relative; overflow: hidden;
+      transition: transform 0.7s cubic-bezier(.22,1,.36,1);
+    }
+    .bc:hover .bc__preview-img { transform: scale(1.03) translateY(-2px); }
+    .bc__preview-img img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center top;
+      display: block;
+      transition: transform 0.7s cubic-bezier(.22,1,.36,1);
+    }
+    .bc:hover .bc__preview-img img { transform: scale(1.03) translateY(-2px); }
+    .bc__preview-img canvas {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
     }
 
-    .work-card__bg {
-      position: absolute; inset: 0;
-      background-size: cover; background-position: center;
-      transition: transform 0.8s cubic-bezier(.22,1,.36,1);
+    /* browser chrome bar */
+    .bc__chrome {
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 26px;
+      background: rgba(0,0,0,0.28);
+      backdrop-filter: blur(8px);
+      display: flex; align-items: center;
+      padding: 0 10px; gap: 5px;
+      z-index: 2;
     }
-    .work-card:hover .work-card__bg { transform: scale(1.045); }
+    .bc__chrome-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+      flex-shrink: 0;
+    }
+    .bc__chrome-bar {
+      flex: 1; height: 13px; border-radius: 6px;
+      background: rgba(255,255,255,0.12);
+      margin: 0 6px;
+    }
 
-    .work-card__overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.42) 42%, rgba(0,0,0,0.08) 100%);
-      transition: background .4s;
-    }
-    .work-card:hover .work-card__overlay {
-      background: linear-gradient(to top, rgba(0,0,0,0.94) 0%, rgba(0,0,0,0.58) 52%, rgba(0,0,0,0.15) 100%);
-    }
-
-    .work-card__content {
-      position: absolute; inset: 0;
+    /* card body below preview */
+    .bc__inner {
+      flex: 1;
       display: flex; flex-direction: column;
       justify-content: space-between;
-      padding: 40px;
+      padding: 24px 28px 28px;
     }
 
-    .work-card__num {
-      font-size: 11px; font-weight: 400;
-      letter-spacing: 0.14em;
-      color: rgba(255,255,255,0.25);
-      align-self: flex-end;
+    /* top block */
+    .bc__top {}
+
+    .bc__title {
+      font-size: 26px; font-weight: 600;
+      line-height: 1.15; letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+    .bc__desc {
+      font-size: 13px; font-weight: 400;
+      line-height: 1.55; letter-spacing: -0.01em;
+      opacity: 0.6;
+      max-width: 26ch;
     }
 
-    .work-card__label {
-      font-size: 10px; font-weight: 400;
-      letter-spacing: 0.13em; text-transform: uppercase;
-      color: rgba(255,255,255,0.28);
-      margin-bottom: 14px;
+    /* pills */
+    .bc__pills {
+      display: flex; flex-wrap: wrap; gap: 7px;
+      margin-top: 20px;
+    }
+    .bc__pill {
+      font-size: 11px; font-weight: 500;
+      padding: 5px 12px; border-radius: 20px;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
     }
 
-    .work-card__title {
-      font-size: clamp(24px, 2.8vw, 38px);
-      font-weight: 300;
-      line-height: 1.08;
-      letter-spacing: -0.022em;
-      color: #fff;
-      margin-bottom: 16px;
+    /* footer */
+    .bc__foot {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 32px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(0,0,0,0.1);
     }
-
-    .work-card__desc {
-      font-size: 13px; font-weight: 300;
-      color: rgba(255,255,255,0.38);
-      line-height: 1.65;
-      max-width: 300px;
-      margin-bottom: 28px;
-      opacity: 0; transform: translateY(10px);
-      transition: opacity .35s, transform .35s cubic-bezier(.22,1,.36,1);
+    .bc__explore {
+      font-size: 14px; font-weight: 500;
+      letter-spacing: -0.01em;
     }
-    .work-card:hover .work-card__desc { opacity: 1; transform: translateY(0); }
-
-    .work-card__cta {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-size: 12px; font-weight: 400;
-      letter-spacing: 0.06em;
-      color: rgba(255,255,255,0.45);
-      opacity: 0; transform: translateY(6px);
-      transition: opacity .3s .05s, transform .3s .05s, color .2s;
-    }
-    .work-card:hover .work-card__cta { opacity: 1; transform: translateY(0); color: #fff; }
-    .work-card__cta-icon {
-      width: 26px; height: 26px; border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.25);
+    .bc__arrow {
+      width: 34px; height: 34px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 13px;
-      transition: transform .2s, border-color .2s;
+      font-size: 16px;
+      background: rgba(0,0,0,0.08);
+      transition: background .2s, transform .2s;
     }
-    .work-card:hover .work-card__cta-icon { transform: rotate(-45deg); border-color: rgba(255,255,255,0.55); }
+    .bc:hover .bc__arrow { background: rgba(0,0,0,0.14); transform: rotate(-45deg); }
 
-    /* V3 — light card */
-    .work-card--v3 .work-card__overlay {
-      background: linear-gradient(to top, rgba(229,228,224,0.90) 0%, rgba(229,228,224,0.45) 45%, rgba(229,228,224,0.04) 100%);
-    }
-    .work-card--v3:hover .work-card__overlay {
-      background: linear-gradient(to top, rgba(229,228,224,0.95) 0%, rgba(229,228,224,0.62) 55%, rgba(229,228,224,0.1) 100%);
-    }
-    .work-card--v3 .work-card__num   { color: rgba(0,0,0,0.22); }
-    .work-card--v3 .work-card__label { color: rgba(0,0,0,0.28); }
-    .work-card--v3 .work-card__title { color: #000; }
-    .work-card--v3 .work-card__desc  { color: rgba(0,0,0,0.38); }
-    .work-card--v3 .work-card__cta   { color: rgba(0,0,0,0.38); }
-    .work-card--v3:hover .work-card__cta { color: #000; }
-    .work-card--v3 .work-card__cta-icon { border-color: rgba(0,0,0,0.2); }
-    .work-card--v3:hover .work-card__cta-icon { border-color: rgba(0,0,0,0.5); }
+    /* ── V1 — Darkroom / Ember ─ warm terracotta ── */
+    .bc--v1 { background: linear-gradient(140deg, #f9ede6 0%, #f0d9cc 100%); color: #3d1a08; }
+    .bc--v1 .bc__pill  { background: rgba(183,89,40,0.12); color: #8a3a10; }
+    .bc--v1 .bc__foot  { border-top-color: rgba(183,89,40,0.15); }
+    .bc--v1 .bc__arrow { background: rgba(183,89,40,0.12); color: #8a3a10; }
+    .bc--v1:hover .bc__arrow { background: rgba(183,89,40,0.22); }
 
-    /* Card backgrounds */
-    .work-card--v1 .work-card__bg {
-      background-image:
-        linear-gradient(to bottom, rgba(5,5,5,0.25), rgba(5,5,5,0.45)),
-        url('https://wpcreative.com.au/wp-content/uploads/2025/03/Wordpress-developer-sydney.png');
-    }
-    .work-card--v2 .work-card__bg {
-      background-image:
-        linear-gradient(to bottom, rgba(18,25,20,0.2), rgba(18,25,20,0.4)),
-        url('https://images.unsplash.com/photo-1490750967868-88df5691cc11?w=1200&q=80&fit=crop');
-    }
-    .work-card--v3 .work-card__bg { background: #e5e4e0; }
+    /* ── V2 — Botanical / Teal ─ sage green ── */
+    .bc--v2 { background: linear-gradient(140deg, #e4f2ee 0%, #cfe8e2 100%); color: #0b2e28; }
+    .bc--v2 .bc__pill  { background: rgba(15,54,57,0.1); color: #0a3530; }
+    .bc--v2 .bc__foot  { border-top-color: rgba(15,54,57,0.12); }
+    .bc--v2 .bc__arrow { background: rgba(15,54,57,0.1); color: #0a3530; }
+    .bc--v2:hover .bc__arrow { background: rgba(15,54,57,0.18); }
 
-    /* V3 iridescent sphere */
-    .work-card--v3 .sphere {
-      position: absolute;
-      width: 58%;
-      aspect-ratio: 1;
-      border-radius: 50%;
-      background: linear-gradient(255deg, rgb(250,203,14) 0%, rgb(240,107,168) 30%, rgb(120,186,230) 65%, #fff 100%);
-      right: -10%; top: 50%;
-      transform: translateY(-50%);
-      pointer-events: none;
-      z-index: 1;
-    }
+    /* ── V3 — Parchment / Iridescent ─ warm lavender ── */
+    .bc--v3 { background: linear-gradient(140deg, #f0ecfa 0%, #e4dcf5 100%); color: #2a1a52; }
+    .bc--v3 .bc__pill  { background: rgba(100,70,200,0.1); color: #4a28a8; }
+    .bc--v3 .bc__foot  { border-top-color: rgba(100,70,200,0.12); }
+    .bc--v3 .bc__arrow { background: rgba(100,70,200,0.1); color: #4a28a8; }
+    .bc--v3:hover .bc__arrow { background: rgba(100,70,200,0.2); }
 
-    /* ── CLOSING — WHITE ─────────────────────────────────────── */
-    .closing {
+    /* ── V4 — Void Cosmos ─ dark navy ── */
+    .bc--v4 { background: linear-gradient(140deg, #0e0a1f 0%, #1a1040 100%); color: #ffffff; }
+    .bc--v4 .bc__desc    { opacity: 0.5; }
+    .bc--v4 .bc__pill    { background: rgba(128,82,255,0.18); color: #c4aaff; }
+    .bc--v4 .bc__foot    { border-top-color: rgba(255,255,255,0.1); }
+    .bc--v4 .bc__explore { color: #fff; }
+    .bc--v4 .bc__arrow   { background: rgba(128,82,255,0.2); color: #c4aaff; }
+    .bc--v4:hover .bc__arrow { background: rgba(128,82,255,0.36); }
+
+    /* ── CTA BAND — WHITE ────────────────────────────────────── */
+    .cta-band {
       background: #fff;
       color: #000;
-      padding: 100px 64px;
+      padding: 96px 64px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 48px;
+    }
+    .cta-band__left { max-width: 600px; }
+    .cta-band__eyebrow {
+      font-size: 10px; font-weight: 500;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(0,0,0,0.3); margin-bottom: 16px; display: block;
+    }
+    .cta-band__heading {
+      font-size: clamp(28px, 4vw, 56px);
+      font-weight: 300; line-height: 1.06;
+      letter-spacing: -0.025em; color: #000;
+      margin-bottom: 20px;
+    }
+    .cta-band__body {
+      font-size: 15px; font-weight: 300;
+      color: rgba(0,0,0,0.45); line-height: 1.7;
+      letter-spacing: -0.01em;
+    }
+    .cta-band__actions {
+      display: flex; flex-direction: column; gap: 14px;
+      align-items: flex-end; flex-shrink: 0;
+    }
+
+    /* ── CLOSING — BLACK ─────────────────────────────────────── */
+    .closing {
+      background: #000;
+      color: #fff;
+      padding: 80px 64px;
       display: flex; justify-content: space-between; align-items: flex-end;
+      border-top: 1px solid rgba(255,255,255,0.04);
     }
 
     .closing__wordmark {
@@ -307,7 +380,7 @@
       font-weight: 300;
       letter-spacing: -0.03em;
       line-height: 0.88;
-      color: #000;
+      color: #fff;
     }
 
     .closing__right {
@@ -316,30 +389,30 @@
     }
     .closing__url {
       font-size: 13px; font-weight: 300;
-      color: rgba(0,0,0,0.35);
+      color: rgba(255,255,255,0.25);
       letter-spacing: 0.02em;
     }
 
     /* ── FOOTER — BLACK ──────────────────────────────────────── */
     footer {
       background: #000;
-      padding: 28px 64px;
+      padding: 24px 64px;
       display: flex; justify-content: space-between; align-items: center;
-      border-top: 1px solid rgba(255,255,255,0.05);
+      border-top: 1px solid rgba(255,255,255,0.04);
     }
-    footer p { font-size: 11px; font-weight: 300; color: rgba(255,255,255,0.14); letter-spacing: 0.06em; }
+    footer p { font-size: 11px; font-weight: 300; color: rgba(255,255,255,0.12); letter-spacing: 0.06em; }
     .sep { color: rgba(255,255,255,0.07); margin: 0 8px; }
 
     /* ── RESPONSIVE ──────────────────────────────────────────── */
-    @media (max-width: 960px) {
-      .hero, .editorial, .closing, footer { padding-left: 28px; padding-right: 28px; }
-      .hero__footnote { right: 28px; }
-      .editorial { grid-template-columns: 1fr; gap: 28px; padding-top: 60px; padding-bottom: 60px; }
-      .work__grid { grid-template-columns: 1fr; }
-      .work-card { min-height: 480px; }
-      .work-card__desc { opacity: 1; transform: translateY(0); }
-      .work-card__cta  { opacity: 1; transform: translateY(0); }
-      .closing { flex-direction: column; align-items: flex-start; gap: 48px; }
+    @media (max-width: 720px) {
+      .hero, .editorial, .closing, footer, .cta-band { padding-left: 24px; padding-right: 24px; }
+      .work { padding: 48px 20px 64px; }
+      .hero__footnote { right: 24px; }
+      .editorial { grid-template-columns: 1fr; gap: 24px; padding-top: 52px; padding-bottom: 52px; }
+      .work__bento { grid-template-columns: 1fr; }
+      .cta-band { flex-direction: column; align-items: flex-start; }
+      .cta-band__actions { align-items: flex-start; }
+      .closing { flex-direction: column; align-items: flex-start; gap: 40px; }
       .closing__right { align-items: flex-start; text-align: left; }
     }
   </style>
@@ -360,13 +433,13 @@
     </nav>
     <div class="hero__body">
       <h1 class="hero__title">
-        <span>Three</span>
+        <span>Four</span>
         <span>visual</span>
         <span>directions.</span>
       </h1>
       <div class="hero__foot">
-        <a href="#work" class="pill-btn js-scroll">Browse work &darr;</a>
-        <p class="hero__caption">One brand. Three design languages.<br>Each built to convert.</p>
+        <a href="#work" class="pill-btn js-scroll">Browse directions &darr;</a>
+        <p class="hero__caption">One brand. Four design languages.<br>Each built to convert.</p>
       </div>
     </div>
     <span class="hero__footnote">Landing&nbsp;page&nbsp;concepts&nbsp;&middot;&nbsp;2024</span>
@@ -375,87 +448,168 @@
   <!-- ── EDITORIAL ── -->
   <section class="editorial" data-section="light">
     <div class="editorial__label">
-      01&ndash;03<br>
+      01&ndash;04<br>
       Landing page<br>concepts
     </div>
-    <p class="editorial__text">Three distinct visual identities applied to a single brand. Darkroom gallery, botanical editorial, typographic parchment. Each built from a real design system &mdash; Aker, Perplexity, OFF+BRAND.</p>
+    <p class="editorial__text">Four distinct visual identities applied to a single brand. Darkroom gallery, botanical editorial, typographic parchment, and void cosmos. Each built from a real design system — Aker, Perplexity, OFF+BRAND, Dala.</p>
   </section>
 
   <!-- ── WORK ── -->
-  <section class="work" id="work" data-section="dark">
-    <div class="work__grid">
+  <section class="work" id="work" data-section="light">
+    <div class="work__bento">
 
       <!-- V1 — Aker / Darkroom -->
-      <a href="v1.html" class="work-card work-card--v1">
-        <div class="work-card__bg"></div>
-        <div class="work-card__overlay"></div>
-        <div class="work-card__content">
-          <div class="work-card__num">01 / 03</div>
-          <div>
-            <div class="work-card__label">Aker &middot; Darkroom gallery</div>
-            <h2 class="work-card__title">Monumental.<br>Restrained.<br>Gallery-grade.</h2>
-            <p class="work-card__desc">Full-bleed cityscape photography. 168px whisper-weight wordmark. Terracotta Ember on deep Char surfaces with parallax and scroll-reveal.</p>
-            <div class="work-card__cta">
-              Open version 01
-              <div class="work-card__cta-icon">&#8599;</div>
+      <a href="v1.html" class="bc bc--1 bc--v1">
+        <div class="bc__preview">
+          <div class="bc__chrome">
+            <span class="bc__chrome-dot"></span>
+            <span class="bc__chrome-dot"></span>
+            <span class="bc__chrome-dot"></span>
+            <span class="bc__chrome-bar"></span>
+          </div>
+          <div class="bc__preview-img">
+            <img src="preview-v1.png" alt="Darkroom Gallery hero" />
+          </div>
+        </div>
+        <div class="bc__inner">
+          <div class="bc__top">
+            <h2 class="bc__title">Darkroom Gallery</h2>
+            <p class="bc__desc">Monumental photography-led design with ember warmth and gallery-grade restraint.</p>
+            <div class="bc__pills">
+              <span class="bc__pill">Full-bleed photo</span>
+              <span class="bc__pill">Ember accent</span>
+              <span class="bc__pill">Parallax</span>
+              <span class="bc__pill">Scroll reveal</span>
             </div>
+          </div>
+          <div class="bc__foot">
+            <span class="bc__explore">Explore</span>
+            <span class="bc__arrow">&#8599;</span>
           </div>
         </div>
       </a>
 
-      <!-- V2 — Perplexity / Botanical -->
-      <a href="v2.html" class="work-card work-card--v2">
-        <div class="work-card__bg"></div>
-        <div class="work-card__overlay"></div>
-        <div class="work-card__content">
-          <div class="work-card__num">02 / 03</div>
-          <div>
-            <div class="work-card__label">Perplexity &middot; Botanical</div>
-            <h2 class="work-card__title">Organic.<br>Editorial.<br>Warm-parchment.</h2>
-            <p class="work-card__desc">Blurred botanical photography. Georgia serif headlines on warm parchment canvas with deep forest nav and frosted glass testimonials.</p>
-            <div class="work-card__cta">
-              Open version 02
-              <div class="work-card__cta-icon">&#8599;</div>
+      <!-- V2 — Botanical -->
+      <a href="v2.html" class="bc bc--2 bc--v2">
+        <div class="bc__preview">
+          <div class="bc__chrome">
+            <span class="bc__chrome-dot"></span>
+            <span class="bc__chrome-dot"></span>
+            <span class="bc__chrome-dot"></span>
+            <span class="bc__chrome-bar"></span>
+          </div>
+          <div class="bc__preview-img">
+            <img src="preview-v2.png" alt="Botanical Editorial hero" />
+          </div>
+        </div>
+        <div class="bc__inner">
+          <div class="bc__top">
+            <h2 class="bc__title">Botanical Editorial</h2>
+            <p class="bc__desc">Organic serif editorial on warm parchment with blurred botanical imagery.</p>
+            <div class="bc__pills">
+              <span class="bc__pill">Georgia serif</span>
+              <span class="bc__pill">Teal accent</span>
+              <span class="bc__pill">Frosted glass</span>
+              <span class="bc__pill">Water ripple</span>
             </div>
+          </div>
+          <div class="bc__foot">
+            <span class="bc__explore">Explore</span>
+            <span class="bc__arrow">&#8599;</span>
           </div>
         </div>
       </a>
 
-      <!-- V3 — OFF+BRAND / Iridescent -->
-      <a href="v3.html" class="work-card work-card--v3">
-        <div class="work-card__bg"></div>
-        <div class="sphere"></div>
-        <div class="work-card__overlay"></div>
-        <div class="work-card__content">
-          <div class="work-card__num">03 / 03</div>
-          <div>
-            <div class="work-card__label">OFF+BRAND &middot; Editorial parchment</div>
-            <h2 class="work-card__title">Typographic.<br>Achromatic.<br>One gradient.</h2>
-            <p class="work-card__desc">103px display type at 0.80 line-height. A single iridescent sphere as the only colour event. Zero shadows, grid-paper project cards.</p>
-            <div class="work-card__cta">
-              Open version 03
-              <div class="work-card__cta-icon">&#8599;</div>
+      <!-- V3 — Parchment / Iridescent -->
+      <a href="v3.html" class="bc bc--3 bc--v3">
+        <div class="bc__preview">
+          <div class="bc__chrome">
+            <span class="bc__chrome-dot"></span>
+            <span class="bc__chrome-dot"></span>
+            <span class="bc__chrome-dot"></span>
+            <span class="bc__chrome-bar"></span>
+          </div>
+          <div class="bc__preview-img">
+            <img src="preview-v3.png" alt="Editorial Parchment hero" />
+          </div>
+        </div>
+        <div class="bc__inner">
+          <div class="bc__top">
+            <h2 class="bc__title">Editorial Parchment</h2>
+            <p class="bc__desc">Ultra-large typographic display with a single iridescent sphere as the only colour event.</p>
+            <div class="bc__pills">
+              <span class="bc__pill">103px display</span>
+              <span class="bc__pill">Achromatic</span>
+              <span class="bc__pill">Iridescent sphere</span>
             </div>
+          </div>
+          <div class="bc__foot">
+            <span class="bc__explore">Explore</span>
+            <span class="bc__arrow">&#8599;</span>
           </div>
         </div>
       </a>
 
+      <!-- V4 — Void Cosmos -->
+      <a href="v4.html" class="bc bc--4 bc--v4">
+        <div class="bc__preview">
+          <div class="bc__chrome">
+            <span class="bc__chrome-dot"></span>
+            <span class="bc__chrome-dot"></span>
+            <span class="bc__chrome-dot"></span>
+            <span class="bc__chrome-bar"></span>
+          </div>
+          <div class="bc__preview-img">
+            <img src="preview-v4.png" alt="Void Cosmos hero" />
+          </div>
+        </div>
+        <div class="bc__inner">
+          <div class="bc__top">
+            <h2 class="bc__title">Void Cosmos</h2>
+            <p class="bc__desc">Dark cosmic canvas — 113px weight-200 headlines etched in light, with a live particle constellation.</p>
+            <div class="bc__pills">
+              <span class="bc__pill">Plum Voltage</span>
+              <span class="bc__pill">Particles</span>
+              <span class="bc__pill">Ultra-thin type</span>
+              <span class="bc__pill">Dark void</span>
+            </div>
+          </div>
+          <div class="bc__foot">
+            <span class="bc__explore">Explore</span>
+            <span class="bc__arrow">&#8599;</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ── CTA BAND ── -->
+  <section class="cta-band" data-section="light">
+    <div class="cta-band__left">
+      <span class="cta-band__eyebrow">Ready to build?</span>
+      <h2 class="cta-band__heading">Which direction fits your brand?</h2>
+      <p class="cta-band__body">Each concept is a fully working design system — not a mood board. Pick a direction and WP Creative will build your real site from it in WordPress, with ACF, and ready to convert.</p>
+    </div>
+    <div class="cta-band__actions">
+      <a href="https://www.wpcreative.com.au" target="_blank" class="pill-btn pill-btn--cta">Book a strategy call &nbsp;&#8599;</a>
+      <a href="https://www.wpcreative.com.au" target="_blank" class="pill-btn pill-btn--dark">Visit wpcreative.com.au</a>
     </div>
   </section>
 
   <!-- ── CLOSING ── -->
-  <section class="closing" data-section="light">
+  <section class="closing" data-section="dark">
     <div class="closing__wordmark">WP<br>Creative</div>
     <div class="closing__right">
       <p class="closing__url">wpcreative.com.au</p>
-      <a href="https://www.wpcreative.com.au" target="_blank" class="pill-btn pill-btn--dark">Visit the live site &nbsp;&#8599;</a>
+      <p style="font-size:11px;color:rgba(255,255,255,0.1);letter-spacing:0.08em;text-transform:uppercase;">4 concepts &middot; Aker &middot; Perplexity &middot; OFF+BRAND &middot; Dala</p>
     </div>
   </section>
 
   <!-- ── FOOTER ── -->
   <footer data-section="dark">
     <p>WP Creative <span class="sep">&middot;</span> Design explorations <span class="sep">&middot;</span> 2024</p>
-    <p>3 concepts <span class="sep">&middot;</span> Aker &middot; Perplexity &middot; OFF+BRAND</p>
+    <p>4 concepts <span class="sep">&middot;</span> Aker &middot; Perplexity &middot; OFF+BRAND &middot; Dala</p>
   </footer>
 
   <script>
@@ -481,10 +635,11 @@
       requestAnimationFrame(lag);
     })();
 
-    document.querySelectorAll('.work-card').forEach(function(el) {
+    document.querySelectorAll('.bc').forEach(function(el) {
       el.addEventListener('mouseenter', function() { cur.classList.add('on-card'); });
       el.addEventListener('mouseleave', function() { cur.classList.remove('on-card'); });
     });
+
 
     var scrollBtn = document.querySelector('.js-scroll');
     if (scrollBtn) {
@@ -493,18 +648,18 @@
         document.getElementById('work').scrollIntoView({ behavior: 'smooth' });
       });
     }
+
   </script>
 
-
-  <!-- __ WATER RIPPLE EFFECT __________________________________________________ -->
+  <!-- __ WATER RIPPLE __ -->
   <script>
   (function(){
-    function initWater(sel, R, G, B) {
+    function initWater(sel, R, G, B, blendMode) {
       var el = document.querySelector(sel);
       if (!el) return;
       if (getComputedStyle(el).position === 'static') el.style.position = 'relative';
       var cvs = document.createElement('canvas');
-      cvs.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:10;mix-blend-mode:screen;';
+      cvs.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:10;mix-blend-mode:'+blendMode+';';
       el.appendChild(cvs);
       var ctx = cvs.getContext('2d');
       var W=0,H=0,buf0,buf1,img;
@@ -527,20 +682,20 @@
       el.addEventListener('mousemove',function(e){
         var rc=el.getBoundingClientRect();
         var cx=e.clientX-rc.left,cy=e.clientY-rc.top;
-        if(Math.hypot(cx-_lx,cy-_ly)<72) return;
+        if(Math.hypot(cx-_lx,cy-_ly)<48) return;
         _lx=cx; _ly=cy;
-        splash(cx,cy,4,110);
+        splash(cx,cy,5,180);
       });
       el.addEventListener('click',function(e){
         var rc=el.getBoundingClientRect();
-        splash(e.clientX-rc.left,e.clientY-rc.top,10,320);
+        splash(e.clientX-rc.left,e.clientY-rc.top,14,500);
       });
       (function frame(){
         var W1=W-1,H1=H-1;
         for(var y=1;y<H1;y++) for(var x=1;x<W1;x++){
           var i=y*W+x;
           buf1[i]=(buf0[i-1]+buf0[i+1]+buf0[i-W]+buf0[i+W])*0.5-buf1[i];
-          buf1[i]*=0.968;
+          buf1[i]*=0.972;
         }
         var tmp=buf0; buf0=buf1; buf1=tmp;
         var d=img.data;
@@ -548,14 +703,14 @@
           var i=y*W+x,p=i*4;
           var nx=buf0[i+1]-buf0[i-1], ny=buf0[i+W]-buf0[i-W];
           var spec=nx+ny;
-          var a=spec>0?Math.min(16,spec*0.19):0;
+          var a=spec>0?Math.min(42,spec*0.48):0;
           d[p]=R; d[p+1]=G; d[p+2]=B; d[p+3]=a;
         }
         ctx.putImageData(img,0,0);
         requestAnimationFrame(frame);
       })();
     }
-    var fn=function(){initWater('.hero',255,255,255);};
+    var fn=function(){ initWater('.hero',255,255,255,'screen'); };
     document.readyState==='loading'?document.addEventListener('DOMContentLoaded',fn):fn();
   })();
   </script>

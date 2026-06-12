@@ -1047,13 +1047,13 @@
       el.addEventListener('mousemove',function(e){
         var rc=el.getBoundingClientRect();
         var cx=e.clientX-rc.left,cy=e.clientY-rc.top;
-        if(Math.hypot(cx-_lx,cy-_ly)<72) return;
+        if(Math.hypot(cx-_lx,cy-_ly)<48) return;
         _lx=cx; _ly=cy;
-        splash(cx,cy,4,110);
+        splash(cx,cy,5,180);
       });
       el.addEventListener('click',function(e){
         var rc=el.getBoundingClientRect();
-        splash(e.clientX-rc.left,e.clientY-rc.top,10,320);
+        splash(e.clientX-rc.left,e.clientY-rc.top,14,500);
       });
       (function frame(){
         var W1=W-1,H1=H-1;
@@ -1068,7 +1068,7 @@
           var i=y*W+x,p=i*4;
           var nx=buf0[i+1]-buf0[i-1], ny=buf0[i+W]-buf0[i-W];
           var spec=nx+ny;
-          var a=spec>0?Math.min(16,spec*0.19):0;
+          var a=spec>0?Math.min(42,spec*0.48):0;
           d[p]=R; d[p+1]=G; d[p+2]=B; d[p+3]=a;
         }
         ctx.putImageData(img,0,0);

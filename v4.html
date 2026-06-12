@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WP Creative — Void Cosmos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── RESET ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ─── TOKENS ── */
+    :root {
+      --void:         #09102e;
+      --bone:         #ffffff;
+      --ash:          #bdbdbd;
+      --smoke:        #9a9a9a;
+      --plum:         #F7991C;
+      --amber:        #ffb829;
+      --lichen:       #15846e;
+      --sans:         'Inter', ui-sans-serif, system-ui, sans-serif;
+      --r:            24px;
+      --page:         1200px;
+    }
+
+    /* ─── BASE ── */
+    body {
+      font-family: var(--sans);
+      font-size: 15px; font-weight: 400;
+      line-height: 1.5; letter-spacing: 0.025em;
+      color: var(--bone);
+      background: var(--void);
+      -webkit-font-smoothing: antialiased;
+      cursor: none;
+    }
+    .wrap { max-width: var(--page); margin: 0 auto; padding: 0 48px; }
+
+    /* ─── CUSTOM CURSOR ── */
+    .cursor-ring {
+      position: fixed; top: 0; left: 0; z-index: 9999;
+      width: 28px; height: 28px; border-radius: 50%;
+      border: 1px solid rgba(247,153,28,0.5);
+      pointer-events: none; transform: translate(-50%,-50%);
+      transition: width .2s, height .2s, border-color .2s, background .2s;
+    }
+    .cursor-ring.grow { width: 54px; height: 54px; background: rgba(247,153,28,0.06); border-color: rgba(247,153,28,0.3); }
+    .cursor-dot {
+      position: fixed; top: 0; left: 0; z-index: 10000;
+      width: 3px; height: 3px; border-radius: 50%;
+      background: var(--bone); pointer-events: none;
+      transform: translate(-50%,-50%);
+    }
+    @media (hover:none) { .cursor-ring, .cursor-dot { display:none; } body { cursor:auto; } }
+
+    /* ─── SCROLL PROGRESS ── */
+    .progress {
+      position: fixed; top: 0; left: 0; z-index: 300;
+      height: 1px; background: rgba(255,255,255,0.25);
+      width: 0%; opacity: 1; transition: width 0.06s linear;
+    }
+
+    /* ─── NAV ── */
+    .nav {
+      position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+      z-index: 200; display: flex; align-items: center; gap: 6px;
+      padding: 10px 14px;
+      background: #09102e;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow: none;
+      border-radius: var(--r);
+      width: calc(100% - 96px); max-width: var(--page);
+      transition: background .5s ease, border-color .5s ease, box-shadow .5s ease, backdrop-filter .5s ease;
+    }
+    .nav.scrolled {
+      background: rgba(9,16,46,0.38);
+      backdrop-filter: blur(40px) saturate(220%) brightness(1.12);
+      -webkit-backdrop-filter: blur(40px) saturate(220%) brightness(1.12);
+      border-color: rgba(255,255,255,0.11);
+      box-shadow:
+        0 2px 0 0 rgba(255,255,255,0.07) inset,
+        0 8px 40px rgba(0,0,0,0.35),
+        0 1px 0 rgba(255,255,255,0.04);
+    }
+    .nav__logo {
+      display: flex; align-items: center;
+      margin-right: auto;
+    }
+    .nav__logo-svg {
+      height: 22px; width: auto;
+      flex-shrink: 0;
+    }
+    .nav__links { display: flex; align-items: center; gap: 2px; }
+    .nav__link {
+      font-size: 13px; font-weight: 400; color: var(--smoke);
+      letter-spacing: 0.021em;
+      padding: 7px 14px; border-radius: 18px;
+      transition: color .18s, background .18s;
+    }
+    .nav__link:hover { color: var(--bone); background: rgba(255,255,255,0.05); }
+    .nav__cta {
+      font-size: 11px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.05em; color: var(--bone);
+      background: var(--plum); border-radius: var(--r);
+      padding: 10px 16px; margin-left: 10px;
+      transition: opacity .18s, transform .2s;
+    }
+    .nav__cta:hover { opacity: 0.85; transform: translateY(-1px); }
+
+    /* ─── HERO ── */
+    .hero {
+      position: relative; min-height: 100vh;
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: center; overflow: hidden;
+    }
+    .hero__text {
+      position: relative; z-index: 2;
+      padding: 140px 64px 80px;
+      max-width: 560px;
+    }
+    .hero__eyebrow {
+      font-size: 11px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.05em;
+      color: rgba(255,255,255,0.38); margin-bottom: 20px;
+      display: block;
+    }
+    .hero__headline {
+      font-size: clamp(54px, 7vw, 113px);
+      font-weight: 200; line-height: 0.88;
+      letter-spacing: -0.04em; color: var(--bone);
+      margin-bottom: 28px;
+    }
+    .hero__headline em { font-style: normal; color: var(--plum); }
+    .hero__sub {
+      font-size: 15px; font-weight: 400; line-height: 1.65;
+      letter-spacing: 0.025em; color: var(--ash);
+      max-width: 420px; margin-bottom: 40px;
+    }
+    .hero__actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .btn-plum {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.05em; color: var(--bone);
+      background: var(--plum); border-radius: var(--r); padding: 14px 20px;
+      cursor: none; transition: opacity .18s, transform .2s;
+    }
+    .btn-plum:hover { opacity: 0.85; transform: translateY(-1px); }
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.05em; color: var(--ash);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: var(--r); padding: 14px 20px;
+      cursor: none; transition: border-color .18s, color .18s, transform .2s;
+    }
+    .btn-outline:hover { border-color: rgba(255,255,255,0.4); color: var(--bone); transform: translateY(-1px); }
+
+    /* particle canvas occupies right half */
+    .hero__canvas-wrap {
+      position: relative; height: 100vh;
+      overflow: hidden;
+    }
+    #constellation {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+    }
+
+    /* ─── SECTION RHYTHM ── */
+    .section { padding: 120px 0; }
+    .section + .section { border-top: 1px solid rgba(255,255,255,0.05); }
+
+    .kicker {
+      font-size: 11px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.05em; color: rgba(255,255,255,0.32);
+      display: block; margin-bottom: 20px;
+    }
+    .heading-lg {
+      font-size: clamp(36px, 5vw, 78px);
+      font-weight: 200; line-height: 0.92; letter-spacing: -0.04em;
+      color: var(--bone); margin-bottom: 24px;
+    }
+    .body-p {
+      font-size: 15px; font-weight: 400; line-height: 1.65;
+      letter-spacing: 0.025em; color: var(--ash);
+      max-width: 60ch;
+    }
+
+    /* ─── MARQUEE STATS ── */
+    .stats-row {
+      padding: 40px 0;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 0;
+    }
+    .stat {
+      padding: 32px 40px;
+      border-right: 1px solid rgba(255,255,255,0.05);
+    }
+    .stat:last-child { border-right: none; }
+    .stat__num {
+      font-size: 54px; font-weight: 200; line-height: 0.9;
+      letter-spacing: -0.04em; color: var(--bone);
+      margin-bottom: 10px;
+    }
+    .stat__num span { color: var(--bone); }
+    .stat__label {
+      font-size: 12px; font-weight: 400;
+      color: var(--smoke); letter-spacing: 0.025em;
+    }
+
+    /* ─── FEATURE GRID ── */
+    .fgrid {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 1px;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--r); overflow: hidden;
+      margin-top: 64px;
+    }
+    .fgrid__item {
+      padding: 40px 36px;
+      background: rgba(255,255,255,0.015);
+      border-right: 1px solid rgba(255,255,255,0.06);
+      transition: background .25s;
+      cursor: none;
+    }
+    .fgrid__item:last-child, .fgrid__item:nth-child(3n) { border-right: none; }
+    .fgrid__item:hover { background: rgba(247,153,28,0.06); }
+    .fgrid__icon {
+      width: 40px; height: 40px; margin-bottom: 20px;
+      border: 1px solid rgba(247,153,28,0.3);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .fgrid__title {
+      font-size: 18px; font-weight: 200; line-height: 1.2;
+      letter-spacing: -0.02em; color: var(--bone);
+      margin-bottom: 12px;
+    }
+    .fgrid__body {
+      font-size: 13px; font-weight: 400; color: var(--smoke);
+      line-height: 1.65; letter-spacing: 0.025em;
+    }
+
+    /* ─── MARQUEE ── */
+    .marquee-wrap {
+      overflow: hidden;
+      padding: 28px 0;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .marquee-track {
+      display: flex; gap: 60px; white-space: nowrap;
+      animation: marquee 22s linear infinite;
+    }
+    .marquee-track span {
+      font-size: 11px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.1em; color: rgba(255,255,255,0.12);
+      flex-shrink: 0;
+    }
+    .marquee-track span.hl { color: rgba(255,255,255,0.5); }
+    @keyframes marquee { 0% { transform:translateX(0); } 100% { transform:translateX(-50%); } }
+
+    /* ─── TESTIMONIALS ── */
+    .tgrid {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 16px;
+      margin-top: 64px;
+    }
+    .tcard {
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--r); padding: 32px;
+      background: rgba(255,255,255,0.02);
+      transition: border-color .25s, background .25s;
+    }
+    .tcard:hover { border-color: rgba(247,153,28,0.25); background: rgba(247,153,28,0.04); }
+    .tcard__quote {
+      font-size: 14px; font-weight: 400; line-height: 1.7;
+      color: var(--ash); letter-spacing: 0.021em; margin-bottom: 24px;
+    }
+    .tcard__name { font-size: 13px; font-weight: 600; color: var(--bone); }
+    .tcard__role { font-size: 12px; color: var(--smoke); margin-top: 4px; }
+
+    /* ─── SERVICES LIST ── */
+    .slist { margin-top: 64px; }
+    .sitem {
+      display: grid; grid-template-columns: 48px 1fr 100px;
+      align-items: center; gap: 24px;
+      padding: 22px 16px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      border-radius: 12px;
+      transition: background .2s, padding-left .25s cubic-bezier(.22,1,.36,1);
+      cursor: none;
+    }
+    .sitem:last-child { border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .sitem:hover { background: rgba(247,153,28,0.05); padding-left: 28px; }
+    .sitem__num { font-size: 11px; font-weight: 400; color: rgba(255,255,255,0.15); font-family: var(--sans); letter-spacing: 0.05em; }
+    .sitem__name { font-size: 18px; font-weight: 200; color: var(--bone); letter-spacing: -0.01em; }
+    .sitem__tag { font-size: 10px; font-weight: 600; color: var(--smoke); letter-spacing: 0.08em; text-transform: uppercase; text-align: right; }
+
+    /* ─── CTA BAND ── */
+    .cta-band {
+      padding: 120px 0; text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .cta-band__eyebrow {
+      font-size: 11px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.05em; color: rgba(255,255,255,0.32);
+      display: block; margin-bottom: 20px;
+    }
+    .cta-band__heading {
+      font-size: clamp(42px, 6vw, 96px);
+      font-weight: 200; line-height: 0.88; letter-spacing: -0.04em;
+      color: var(--bone); margin-bottom: 28px; max-width: 800px; margin-left: auto; margin-right: auto;
+    }
+    .cta-band__sub {
+      font-size: 15px; color: var(--smoke); line-height: 1.65;
+      max-width: 50ch; margin: 0 auto 40px; letter-spacing: 0.025em;
+    }
+    .cta-band__btns { display: flex; gap: 12px; justify-content: center; }
+
+    /* ─── FOOTER ── */
+    .footer {
+      padding: 56px 0 40px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .footer__top {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px; margin-bottom: 56px;
+    }
+    .footer__wordmark {
+      font-size: 17px; font-weight: 600; color: var(--bone);
+      margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+    }
+    .footer__tagline { font-size: 13px; color: var(--smoke); line-height: 1.6; max-width: 220px; }
+    .footer__col-head {
+      font-size: 10px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.1em; color: rgba(255,255,255,0.18);
+      margin-bottom: 18px;
+    }
+    .footer__links { display: flex; flex-direction: column; gap: 10px; }
+    .footer__links a { font-size: 13px; color: rgba(255,255,255,0.35); transition: color .18s; }
+    .footer__links a:hover { color: var(--bone); }
+    .footer__bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.04);
+    }
+    .footer__copy { font-size: 11px; color: rgba(255,255,255,0.12); letter-spacing: 0.04em; }
+    .footer__badge { font-size: 11px; color: rgba(255,255,255,0.25); letter-spacing: 0.04em; }
+
+    /* ─── REVEAL ── */
+    .rv { opacity:0; transform:translateY(24px); transition: opacity .7s cubic-bezier(.22,1,.36,1), transform .7s cubic-bezier(.22,1,.36,1); }
+    .rv.in { opacity:1; transform:none; }
+    .rv-l { opacity:0; transform:translateX(-28px); transition: opacity .75s cubic-bezier(.22,1,.36,1), transform .75s cubic-bezier(.22,1,.36,1); }
+    .rv-l.in { opacity:1; transform:none; }
+
+    /* ─── RESPONSIVE ── */
+    @media (max-width: 960px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero__canvas-wrap { height: 55vw; }
+      .hero__text { padding: 140px 28px 60px; max-width: 100%; }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .fgrid { grid-template-columns: 1fr; }
+      .tgrid { grid-template-columns: 1fr; }
+      .footer__top { grid-template-columns: 1fr 1fr; }
+      .nav { width: calc(100% - 40px); left: 50%; transform: translateX(-50%); }
+      .wrap { padding: 0 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor-ring" id="ring"></div>
+  <div class="cursor-dot"  id="dot"></div>
+  <div class="progress"    id="prog"></div>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="nav__logo">
+      <svg class="nav__logo-svg" viewBox="0 0 294.4 74.14" xmlns="http://www.w3.org/2000/svg">
+        <style>.st0{fill:#F7991C;}.st1{fill:#fff;}.st2{fill:#51B048;}.st3{fill:#FDDB00;}</style>
+        <path class="st0" d="M37.53,24.59c-0.84,0.09-1.71-0.24-2.28-0.93L19.21,4.29c-0.92-1.11-0.77-2.76,0.35-3.68c1.11-0.92,2.76-0.77,3.68,0.35l16.03,19.37c0.92,1.11,0.77,2.76-0.35,3.68C38.51,24.35,38.02,24.54,37.53,24.59z"/>
+        <path class="st1" d="M69.55,50.82l-5.24,14.18h-5.58l-6.06-18.17l-6.06,18.17h-5.58l-8.94-24.52h6.11l5.77,17.79l6.01-17.79h5.53l6.01,17.84l2.98-8.75c1.11-3.65,1.78-6.44,1.25-9.09h5.53C71.86,43.37,71.04,46.59,69.55,50.82z"/>
+        <path class="st1" d="M101.09,52.75c0,7.31-5.19,12.84-12.07,12.84c-3.65,0-6.68-1.68-8.66-4.38v12.93h-5.38V40.49h5.38v3.8c1.97-2.69,5-4.38,8.66-4.38C95.9,39.91,101.09,45.44,101.09,52.75z M95.51,52.75c0-4.33-3.22-7.64-7.55-7.64c-4.33,0-7.6,3.32-7.6,7.64c0,4.33,3.27,7.64,7.6,7.64C92.29,60.39,95.51,57.07,95.51,52.75z"/>
+        <path class="st1" d="M112.53,52.75c0-7.31,5.63-12.84,13.13-12.84c6.4,0,11.44,4.04,12.74,9.81h-5.72c-1.15-2.74-3.8-4.62-7.02-4.62c-4.33,0-7.6,3.32-7.6,7.64c0,4.33,3.27,7.64,7.6,7.64c3.22,0,5.87-1.88,7.02-4.62h5.72c-1.3,5.77-6.35,9.81-12.74,9.81C118.15,65.58,112.53,60.06,112.53,52.75z"/>
+        <path class="st1" d="M155.51,40.1v5.53c-5.19,0-8.22,2.93-8.22,7.45v11.92h-5.38V40.49h5.38v4.09C149.21,41.78,152.05,40.1,155.51,40.1z"/>
+        <path class="st1" d="M182.48,54.81h-20.29c0.77,3.56,3.7,5.91,7.55,5.91c2.84,0,5.29-1.3,6.54-3.17h5.96c-1.97,4.81-6.78,8.03-12.6,8.03c-7.6,0-13.22-5.53-13.22-12.84s5.63-12.84,13.08-12.84c7.5,0,13.13,5.53,13.13,12.89C182.63,53.32,182.58,54.24,182.48,54.81z M162.24,50.39h14.57c-0.87-3.37-3.75-5.63-7.31-5.63S163.15,47.03,162.24,50.39z"/>
+        <path class="st1" d="M213.97,59.82v5.19h-1.54c-3.46,0-5.63-1.44-6.3-4.13c-1.97,2.88-5.1,4.71-8.85,4.71c-6.92,0-12.07-5.53-12.07-12.84s5.14-12.84,12.07-12.84c3.61,0,6.63,1.68,8.61,4.38v-3.8h5.38v17.07c0,1.39,0.82,2.26,2.26,2.26H213.97z M205.9,52.75c0-4.33-3.22-7.64-7.55-7.64c-4.38,0-7.6,3.32-7.6,7.64c0,4.33,3.22,7.64,7.6,7.64C202.67,60.39,205.9,57.07,205.9,52.75z"/>
+        <path class="st1" d="M224.36,45.39v11.2c0,2.16,1.35,3.46,3.61,3.46h2.45v4.95h-3.22c-5.34,0-8.22-2.69-8.22-7.55V45.39h-4.14v-4.9h2.5c1.25,0,1.92-0.67,1.92-1.92v-4.71h5.1v6.64h6.06v4.9H224.36z"/>
+        <path class="st1" d="M233.49,32.94c0-1.97,1.49-3.41,3.41-3.41c1.97,0,3.46,1.44,3.46,3.41c0,1.92-1.49,3.41-3.46,3.41C234.98,36.35,233.49,34.86,233.49,32.94z M234.21,40.49h5.38v24.52h-5.38V40.49z"/>
+        <path class="st1" d="M264.79,50.73l-6.11,14.28h-5.63l-10.43-24.52h6.15l7.16,17.93l3.65-8.85c1.39-3.61,1.92-6.54,1.39-9.09h5.53C267.1,43.28,266.52,46.64,264.79,50.73z"/>
+        <path class="st1" d="M294.26,54.81h-20.29c0.77,3.56,3.7,5.91,7.55,5.91c2.84,0,5.29-1.3,6.54-3.17h5.96c-1.97,4.81-6.78,8.03-12.6,8.03c-7.6,0-13.22-5.53-13.22-12.84s5.63-12.84,13.08-12.84c7.5,0,13.13,5.53,13.13,12.89C294.4,53.32,294.36,54.24,294.26,54.81z M274.02,50.39h14.57c-0.87-3.37-3.75-5.63-7.31-5.63S274.93,47.03,274.02,50.39z"/>
+        <path class="st2" d="M62.18,18.15c-0.02,0-0.03,0-0.05,0c-1.45-0.03-2.59-1.22-2.57-2.67l0.22-11.57c0.03-1.45,1.24-2.57,2.67-2.57c1.45,0.03,2.59,1.22,2.57,2.67L64.8,15.59C64.77,17.02,63.61,18.15,62.18,18.15z"/>
+        <path class="st3" d="M87.67,25.12c-0.6,0-1.2-0.2-1.69-0.62c-1.1-0.93-1.24-2.59-0.31-3.69L97.34,7.04c0.93-1.1,2.59-1.24,3.69-0.31c1.1,0.93,1.24,2.59,0.31,3.69L89.66,24.2C89.15,24.81,88.41,25.12,87.67,25.12z"/>
+        <path class="st3" d="M8.74,46.75C3.92,46.75,0,42.83,0,38.01c0-4.82,3.92-8.74,8.74-8.74s8.74,3.92,8.74,8.74C17.48,42.83,13.56,46.75,8.74,46.75z M8.74,34.51c-1.93,0-3.5,1.57-3.5,3.5c0,1.93,1.57,3.5,3.5,3.5c1.93,0,3.5-1.57,3.5-3.5C12.24,36.08,10.67,34.51,8.74,34.51z"/>
+      </svg>
+    </div>
+    <div class="nav__links">
+      <a href="#services" class="nav__link">Services</a>
+      <a href="#results"  class="nav__link">Results</a>
+      <a href="#about"    class="nav__link">About</a>
+    </div>
+    <a href="#cta" class="nav__cta">Request access</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero__text">
+      <span class="hero__eyebrow">WordPress Agency for Marketing Teams</span>
+      <h1 class="hero__headline">
+        Websites<br>that close<br><em>deals.</em>
+      </h1>
+      <p class="hero__sub">WP Creative builds WordPress sites where marketing vision and technical precision converge — converting visitors into pipeline, not just impressions.</p>
+      <div class="hero__actions">
+        <a href="#cta" class="btn-plum">Book a strategy call</a>
+        <a href="#results" class="btn-outline">See results ↓</a>
+      </div>
+    </div>
+    <div class="hero__canvas-wrap">
+      <canvas id="constellation"></canvas>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat">
+      <div class="stat__num"><span data-count="1200" data-suffix="+">1200+</span></div>
+      <div class="stat__label">Projects completed</div>
+    </div>
+    <div class="stat">
+      <div class="stat__num"><span data-count="15" data-suffix="+">15+</span></div>
+      <div class="stat__label">Years in the field</div>
+    </div>
+    <div class="stat">
+      <div class="stat__num"><span data-count="100" data-suffix="+">100+</span></div>
+      <div class="stat__label">5-star Google reviews</div>
+    </div>
+    <div class="stat">
+      <div class="stat__num"><span data-count="100" data-suffix="%">100%</span></div>
+      <div class="stat__label">In-house, never outsourced</div>
+    </div>
+  </div>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span>WordPress Development</span><span class="hl">·</span>
+      <span>UX / UI Design</span><span class="hl">·</span>
+      <span>WooCommerce</span><span class="hl">·</span>
+      <span>CRM Integrations</span><span class="hl">·</span>
+      <span>Care Plans</span><span class="hl">·</span>
+      <span>SEO / CRO</span><span class="hl">·</span>
+      <span>Performance</span><span class="hl">·</span>
+      <span>WordPress Development</span><span class="hl">·</span>
+      <span>UX / UI Design</span><span class="hl">·</span>
+      <span>WooCommerce</span><span class="hl">·</span>
+      <span>CRM Integrations</span><span class="hl">·</span>
+      <span>Care Plans</span><span class="hl">·</span>
+      <span>SEO / CRO</span><span class="hl">·</span>
+      <span>Performance</span><span class="hl">·</span>
+    </div>
+  </div>
+
+  <!-- STATEMENT -->
+  <section class="section" id="about">
+    <div class="wrap">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;">
+        <div class="rv-l">
+          <span class="kicker">/about</span>
+          <h2 class="heading-lg">The<br>Marketechs™</h2>
+        </div>
+        <div class="rv" style="padding-top:12px;">
+          <p class="body-p" style="margin-bottom:20px;">We are <strong style="color:var(--bone);font-weight:600;">Marketechs™</strong> — a rare convergence of marketing vision and technical precision. Most agencies build websites. We build revenue engines.</p>
+          <p class="body-p">Senior-only. 100% in-house. Every project handled by developers who understand conversion funnels, campaign architecture, and what it means to move at marketing speed.</p>
+          <a href="#cta" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--plum);margin-top:28px;letter-spacing:0.025em;transition:opacity .2s;" onmouseenter="this.style.opacity='.65'" onmouseleave="this.style.opacity='1'">Our story →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="section" id="what-we-build">
+    <div class="wrap">
+      <div class="rv">
+        <span class="kicker">/what-we-build</span>
+        <h2 class="heading-lg">Built for<br>marketing.</h2>
+      </div>
+      <div class="fgrid">
+        <div class="fgrid__item rv">
+          <div class="fgrid__icon">🎨</div>
+          <h3 class="fgrid__title">High-converting UX / UI design</h3>
+          <p class="fgrid__body">Every page designed around your funnel. UX that removes friction, builds trust, and converts visitors into pipeline.</p>
+        </div>
+        <div class="fgrid__item rv">
+          <div class="fgrid__icon">⚡</div>
+          <h3 class="fgrid__title">Lightning-fast WordPress builds</h3>
+          <p class="fgrid__body">Performance, SEO, and scalability baked into every build. Sites that score A on GT Metrics, not F on campaign days.</p>
+        </div>
+        <div class="fgrid__item rv">
+          <div class="fgrid__icon">🔗</div>
+          <h3 class="fgrid__title">CRM & marketing integrations</h3>
+          <p class="fgrid__body">HubSpot, Salesforce, Marketo, LMS, ERP — wired into your WordPress stack cleanly and reliably.</p>
+        </div>
+        <div class="fgrid__item rv">
+          <div class="fgrid__icon">🛒</div>
+          <h3 class="fgrid__title">WooCommerce built to scale</h3>
+          <p class="fgrid__body">Custom eCommerce designed around your catalogue, customers, and revenue goals — not a theme.</p>
+        </div>
+        <div class="fgrid__item rv">
+          <div class="fgrid__icon">🛡</div>
+          <h3 class="fgrid__title">Care & performance plans</h3>
+          <p class="fgrid__body">Emergency fixes within minutes. Board-ready reporting. Ongoing optimisation — no ticket queues.</p>
+        </div>
+        <div class="fgrid__item rv" style="background:rgba(247,153,28,0.08);border-left:1px solid rgba(247,153,28,0.2);">
+          <div class="fgrid__icon" style="border-color:rgba(247,153,28,0.6);">📈</div>
+          <h3 class="fgrid__title">SEO & conversion rate optimisation</h3>
+          <p class="fgrid__body">Traffic that converts. On-page SEO, landing page CRO, and A/B testing aligned to your pipeline goals.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section class="section" id="results">
+    <div class="wrap">
+      <div class="rv">
+        <span class="kicker">/results</span>
+        <h2 class="heading-lg">Numbers that<br>move pipeline.</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:1px;border:1px solid rgba(255,255,255,0.07);border-radius:var(--r);overflow:hidden;margin-top:64px;">
+        <div class="rv" style="padding:36px 28px;background:rgba(255,255,255,0.02);border-right:1px solid rgba(255,255,255,0.06);">
+          <div style="font-size:44px;font-weight:200;color:var(--plum);line-height:1;letter-spacing:-0.04em;" data-count="108" data-prefix="+" data-suffix="%">+108%</div>
+          <div style="font-size:12px;color:var(--smoke);margin-top:8px;line-height:1.4;">Organic traffic</div>
+          <div style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.15);margin-top:16px;letter-spacing:0.08em;">FLARE HR</div>
+        </div>
+        <div class="rv" style="padding:36px 28px;background:rgba(255,255,255,0.02);border-right:1px solid rgba(255,255,255,0.06);">
+          <div style="font-size:44px;font-weight:200;color:var(--plum);line-height:1;letter-spacing:-0.04em;" data-count="144" data-prefix="+" data-suffix="%">+144%</div>
+          <div style="font-size:12px;color:var(--smoke);margin-top:8px;line-height:1.4;">Mobile speed</div>
+          <div style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.15);margin-top:16px;letter-spacing:0.08em;">GREGORY JEWELLERS</div>
+        </div>
+        <div class="rv" style="padding:36px 28px;background:rgba(255,255,255,0.02);border-right:1px solid rgba(255,255,255,0.06);">
+          <div style="font-size:44px;font-weight:200;color:var(--plum);line-height:1;letter-spacing:-0.04em;" data-count="145" data-prefix="+" data-suffix="%">+145%</div>
+          <div style="font-size:12px;color:var(--smoke);margin-top:8px;line-height:1.4;">User engagement</div>
+          <div style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.15);margin-top:16px;letter-spacing:0.08em;">CROWN FURNITURE</div>
+        </div>
+        <div class="rv" style="padding:36px 28px;background:rgba(255,255,255,0.02);border-right:1px solid rgba(255,255,255,0.06);">
+          <div style="font-size:44px;font-weight:200;color:var(--plum);line-height:1;letter-spacing:-0.04em;" data-count="75" data-prefix="+" data-suffix="%">+75%</div>
+          <div style="font-size:12px;color:var(--smoke);margin-top:8px;line-height:1.4;">Quote requests</div>
+          <div style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.15);margin-top:16px;letter-spacing:0.08em;">TILE FACTORY</div>
+        </div>
+        <div class="rv" style="padding:36px 28px;background:rgba(255,255,255,0.02);">
+          <div style="font-size:44px;font-weight:200;color:var(--plum);line-height:1;letter-spacing:-0.04em;" data-count="220" data-prefix="+" data-suffix="%">+220%</div>
+          <div style="font-size:12px;color:var(--smoke);margin-top:8px;line-height:1.4;">Mobile speed</div>
+          <div style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.15);margin-top:16px;letter-spacing:0.08em;">CHRONOS AGENCY</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="section" id="services">
+    <div class="wrap">
+      <div style="display:grid;grid-template-columns:380px 1fr;gap:80px;align-items:start;">
+        <div class="rv-l" style="position:sticky;top:120px;">
+          <span class="kicker">/services</span>
+          <h2 class="heading-lg" style="font-size:clamp(28px,3.5vw,48px);">Full-service WordPress.</h2>
+          <p class="body-p" style="margin-top:16px;">Every service built around one goal: making your website your best-performing marketing channel.</p>
+        </div>
+        <div class="slist rv">
+          <div class="sitem"><span class="sitem__num">01</span><span class="sitem__name">UX / UI Design</span><span class="sitem__tag">Design</span></div>
+          <div class="sitem"><span class="sitem__num">02</span><span class="sitem__name">WordPress Development</span><span class="sitem__tag">Build</span></div>
+          <div class="sitem"><span class="sitem__num">03</span><span class="sitem__name">WooCommerce & eCommerce</span><span class="sitem__tag">Commerce</span></div>
+          <div class="sitem"><span class="sitem__num">04</span><span class="sitem__name">CRM & Third-Party Integrations</span><span class="sitem__tag">Integrate</span></div>
+          <div class="sitem"><span class="sitem__num">05</span><span class="sitem__name">Website Care Plans</span><span class="sitem__tag">Ongoing</span></div>
+          <div class="sitem"><span class="sitem__num">06</span><span class="sitem__name">Performance Optimisation</span><span class="sitem__tag">Growth</span></div>
+          <div class="sitem"><span class="sitem__num">07</span><span class="sitem__name">SEO & Conversion Rate Optimisation</span><span class="sitem__tag">SEO/CRO</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section">
+    <div class="wrap">
+      <div class="rv">
+        <span class="kicker">/testimonials</span>
+        <h2 class="heading-lg" style="font-size:clamp(32px,4vw,64px);">Trusted by brands.<br>Loved by teams.</h2>
+      </div>
+      <div class="tgrid">
+        <div class="tcard rv"><p class="tcard__quote">"WP Creative are hands down the best development agency we've worked with. Translating creative vision into technically excellent results is genuinely rare."</p><div class="tcard__name">Scott Roberts</div><div class="tcard__role">Creative Director, Studio Helm</div></div>
+        <div class="tcard rv"><p class="tcard__quote">"I'd recommend WPC in a heartbeat. Excellent project managers with the skills and mindset to listen and resolve issues efficiently."</p><div class="tcard__name">Minsha Mueen</div><div class="tcard__role">Digital Marketing Manager, Flare</div></div>
+        <div class="tcard rv"><p class="tcard__quote">"With their help, our two large content-heavy news websites now rank A's on GT Metrics with greatly increased speeds."</p><div class="tcard__name">Mark Brown</div><div class="tcard__role">Founder, Engage Media</div></div>
+        <div class="tcard rv"><p class="tcard__quote">"Really good in terms of their ability to deliver. Their working style, collaboration style — and they're very cost effective."</p><div class="tcard__name">Pete Williams</div><div class="tcard__role">Founder, Deloitte Digital</div></div>
+        <div class="tcard rv"><p class="tcard__quote">"Specialists in WordPress and WooCommerce, which are both crucial to our operation. A genuinely great fit."</p><div class="tcard__name">Simon Kennedy</div><div class="tcard__role">Managing Editor, Quadrant</div></div>
+        <div class="tcard rv"><p class="tcard__quote">"My favourite thing about their service is the communication and attention to detail. Strong and swift — exactly what you need."</p><div class="tcard__name">Chad Fellows</div><div class="tcard__role">Founder, Kitchen Ventilation</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLIENTS -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span>Oxford University</span><span class="hl">·</span><span>Bonds</span><span class="hl">·</span><span>nib Eyecare</span><span class="hl">·</span><span>Transport NSW</span><span class="hl">·</span><span>UTS</span><span class="hl">·</span><span>Quantium</span><span class="hl">·</span><span>illion</span><span class="hl">·</span><span>Flare HR</span><span class="hl">·</span><span>Gregory Jewellers</span><span class="hl">·</span><span>Crown Furniture</span><span class="hl">·</span><span>Quadrant</span><span class="hl">·</span><span>Onsite</span><span class="hl">·</span>
+      <span>Oxford University</span><span class="hl">·</span><span>Bonds</span><span class="hl">·</span><span>nib Eyecare</span><span class="hl">·</span><span>Transport NSW</span><span class="hl">·</span><span>UTS</span><span class="hl">·</span><span>Quantium</span><span class="hl">·</span><span>illion</span><span class="hl">·</span><span>Flare HR</span><span class="hl">·</span><span>Gregory Jewellers</span><span class="hl">·</span><span>Crown Furniture</span><span class="hl">·</span><span>Quadrant</span><span class="hl">·</span><span>Onsite</span><span class="hl">·</span>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <section class="cta-band" id="cta">
+    <div class="wrap">
+      <span class="cta-band__eyebrow rv">/get-started</span>
+      <h2 class="cta-band__heading rv">Ready to make your website<br>your best salesperson?</h2>
+      <p class="cta-band__sub rv">Book a free 30-minute strategy call. We'll audit your site, identify conversion gaps, and map a clear path to better performance.</p>
+      <div class="cta-band__btns rv">
+        <a href="#" class="btn-plum">Book a strategy call</a>
+        <a href="#results" class="btn-outline">See case results</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer__top">
+        <div>
+          <div class="footer__wordmark">
+            <svg style="height:18px;width:auto;" viewBox="0 0 294.4 74.14" xmlns="http://www.w3.org/2000/svg">
+              <style>.fst0{fill:#F7991C;}.fst1{fill:#fff;}.fst2{fill:#51B048;}.fst3{fill:#FDDB00;}</style>
+              <path class="fst0" d="M37.53,24.59c-0.84,0.09-1.71-0.24-2.28-0.93L19.21,4.29c-0.92-1.11-0.77-2.76,0.35-3.68c1.11-0.92,2.76-0.77,3.68,0.35l16.03,19.37c0.92,1.11,0.77,2.76-0.35,3.68C38.51,24.35,38.02,24.54,37.53,24.59z"/>
+              <path class="fst1" d="M69.55,50.82l-5.24,14.18h-5.58l-6.06-18.17l-6.06,18.17h-5.58l-8.94-24.52h6.11l5.77,17.79l6.01-17.79h5.53l6.01,17.84l2.98-8.75c1.11-3.65,1.78-6.44,1.25-9.09h5.53C71.86,43.37,71.04,46.59,69.55,50.82z"/>
+              <path class="fst1" d="M101.09,52.75c0,7.31-5.19,12.84-12.07,12.84c-3.65,0-6.68-1.68-8.66-4.38v12.93h-5.38V40.49h5.38v3.8c1.97-2.69,5-4.38,8.66-4.38C95.9,39.91,101.09,45.44,101.09,52.75z M95.51,52.75c0-4.33-3.22-7.64-7.55-7.64c-4.33,0-7.6,3.32-7.6,7.64c0,4.33,3.27,7.64,7.6,7.64C92.29,60.39,95.51,57.07,95.51,52.75z"/>
+              <path class="fst1" d="M112.53,52.75c0-7.31,5.63-12.84,13.13-12.84c6.4,0,11.44,4.04,12.74,9.81h-5.72c-1.15-2.74-3.8-4.62-7.02-4.62c-4.33,0-7.6,3.32-7.6,7.64c0,4.33,3.27,7.64,7.6,7.64c3.22,0,5.87-1.88,7.02-4.62h5.72c-1.3,5.77-6.35,9.81-12.74,9.81C118.15,65.58,112.53,60.06,112.53,52.75z"/>
+              <path class="fst1" d="M155.51,40.1v5.53c-5.19,0-8.22,2.93-8.22,7.45v11.92h-5.38V40.49h5.38v4.09C149.21,41.78,152.05,40.1,155.51,40.1z"/>
+              <path class="fst1" d="M182.48,54.81h-20.29c0.77,3.56,3.7,5.91,7.55,5.91c2.84,0,5.29-1.3,6.54-3.17h5.96c-1.97,4.81-6.78,8.03-12.6,8.03c-7.6,0-13.22-5.53-13.22-12.84s5.63-12.84,13.08-12.84c7.5,0,13.13,5.53,13.13,12.89C182.63,53.32,182.58,54.24,182.48,54.81z M162.24,50.39h14.57c-0.87-3.37-3.75-5.63-7.31-5.63S163.15,47.03,162.24,50.39z"/>
+              <path class="fst1" d="M213.97,59.82v5.19h-1.54c-3.46,0-5.63-1.44-6.3-4.13c-1.97,2.88-5.1,4.71-8.85,4.71c-6.92,0-12.07-5.53-12.07-12.84s5.14-12.84,12.07-12.84c3.61,0,6.63,1.68,8.61,4.38v-3.8h5.38v17.07c0,1.39,0.82,2.26,2.26,2.26H213.97z M205.9,52.75c0-4.33-3.22-7.64-7.55-7.64c-4.38,0-7.6,3.32-7.6,7.64c0,4.33,3.22,7.64,7.6,7.64C202.67,60.39,205.9,57.07,205.9,52.75z"/>
+              <path class="fst1" d="M224.36,45.39v11.2c0,2.16,1.35,3.46,3.61,3.46h2.45v4.95h-3.22c-5.34,0-8.22-2.69-8.22-7.55V45.39h-4.14v-4.9h2.5c1.25,0,1.92-0.67,1.92-1.92v-4.71h5.1v6.64h6.06v4.9H224.36z"/>
+              <path class="fst1" d="M233.49,32.94c0-1.97,1.49-3.41,3.41-3.41c1.97,0,3.46,1.44,3.46,3.41c0,1.92-1.49,3.41-3.46,3.41C234.98,36.35,233.49,34.86,233.49,32.94z M234.21,40.49h5.38v24.52h-5.38V40.49z"/>
+              <path class="fst1" d="M264.79,50.73l-6.11,14.28h-5.63l-10.43-24.52h6.15l7.16,17.93l3.65-8.85c1.39-3.61,1.92-6.54,1.39-9.09h5.53C267.1,43.28,266.52,46.64,264.79,50.73z"/>
+              <path class="fst1" d="M294.26,54.81h-20.29c0.77,3.56,3.7,5.91,7.55,5.91c2.84,0,5.29-1.3,6.54-3.17h5.96c-1.97,4.81-6.78,8.03-12.6,8.03c-7.6,0-13.22-5.53-13.22-12.84s5.63-12.84,13.08-12.84c7.5,0,13.13,5.53,13.13,12.89C294.4,53.32,294.36,54.24,294.26,54.81z M274.02,50.39h14.57c-0.87-3.37-3.75-5.63-7.31-5.63S274.93,47.03,274.02,50.39z"/>
+              <path class="fst2" d="M62.18,18.15c-0.02,0-0.03,0-0.05,0c-1.45-0.03-2.59-1.22-2.57-2.67l0.22-11.57c0.03-1.45,1.24-2.57,2.67-2.57c1.45,0.03,2.59,1.22,2.57,2.67L64.8,15.59C64.77,17.02,63.61,18.15,62.18,18.15z"/>
+              <path class="fst3" d="M87.67,25.12c-0.6,0-1.2-0.2-1.69-0.62c-1.1-0.93-1.24-2.59-0.31-3.69L97.34,7.04c0.93-1.1,2.59-1.24,3.69-0.31c1.1,0.93,1.24,2.59,0.31,3.69L89.66,24.2C89.15,24.81,88.41,25.12,87.67,25.12z"/>
+              <path class="fst3" d="M8.74,46.75C3.92,46.75,0,42.83,0,38.01c0-4.82,3.92-8.74,8.74-8.74s8.74,3.92,8.74,8.74C17.48,42.83,13.56,46.75,8.74,46.75z M8.74,34.51c-1.93,0-3.5,1.57-3.5,3.5c0,1.93,1.57,3.5,3.5,3.5c1.93,0,3.5-1.57,3.5-3.5C12.24,36.08,10.67,34.51,8.74,34.51z"/>
+            </svg>
+          </div>
+          <p class="footer__tagline">The WordPress agency for marketing teams. Senior-only, in-house, built for results.</p>
+        </div>
+        <div>
+          <div class="footer__col-head">Services</div>
+          <div class="footer__links">
+            <a href="#">UX / UI Design</a><a href="#">WordPress Dev</a><a href="#">WooCommerce</a><a href="#">Integrations</a><a href="#">Care Plans</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer__col-head">Company</div>
+          <div class="footer__links">
+            <a href="#">About</a><a href="#">Case Studies</a><a href="#">Blog</a><a href="#">Careers</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer__col-head">Contact</div>
+          <div class="footer__links">
+            <a href="#">Book a Meeting</a><a href="#">hello@wpcreative.com.au</a><a href="#">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span class="footer__copy">© 2024 WP Creative. All rights reserved.</span>
+        <span class="footer__badge">Built by Marketechs™</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+  /* ── Cursor ── */
+  (function(){
+    var ring=document.getElementById('ring'), dot=document.getElementById('dot');
+    var mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove',function(e){
+      mx=e.clientX; my=e.clientY;
+      dot.style.left=mx+'px'; dot.style.top=my+'px';
+    });
+    (function lag(){ rx+=(mx-rx)*0.13; ry+=(my-ry)*0.13; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(lag); })();
+    document.addEventListener('mousedown',function(){ ring.style.transform='translate(-50%,-50%) scale(0.8)'; });
+    document.addEventListener('mouseup',function(){   ring.style.transform=''; });
+    document.querySelectorAll('a,button,.fgrid__item,.tcard,.sitem').forEach(function(el){
+      el.addEventListener('mouseenter',function(){ ring.classList.add('grow'); });
+      el.addEventListener('mouseleave',function(){ ring.classList.remove('grow'); });
+    });
+  })();
+
+  /* ── Progress ── */
+  (function(){
+    var p=document.getElementById('prog');
+    var nav=document.getElementById('nav');
+    window.addEventListener('scroll',function(){
+      p.style.width=(window.scrollY/(document.body.scrollHeight-window.innerHeight)*100)+'%';
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    },{passive:true});
+  })();
+
+  /* ── Reveal ── */
+  (function(){
+    var obs=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); } }); },{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+    document.querySelectorAll('.rv,.rv-l').forEach(function(el,i){ el.style.transitionDelay=(i%5*60)+'ms'; obs.observe(el); });
+  })();
+
+  /* ── Counters ── */
+  (function(){
+    function countUp(el,target,prefix,suffix){
+      var start=null;
+      (function step(ts){ if(!start)start=ts; var p=Math.min((ts-start)/1300,1),e=1-Math.pow(1-p,3); el.textContent=prefix+Math.floor(e*target).toLocaleString()+suffix; if(p<1)requestAnimationFrame(step); })(performance.now());
+    }
+    var obs=new IntersectionObserver(function(es){ es.forEach(function(e){ if(!e.isIntersecting)return; var el=e.target; countUp(el,+el.dataset.count,el.dataset.prefix||'',el.dataset.suffix||''); obs.unobserve(el); }); },{threshold:0.5});
+    document.querySelectorAll('[data-count]').forEach(function(el){ obs.observe(el); });
+  })();
+
+  /* ── Magnetic buttons ── */
+  (function(){
+    document.querySelectorAll('.btn-plum,.btn-outline,.nav__cta').forEach(function(btn){
+      btn.addEventListener('mousemove',function(e){
+        var r=btn.getBoundingClientRect();
+        btn.style.transform='translate('+(e.clientX-r.left-r.width/2)*0.2+'px,'+(e.clientY-r.top-r.height/2)*0.3+'px)';
+      });
+      btn.addEventListener('mouseleave',function(){ btn.style.transform=''; });
+    });
+  })();
+  </script>
+
+  <!-- ── PARTICLE CONSTELLATION ── -->
+  <script>
+  (function(){
+    var cvs = document.getElementById('constellation');
+    var ctx = cvs.getContext('2d');
+    var W, H, particles = [], mouse = {x:-9999, y:-9999};
+
+    var COLORS = ['#8052ff','#8052ff','#8052ff','#ffffff','#ffb829','#15846e','#bdbdbd'];
+    var SHAPES = ['circle','tri','diamond','square'];
+
+    function resize(){
+      W = cvs.width  = cvs.offsetWidth;
+      H = cvs.height = cvs.offsetHeight;
+    }
+    resize();
+    new ResizeObserver(resize).observe(cvs.parentElement);
+
+    /* Build a galaxy — cluster toward center-right of canvas */
+    function makeParticles(){
+      particles = [];
+      var N = 1800;
+      for(var i=0; i<N; i++){
+        /* polar coords around a focal point */
+        var angle  = Math.random() * Math.PI * 2;
+        var radius = Math.pow(Math.random(), 0.55) * Math.min(W,H) * 0.52;
+        var fx = W * 0.5 + Math.cos(angle) * radius * (0.7 + Math.random()*0.6);
+        var fy = H * 0.5 + Math.sin(angle) * radius * (0.5 + Math.random()*0.7);
+        var size = 1.2 + Math.random() * 3.2;
+        particles.push({
+          x: fx, y: fy,
+          ox: fx, oy: fy,
+          vx: 0, vy: 0,
+          size: size,
+          color: COLORS[Math.floor(Math.random()*COLORS.length)],
+          shape: SHAPES[Math.floor(Math.random()*SHAPES.length)],
+          alpha: 0.18 + Math.random() * 0.65,
+          drift: Math.random() * Math.PI * 2,
+          driftSpeed: 0.003 + Math.random() * 0.008,
+          driftRadius: 0.4 + Math.random() * 1.4,
+        });
+      }
+    }
+    makeParticles();
+
+    cvs.parentElement.addEventListener('mousemove',function(e){
+      var r = cvs.getBoundingClientRect();
+      mouse.x = e.clientX - r.left;
+      mouse.y = e.clientY - r.top;
+    });
+    cvs.parentElement.addEventListener('mouseleave',function(){ mouse.x=-9999; mouse.y=-9999; });
+
+    function drawShape(p){
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.globalAlpha = p.alpha;
+      ctx.fillStyle   = p.color;
+      ctx.strokeStyle = p.color;
+      ctx.lineWidth   = 0.8;
+      var s = p.size;
+      switch(p.shape){
+        case 'circle':
+          ctx.beginPath(); ctx.arc(0,0,s,0,Math.PI*2); ctx.fill(); break;
+        case 'tri':
+          ctx.beginPath(); ctx.moveTo(0,-s); ctx.lineTo(s*0.87,s*0.5); ctx.lineTo(-s*0.87,s*0.5); ctx.closePath(); ctx.fill(); break;
+        case 'diamond':
+          ctx.beginPath(); ctx.moveTo(0,-s); ctx.lineTo(s*0.65,0); ctx.lineTo(0,s); ctx.lineTo(-s*0.65,0); ctx.closePath(); ctx.fill(); break;
+        case 'square':
+          ctx.fillRect(-s*0.7,-s*0.7,s*1.4,s*1.4); break;
+      }
+      ctx.restore();
+    }
+
+    var t = 0;
+    function frame(){
+      ctx.clearRect(0,0,W,H);
+      t += 0.016;
+      for(var i=0; i<particles.length; i++){
+        var p = particles[i];
+        p.drift += p.driftSpeed;
+        var tx = p.ox + Math.cos(p.drift) * p.driftRadius;
+        var ty = p.oy + Math.sin(p.drift) * p.driftRadius;
+        /* mouse repel */
+        var dx = p.x - mouse.x, dy = p.y - mouse.y;
+        var dist = Math.sqrt(dx*dx + dy*dy);
+        if(dist < 90){
+          var force = (90 - dist) / 90 * 2.4;
+          p.vx += (dx/dist) * force;
+          p.vy += (dy/dist) * force;
+        }
+        p.vx += (tx - p.x) * 0.06;
+        p.vy += (ty - p.y) * 0.06;
+        p.vx *= 0.82;
+        p.vy *= 0.82;
+        p.x  += p.vx;
+        p.y  += p.vy;
+        drawShape(p);
+      }
+      requestAnimationFrame(frame);
+    }
+    frame();
+  })();
+  </script>
+
+  <!-- ── WATER RIPPLE ON HERO ── -->
+  <script>
+  (function(){
+    function initWater(sel, R, G, B) {
+      var el = document.querySelector(sel);
+      if (!el) return;
+      if (getComputedStyle(el).position === 'static') el.style.position = 'relative';
+      var cvs = document.createElement('canvas');
+      cvs.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:20;mix-blend-mode:screen;';
+      el.appendChild(cvs);
+      var ctx = cvs.getContext('2d');
+      var W=0,H=0,buf0,buf1,img;
+      function resize(){
+        W=Math.max(4,el.offsetWidth>>1); H=Math.max(4,el.offsetHeight>>1);
+        cvs.width=W; cvs.height=H;
+        buf0=new Float32Array(W*H); buf1=new Float32Array(W*H);
+        img=ctx.createImageData(W,H);
+      }
+      resize(); new ResizeObserver(resize).observe(el);
+      function splash(ex,ey,rad,force){
+        var sx=(ex/el.offsetWidth*W)|0, sy=(ey/el.offsetHeight*H)|0, r2=rad*rad;
+        for(var dy=-rad;dy<=rad;dy++) for(var dx=-rad;dx<=rad;dx++){
+          if(dx*dx+dy*dy>r2) continue;
+          var px=sx+dx,py=sy+dy;
+          if(px>0&&px<W-1&&py>0&&py<H-1) buf0[py*W+px]+=force;
+        }
+      }
+      var _lx=-999,_ly=-999;
+      el.addEventListener('mousemove',function(e){
+        var rc=el.getBoundingClientRect();
+        var cx=e.clientX-rc.left,cy=e.clientY-rc.top;
+        if(Math.hypot(cx-_lx,cy-_ly)<48) return;
+        _lx=cx; _ly=cy;
+        splash(cx,cy,5,180);
+      });
+      el.addEventListener('click',function(e){
+        var rc=el.getBoundingClientRect();
+        splash(e.clientX-rc.left,e.clientY-rc.top,14,500);
+      });
+      (function frame(){
+        var W1=W-1,H1=H-1;
+        for(var y=1;y<H1;y++) for(var x=1;x<W1;x++){
+          var i=y*W+x;
+          buf1[i]=(buf0[i-1]+buf0[i+1]+buf0[i-W]+buf0[i+W])*0.5-buf1[i];
+          buf1[i]*=0.972;
+        }
+        var tmp=buf0; buf0=buf1; buf1=tmp;
+        var d=img.data;
+        for(var y=1;y<H1;y++) for(var x=1;x<W1;x++){
+          var i=y*W+x,p=i*4;
+          var nx=buf0[i+1]-buf0[i-1], ny=buf0[i+W]-buf0[i-W];
+          var spec=nx+ny;
+          var a=spec>0?Math.min(42,spec*0.48):0;
+          d[p]=R; d[p+1]=G; d[p+2]=B; d[p+3]=a;
+        }
+        ctx.putImageData(img,0,0);
+        requestAnimationFrame(frame);
+      })();
+    }
+    var fn=function(){ initWater('.hero',247,153,28); };
+    document.readyState==='loading'?document.addEventListener('DOMContentLoaded',fn):fn();
+  })();
+  </script>
+
+</body>
+</html>
