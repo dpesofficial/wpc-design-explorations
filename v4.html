@@ -377,16 +377,166 @@
     .rv-l.in { opacity:1; transform:none; }
 
     /* ─── RESPONSIVE ── */
+
+    /* ── 960px — Tablet ── */
     @media (max-width: 960px) {
+      .wrap { padding: 0 32px; }
+
+      /* Nav */
+      .nav-wrap { padding: 16px 32px; }
+      .nav-wrap.scrolled { padding: 0; }
+      .nav__links { display: none; }
+      .nav__cta { margin-left: auto; }
+
+      /* Hero: stack text above canvas */
       .hero { grid-template-columns: 1fr; }
-      .hero__canvas-wrap { height: 55vw; }
-      .hero__text { padding: 140px 28px 60px; max-width: 100%; }
+      .hero__text { padding: 120px 32px 60px; max-width: 100%; }
+      .hero__headline { font-size: clamp(44px, 8vw, 88px); }
+      .hero__canvas-wrap { height: 50vw; }
+
+      /* Stats */
       .stats-row { grid-template-columns: 1fr 1fr; }
-      .fgrid { grid-template-columns: 1fr; }
+      .stat { padding: 24px 28px; }
+      .stat__num { font-size: 40px; }
+
+      /* Section padding */
+      .section { padding: 60px 0; }
+
+      /* Feature grid */
+      .fgrid { grid-template-columns: 1fr 1fr; }
+      .fgrid__item:nth-child(3n) { border-right: 1px solid rgba(255,255,255,0.06); }
+      .fgrid__item:nth-child(2n) { border-right: none; }
+
+      /* Testimonials */
+      .tgrid { grid-template-columns: 1fr 1fr; }
+
+      /* CTA band */
+      .cta-band { padding: 60px 0; }
+      .cta-band__heading { font-size: clamp(32px, 6vw, 64px); }
+      .cta-band__btns { flex-direction: column; align-items: stretch; max-width: 320px; margin: 0 auto; }
+      .cta-band__btns .btn-plum,
+      .cta-band__btns .btn-outline { text-align: center; justify-content: center; }
+
+      /* Footer */
+      .footer__top { grid-template-columns: 1fr 1fr; gap: 36px; }
+      .footer__bottom { flex-direction: column; align-items: flex-start; gap: 8px; }
+
+      /* Inline grids in sections — statement and services */
+    }
+
+    /* ── 480px — Mobile ── */
+    @media (max-width: 480px) {
+      .wrap { padding: 0 20px; }
+
+      /* Nav: mobile nav-wrap padding */
+      .nav-wrap { padding: 12px 16px; }
+      .nav-wrap.scrolled { padding: 0; }
+      .nav { padding: 10px 14px; }
+      .nav__links { display: none; }
+      .nav__cta { margin-left: auto; padding: 8px 14px; font-size: 10px; }
+
+      /* Hero: single column text only, hide canvas */
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero__text { padding: 100px 20px 48px; }
+      .hero__headline { font-size: clamp(36px, 12vw, 60px); margin-bottom: 20px; }
+      .hero__sub { font-size: 14px; margin-bottom: 28px; }
+      .hero__eyebrow { font-size: 10px; margin-bottom: 16px; }
+      .hero__actions { flex-direction: column; align-items: stretch; gap: 10px; }
+      .hero__actions .btn-plum,
+      .hero__actions .btn-outline { text-align: center; justify-content: center; width: 100%; }
+      .hero__canvas-wrap { display: none; }
+
+      /* Stats: 2 col */
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .stat { padding: 20px 16px; }
+      .stat__num { font-size: 36px; }
+      .stat__label { font-size: 11px; }
+
+      /* Sections */
+      .section { padding: 40px 0; }
+
+      /* Feature grid: 1 col */
+      .fgrid { grid-template-columns: 1fr; border-radius: 16px; margin-top: 40px; }
+      .fgrid__item { border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.06); }
+      .fgrid__item:last-child { border-bottom: none; }
+      .fgrid__title { font-size: 16px; }
+
+      /* Heading sizes */
+      .heading-lg { font-size: clamp(28px, 9vw, 44px); }
+
+      /* Inline statement grid — override inline style */
+      /* (handled via the !important below targeting the inline grid) */
+
+      /* Testimonials: 1 col */
       .tgrid { grid-template-columns: 1fr; }
-      .footer__top { grid-template-columns: 1fr 1fr; }
-      .nav { width: calc(100% - 40px); left: 50%; transform: translateX(-50%); }
-      .wrap { padding: 0 24px; }
+      .tcard { padding: 24px; }
+      .tcard__quote { font-size: 13px; }
+
+      /* Services list */
+      .sitem { grid-template-columns: 36px 1fr; gap: 12px; padding: 18px 12px; }
+      .sitem__tag { display: none; }
+      .sitem__name { font-size: 16px; }
+
+      /* CTA band */
+      .cta-band { padding: 40px 0; }
+      .cta-band__heading { font-size: clamp(28px, 9vw, 48px); }
+      .cta-band__sub { font-size: 14px; }
+      .cta-band__btns { flex-direction: column; align-items: stretch; max-width: 100%; }
+      .cta-band__btns .btn-plum,
+      .cta-band__btns .btn-outline { text-align: center; justify-content: center; width: 100%; }
+
+      /* Footer */
+      .footer { padding: 40px 0 28px; }
+      .footer__top { grid-template-columns: 1fr; gap: 28px; }
+      .footer__bottom { flex-direction: column; align-items: flex-start; gap: 8px; }
+    }
+
+    /* Override inline grid styles for statement and services sections on mobile */
+    @media (max-width: 480px) {
+      /* Statement inline grid */
+      .section [style*="grid-template-columns:1fr 1fr"],
+      .section [style*="grid-template-columns: 1fr 1fr"] {
+        grid-template-columns: 1fr !important;
+        gap: 32px !important;
+      }
+      /* Services inline layout (380px sticky col) */
+      .section [style*="grid-template-columns:380px"],
+      .section [style*="grid-template-columns: 380px"] {
+        grid-template-columns: 1fr !important;
+        gap: 32px !important;
+      }
+      .section [style*="position:sticky"],
+      .section [style*="position: sticky"] {
+        position: static !important;
+      }
+      /* Results grid inline */
+      .section > .wrap > [style*="repeat(5,1fr)"],
+      .section > .wrap > [style*="repeat(5, 1fr)"] {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 1px !important;
+      }
+    }
+
+    @media (max-width: 960px) {
+      /* Tablet: fix inline grids */
+      .section [style*="grid-template-columns:1fr 1fr"],
+      .section [style*="grid-template-columns: 1fr 1fr"] {
+        gap: 40px !important;
+      }
+      .section [style*="grid-template-columns:380px"],
+      .section [style*="grid-template-columns: 380px"] {
+        grid-template-columns: 1fr !important;
+        gap: 40px !important;
+      }
+      .section [style*="position:sticky"],
+      .section [style*="position: sticky"] {
+        position: static !important;
+      }
+      /* Results grid inline: 2 col on tablet */
+      .section > .wrap > [style*="repeat(5,1fr)"],
+      .section > .wrap > [style*="repeat(5, 1fr)"] {
+        grid-template-columns: 1fr 1fr !important;
+      }
     }
   </style>
 </head>
